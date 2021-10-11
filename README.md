@@ -90,31 +90,56 @@ For open source projects, say how it is licensed.
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
 
 ## Endpoints User (tabela usuário)
-/harbor_manager/user
+POST /harbor_manager/users - cria um usuário.
 
+POST /harbor_manager/users/login - faz login de um usuário
+
+GET /harbor_manager/users/<string:username of the user> - lista o próprio dado do usuário **precisa de autorização** 
+
+PATCH /harbor_manager/users - atualiza um usuário específico **precisa de autorização** 
+                      
 ## Endpoints Marine Company (tabela empresa marítima)
-POST /harbor_manager/marine_company - cria empresas marítimas
+POST /harbor_manager/marine_company - cria empresas marítimas **precisa de autorização**
 
-GET /harbor_manager/marine_company - lista todas as empresas marítimas
+GET /harbor_manager/marine_company - lista os dados da empresa do usuário **precisa de autorização**
 
-GET /harbor_manager/marine_company/<int:number of the company> - lista uma empresa marítima específica
+PATCH /harbor_manager/marine_company - atualiza os dados da empresa **precisa de autorização**
 
-PATCH /harbor_manager/marine_company/<int:number of the company> - atualiza uma empresa marítima específica
+DELETE /harbor_manager/marine_company - deleta a empresa do usuário **precisa de autorização**
 
-DELETE /harbor_manager/marine_company/<int:number of the company> - deleta uma empresa marítima específica
+-------
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/containers - lista todos os containers da companhia **precisa de autorização**
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/containers/<int: id_container> - lista um container específico da companhia **precisa de autorização**
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/containers/unavailable - lista todos os containers da companhia que estão em viagem **precisa de autorização**
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/containers/available - lista todos os pedidos da companhia que não estão em viagem **precisa de autorização**  
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/ships - lista todos os navios da companhia **precisa de autorização**  
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/ships/<string: name of the ship> - lista um navio específico da companhia **precisa de autorização** 
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/orders - lista todos os pedidos da companhia **precisa de autorização**
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/orders/<int: id_pedido> - lista todos os pedidos da companhia **precisa de autorização**
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company> - lista algumas informações da companhia
 
 ## Endpoints Ship (tabela navio)
-POST /harbor_manager/ship - cria navios
+POST /harbor_manager/ship - cria navios **precisa de autorização**     
 
 GET /harbor_manager/ship - lista todos os navios cadastrados
 
-GET /harbor_manager/ship/<int:number of the ship> - lista um navio específico
+GET /harbor_manager/ship/<string:name of the ship> - lista algumas informações de um navio específico
 
-GET /harbor_manager/ship/<int:number of the ship>/travel - lista as viagens de um navio
+PATCH /harbor_manager/ship/<string:name of the ship> - altera dados do navio **precisa de autorização**     
 
-GET /harbor_manager/ship/<int:number of the ship>/dock - lista os pátios pelos quais o navio já passou
+DELETE /harbor_manager/ship/<string:name of the ship> - deleta um navio **precisa de autorização**  
+- se ele não estiver em nenhuma viagem
 
-GET /harbor_manager/ship/<int:number of the ship> - lista um navio específico
+-----
+GET /harbor_manager/ship/<string:name of the ship>/containers - lista todos os containers que o navio esta carregando ? **precisa de autorização**
 
 ## Endpoints Container (tabela container)
 POST /harbor_manager/container - cria containers
@@ -131,15 +156,29 @@ PATCH /harbor_manager/container/<int:number of the container> - atualiza um cont
 
 DELETE /harbor_manager/container/<int:number of the container> - deleta um container específico
 
-/harbor_manager/container (tabela container)
-/harbor_manager/travel (tabela viagem)
-/harbor_manager/order_authorization (tabela pedido_autorização)
-/harbor_manager/container_dates_on_terminal (tabela container_datas_no_terminal)
-/harbor_manager/marine_terminal (tabela patio)
-/harbor_manager/dock (tabela atracadouro)
-/harbor_manager/ship_at_dock (tabela navio no atracadouro)
-/harbor_manager/harbor (tabela porto)
-/harbor_manager/reports ?
+## Endpoints Travel (tabela viagem)
+/harbor_manager/travel 
+
+## Endpoints order_authorization (tabela pedido_autorização)
+/harbor_manager/order_authorization
+
+## Endpoints container_dates_on_terminal (tabela container_datas_no_terminal)
+/harbor_manager/container_dates_on_terminal
+
+## Endpoints container_dates_on_terminal (tabela patio)
+/harbor_manager/marine_terminal
+
+## Endpoints dock (tabela atracadouro)
+/harbor_manager/dock
+
+## Endpoints ship_at_dock (tabela navio no atracadouro)
+/harbor_manager/ship_at_dock
+
+## Endpoints harbor (tabela porto)
+/harbor_manager/harbor
+
+## Endpoints reports
+/harbor_manager/reports
 
 
 
