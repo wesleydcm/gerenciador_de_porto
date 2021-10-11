@@ -89,3 +89,57 @@ For open source projects, say how it is licensed.
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
 
+## Endpoints User (tabela usuário)
+/harbor_manager/user
+
+## Endpoints Marine Company (tabela empresa marítima)
+POST /harbor_manager/marine_company - cria empresas marítimas
+
+GET /harbor_manager/marine_company - lista todas as empresas marítimas
+
+GET /harbor_manager/marine_company/<int:number of the company> - lista uma empresa marítima específica
+
+PATCH /harbor_manager/marine_company/<int:number of the company> - atualiza uma empresa marítima específica
+
+DELETE /harbor_manager/marine_company/<int:number of the company> - deleta uma empresa marítima específica
+
+## Endpoints Ship (tabela navio)
+POST /harbor_manager/ship - cria navios
+
+GET /harbor_manager/ship - lista todos os navios cadastrados
+
+GET /harbor_manager/ship/<int:number of the ship> - lista um navio específico
+
+GET /harbor_manager/ship/<int:number of the ship>/travel - lista as viagens de um navio
+
+GET /harbor_manager/ship/<int:number of the ship>/dock - lista os pátios pelos quais o navio já passou
+
+GET /harbor_manager/ship/<int:number of the ship> - lista um navio específico
+
+## Endpoints Container (tabela container)
+POST /harbor_manager/container - cria containers
+
+GET /harbor_manager/container - lista todos os containers
+
+GET /harbor_manager/container/<int:number of the container> - lista um container específico
+
+GET /harbor_manager/container/<int:number of the container>/travel - lista as viagens de um container
+
+GET /harbor_manager/container/<int:number of the container>/marine_terminal - lista os pátios nos quais o container esteve
+
+PATCH /harbor_manager/container/<int:number of the container> - atualiza um container específico
+
+DELETE /harbor_manager/container/<int:number of the container> - deleta um container específico
+
+/harbor_manager/container (tabela container)
+/harbor_manager/travel (tabela viagem)
+/harbor_manager/order_authorization (tabela pedido_autorização)
+/harbor_manager/container_dates_on_terminal (tabela container_datas_no_terminal)
+/harbor_manager/marine_terminal (tabela patio)
+/harbor_manager/dock (tabela atracadouro)
+/harbor_manager/ship_at_dock (tabela navio no atracadouro)
+/harbor_manager/harbor (tabela porto)
+/harbor_manager/reports ?
+
+
+
