@@ -7,14 +7,13 @@ from dataclasses import dataclass
 @dataclass
 class ContainerHarbor(db.Model):
 
-    data_entrada: Date
-    data_saida: Date
+    entry_date: Date
+    exit_date: Date
     
-    __tablename__ = 'container_porto'
+    __tablename__ = 'container_harbor'
 
-    id_container_viagem = Column(Integer, primary_key=True)
-    data_entrada = Column(Date, nullable=False)
-    data_saida = Column(Date)
+    id_container_travel = Column(Integer, primary_key=True)
+    entry_date = Column(Date, nullable=False)
+    exit_date = Column(Date)
     id_container = Column(Integer, ForeignKey('containers.id_container', ondelete='cascade'))
-    id_porto = Column(Integer, ForeignKey('porto.id_porto', ondelete='cascade'))
-
+    id_harbor = Column(Integer, ForeignKey('harbor.id_harbor', ondelete='cascade'))

@@ -8,17 +8,18 @@ from app.configs.database import db
 
 @dataclass
 class ShipHarbor(db.Model):
-    data_chegada: date
-    data_saida: date
 
-    __tablename__ = "navio_porto"
+    entry_date: date
+    exit_date: date
 
-    id_navio_porto = Column(Integer, primary_key=True)
-    data_chegada = Column(Date)
-    data_saida = Column(Date)
-    id_navio = Column(
-        Integer, ForeignKey("navios.id_navio", ondelete="cascade")
+    __tablename__ = "ship_harbor"
+
+    id_ship_harbor = Column(Integer, primary_key=True)
+    entry_date = Column(Date)
+    exit_date = Column(Date)
+    id_ship = Column(
+        Integer, ForeignKey("ships.id_ship", ondelete="cascade")
     )
-    id_porto = Column(
-        Integer, ForeignKey("porto.id_porto", ondelete="cascade")
+    id_harbor = Column(
+        Integer, ForeignKey("harbor.id_harbor", ondelete="cascade")
     )

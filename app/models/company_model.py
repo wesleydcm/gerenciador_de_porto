@@ -7,13 +7,12 @@ from dataclasses import dataclass
 @dataclass
 class ShippingCompany(db.Model):
 
-    data_criacao: Date
-    nome_fantasia: str
+    created_at: Date
+    trading_name: str
 
     __tablename__ = 'shipping_company'
 
-    id_empresa_maritima = Column(Integer, primary_key=True)
-    data_criacao = Column(Date, nullable=False)
-    nome_fantasia = Column(String(255), nullable=False, unique=True)
-    id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario', ondelete='cascade'))
-
+    id_shipping_company = Column(Integer, primary_key=True)
+    created_at = Column(Date, nullable=False)
+    trading_name = Column(String(255), nullable=False, unique=True)
+    id_user = Column(Integer, ForeignKey('users.id_user', ondelete='cascade'))

@@ -6,12 +6,13 @@ from app.configs.database import db
 
 @dataclass
 class User(db.Model):
-    nome: str
+
+    name: str
     username: str
 
-    __tablename__ = "usuarios"
+    __tablename__ = "users"
 
-    id_usuario = Column(Integer, primary_key=True)
-    nome = Column(String(255), nullable=False)
+    id_user = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False)
     username = Column(String(255), nullable=False, unique=True)
-    senha = Column(String(127), nullable=False)
+    password = Column(String(127), nullable=False)

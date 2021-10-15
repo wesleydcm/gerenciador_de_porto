@@ -6,17 +6,17 @@ from app.configs.database import db
 
 @dataclass
 class Harbor(db.Model):
-    nome: str
-    pais: str
-    cidade: str
+    name: str
+    country: str
+    city: str
     teus: int
-    disponibilidade: int
+    availability: int
 
-    __tablename__ = "porto"
+    __tablename__ = "harbor"
 
-    id_porto = Column(Integer, primary_key=True)
-    nome = Column(String(255), nullable=False, unique=True)
-    pais = Column(String(255), nullable=False)
-    cidade = Column(String(255), nullable=False)
+    id_harbor = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False, unique=True)
+    country = Column(String(255), nullable=False)
+    city = Column(String(255), nullable=False)
     teus = Column(Integer, nullable=False)
-    disponibilidade = Column(Integer, nullable=False)
+    availability = Column(Integer, nullable=False)

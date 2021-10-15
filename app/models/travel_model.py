@@ -7,14 +7,15 @@ from sqlalchemy.sql.schema import ForeignKey
 
 @dataclass
 class Travel(db.Model):
-    destino: str
-    codigo: str
 
-    __tablename__ = "viagens"
+    destination: str
+    code: str
+
+    __tablename__ = "travel"
 
     id_viagem = Column(Integer, primary_key=True)
-    destino = Column(String, nullable=False, unique=True)
-    codigo = Column(Integer, nullable=False, unique=True)
-    id_navio = Column(
-        Integer, ForeignKey("navios.id_navio", ondelete="cascade")
+    destination = Column(String, nullable=False, unique=True)
+    code = Column(Integer, nullable=False, unique=True)
+    id_ship = Column(
+        Integer, ForeignKey("ships.id_ship", ondelete="cascade")
     )
