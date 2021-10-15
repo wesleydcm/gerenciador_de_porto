@@ -12,7 +12,7 @@ class PortoModel(db.Model):
     teus: int
     disponibilidade: int
 
-    __tablename__ = "usuarios"
+    __tablename__ = "porto"
 
     id_porto = Column(Integer, primary_key=True)
     nome = Column(String(255), nullable=False, unique=True)
