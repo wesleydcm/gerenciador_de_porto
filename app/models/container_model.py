@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ContainerModel (db.Model):
+class Container (db.Model):
 
     codigo_rastreio: int
     teu: int

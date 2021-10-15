@@ -114,18 +114,18 @@ INSERT INTO container_viagem (data_criacao, ultima_atualizacao, id_container, id
         ('02-05-2001', '13-05-2001', 1, 4),
         ('02-12-2019', '22-12-2019', 2, 4);
 
-INSERT INTO porto (nome, pais, cidade, teus, disponibilidade)
+INSERT INTO harbor (nome, pais, cidade, teus, disponibilidade)
     VALUES
-        ('Porto X', 'Brasil', 'Blumenal', 50, 50);
+        ('Harbor X', 'Brasil', 'Blumenal', 50, 50);
 
-INSERT INTO navio_porto (data_chegada, data_saida, id_navio, id_porto)
+INSERT INTO navio_harbor (data_chegada, data_saida, id_navio, id_harbor)
     VALUES
         ('07-02-2007', '12-10-2007', 1, 1),
         ('07-08-2010', '12-02-2011', 2, 1),
         ('07-03-2012', '12-07-2012', 3, 1),
         ('07-09-2020', '12-11-2020', 4, 1);
 
-INSERT INTO container_porto (data_entrada, data_saida, id_container, id_porto)
+INSERT INTO container_harbor (data_entrada, data_saida, id_container, id_harbor)
     VALUES
         ('01-02-2005', '07-03-2008', 1, 1),
         ('01-02-2005', '07-04-2005', 2, 1),

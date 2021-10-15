@@ -1,12 +1,12 @@
-from sqlalchemy import Column, String, Integer
-from sqlalchemy.sql.schema import ForeignKey
 from dataclasses import dataclass
 
 from app.configs.database import db
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.sql.schema import ForeignKey
 
 
 @dataclass
-class ViagemModel(db.Model):
+class Travel(db.Model):
     destino: str
     codigo: str
 

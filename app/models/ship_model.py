@@ -1,12 +1,12 @@
-from sqlalchemy import Column, String, Integer
 from dataclasses import dataclass
-from sqlalchemy.sql.schema import ForeignKey
 
 from app.configs.database import db
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.sql.schema import ForeignKey
 
 
 @dataclass
-class NavioModel(db.Model):
+class Ship(db.Model):
     nome: str
     calado: int
     tamanho: int

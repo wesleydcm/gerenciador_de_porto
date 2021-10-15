@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ContainerPortoModel (db.Model):
+class ContainerHarbor (db.Model):
 
     data_entrada: Date
     data_saida: Date

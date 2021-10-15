@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.controllers.porto_controller import get_one_harbor
+from app.controllers.harbor_controller import get_one_harbor
 
 bp = Blueprint('harbor_bp', __name__, url_prefix='/harbor')
 

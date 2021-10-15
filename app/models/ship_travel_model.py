@@ -7,7 +7,7 @@ from app.configs.database import db
 
 
 @dataclass
-class NavioPortoModel(db.Model):
+class ShipHarbor(db.Model):
     data_chegada: date
     data_saida: date
 

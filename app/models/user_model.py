@@ -5,7 +5,7 @@ from app.configs.database import db
 
 
 @dataclass
-class UsuarioModel(db.Model):
+class User(db.Model):
     nome: str
     username: str
 

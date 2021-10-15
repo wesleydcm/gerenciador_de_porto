@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ContainerViagemModel (db.Model):
+class ContainerTravel (db.Model):
 
     data_criacao: Date
     ultima_atualizacao: Date

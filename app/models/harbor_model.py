@@ -5,7 +5,7 @@ from app.configs.database import db
 
 
 @dataclass
-class PortoModel(db.Model):
+class Harbor(db.Model):
     nome: str
     pais: str
     cidade: str
