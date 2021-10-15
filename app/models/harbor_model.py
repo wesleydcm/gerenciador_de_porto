@@ -6,6 +6,7 @@ from app.configs.database import db
 
 @dataclass
 class Harbor(db.Model):
+    
     name: str
     country: str
     city: str

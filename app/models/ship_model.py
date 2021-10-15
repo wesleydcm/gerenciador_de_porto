@@ -7,6 +7,7 @@ from sqlalchemy.sql.schema import ForeignKey
 
 @dataclass
 class Ship(db.Model):
+
     name: str
     draught: int
     size: int
