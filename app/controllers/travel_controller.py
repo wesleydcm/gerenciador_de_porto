@@ -9,6 +9,6 @@ def get_one_travel(id:int):
     travel = Travel.query.get(id)
 
     if not travel:
-        return {'msg': 'ship not found'}, 404
+        return {'msg': 'travel not found'}, 404
     
     return jsonify(travel), 200
