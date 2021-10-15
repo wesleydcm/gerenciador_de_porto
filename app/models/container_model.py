@@ -19,6 +19,6 @@ class Container(db.Model):
     tipo = Column(String(255), nullable=False, default='dry box')
     id_empresa_maritima = Column(
         Integer, ForeignKey(
-            "empresa_maritima.id_empresa_maritima", ondelete="cascade"
+            "shipping_company.id_empresa_maritima", ondelete="cascade"
         )
     )
