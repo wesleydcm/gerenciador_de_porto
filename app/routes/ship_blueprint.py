@@ -1,5 +1,5 @@
-from flask import Blueprint
 from app.controllers.ship_controller import get_one_ship
+from flask import Blueprint
 
 bp = Blueprint('ship_bp', __name__, url_prefix='/ship')
 
