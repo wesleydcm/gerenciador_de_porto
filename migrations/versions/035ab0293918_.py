@@ -27,11 +27,11 @@ def upgrade():
     sa.PrimaryKeyConstraint('id_empresa_maritima'),
     sa.UniqueConstraint('nome_fantasia')
     )
-    op.drop_table('empresa_maritima')
     op.drop_constraint('containers_id_empresa_maritima_fkey', 'containers', type_='foreignkey')
     op.create_foreign_key(None, 'containers', 'shipping_company', ['id_empresa_maritima'], ['id_empresa_maritima'], ondelete='cascade')
     op.drop_constraint('navios_id_empresa_maritima_fkey', 'navios', type_='foreignkey')
     op.create_foreign_key(None, 'navios', 'shipping_company', ['id_empresa_maritima'], ['id_empresa_maritima'], ondelete='cascade')
+    op.drop_table('empresa_maritima')
     # ### end Alembic commands ###
 
 
