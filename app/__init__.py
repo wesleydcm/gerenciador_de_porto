@@ -15,4 +15,3 @@ def create_app():
     # app.register_blueprint(api_blueprint.bp)
 
     return app
-

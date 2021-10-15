@@ -14,4 +14,4 @@ class UsuarioModel(db.Model):
     id_usuario = Column(Integer, primary_key=True)
     nome = Column(String(255), nullable=False)
     username = Column(String(255), nullable=False, unique=True)
-    senha = Column(Integer(255), nullable=False)
+    senha = Column(Integer, nullable=False)
