@@ -7,19 +7,19 @@ from sqlalchemy.sql.schema import ForeignKey
 
 @dataclass
 class Ship(db.Model):
-    nome: str
-    calado: int
-    tamanho: int
-    nacionalidade: str
+    name: str
+    draught: int
+    size: int
+    nationality: str
 
-    __tablename__ = "navios"
+    __tablename__ = "ships"
 
-    id_navio = Column(Integer, primary_key=True)
-    nome = Column(String(256), nullable=False, unique=True)
-    calado = Column(Integer, nullable=False)
-    tamanho = Column(Integer, nullable=False)
-    nacionalidade = Column(String(50), nullable=False)
-    id_empresa_maritima = Column(
+    id_ship = Column(Integer, primary_key=True)
+    name = Column(String(256), nullable=False, unique=True)
+    draught = Column(Integer, nullable=False)
+    size = Column(Integer, nullable=False)
+    nationality = Column(String(50), nullable=False)
+    id_shipping_company = Column(
         Integer, ForeignKey(
             "shipping_company.id_shipping_company", ondelete="cascade"
         )
