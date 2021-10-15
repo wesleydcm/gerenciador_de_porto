@@ -1,6 +1,6 @@
 from flask import Flask
 from app.configs import env_configs, database, migration, jwt_auth
-# from app.routes import api_blueprint
+from app.routes import api_blueprint
 
 
 def create_app():
@@ -12,6 +12,6 @@ def create_app():
     migration.init_app(app)
     jwt_auth.init_app(app)
 
-    # app.register_blueprint(api_blueprint.bp)
+    app.register_blueprint(api_blueprint.bp)
 
     return app
