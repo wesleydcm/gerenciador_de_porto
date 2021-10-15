@@ -10,7 +10,7 @@ class ShippingCompany(db.Model):
     data_criacao: Date
     nome_fantasia: str
 
-    __tablename__ = 'empresa_maritima'
+    __tablename__ = 'shipping_company'
 
     id_empresa_maritima = Column(Integer, primary_key=True)
     data_criacao = Column(Date, nullable=False)
