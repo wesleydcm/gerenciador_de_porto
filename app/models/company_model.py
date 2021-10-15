@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ShippingCompany (db.Model):
+class ShippingCompany(db.Model):
 
     data_criacao: Date
     nome_fantasia: str
