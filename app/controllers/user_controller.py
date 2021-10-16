@@ -72,4 +72,13 @@ def update():
         User.query.filter_by(username=user_data["username"]).update(data)
         current_app.db.session.commit()
 
-    return jsonify(user)
+    return jsonify(user), HTTPStatus.OK
+
+
+@jwt_required()
+def delete():
+    data_user = get_jwt_identity()
+    user = User.query.filter_by(username=data_user["username"]).first()
+    session(user, "remove")
+
+    return jsonify(user), HTTPStatus.OK
