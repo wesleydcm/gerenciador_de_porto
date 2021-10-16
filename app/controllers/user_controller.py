@@ -1,8 +1,10 @@
+from flask import jsonify, request, current_app
 from http import HTTPStatus
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import (
+    create_access_token, jwt_required, get_jwt_identity
+)
 
 from app.models.user_model import User
-from flask import jsonify, request, current_app
 
 
 def session(model, action):
