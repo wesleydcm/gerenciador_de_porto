@@ -45,7 +45,31 @@ def login():
 def get_user():
     user = get_jwt_identity()
 
-    if not user:
-        return {'msg': 'user not found'}, 404
+    new_user = User.query.filter_by(id_user=user["id_user"]).first()
 
-    return jsonify(user), 200
+    if not user:
+        return {'msg': 'user not found'}, HTTPStatus.BAD_REQUEST
+
+    return jsonify(new_user), HTTPStatus.OK
+
+
+@jwt_required()
+def update():
+    data = request.get_json()
+    user_data = get_jwt_identity()
+
+    user = User.query.filter_by(username=user_data["username"]).first()
+
+    if data["password"]:
+        password_to_hash = data.pop("password")
+        user.password = password_to_hash
+        current_app.db.session.commit()
+
+    if data:
+        for key, value in data.items():
+            setattr(user, key, value)
+
+        User.query.filter_by(username=user_data["username"]).update(data)
+        current_app.db.session.commit()
+
+    return jsonify(user)

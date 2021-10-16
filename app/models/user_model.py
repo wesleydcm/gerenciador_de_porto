@@ -7,7 +7,7 @@ from app.configs.database import db
 
 @dataclass
 class User(db.Model):
-
+    id_user: int
     name: str
     username: str
 
