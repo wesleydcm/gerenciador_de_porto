@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 from app.models.user_model import User
 from flask import jsonify, request, current_app
@@ -41,10 +41,11 @@ def login():
     return {"Error": "Bad username or password"}, HTTPStatus.BAD_REQUEST
 
 
-def get_one_user(id:int):
-
-    user = User.query.get(id)
+@jwt_required()
+def get_user():
+    user = get_jwt_identity()
 
     if not user:
         return {'msg': 'user not found'}, 404
+
     return jsonify(user), 200
