@@ -160,9 +160,11 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 
 ## Endpoints Travel (tabela viagem)
 
-POST /harbor_manager/travel - cria uma viagem. - **precisa de autorização**
+### POST `/harbor_manager/travel`
 
-- Rota protegida
+> Rota responsável pelo cadastros de viagens.
+
+- **Rota protegida**
 
 - Corpo requisição:
 
@@ -172,8 +174,6 @@ POST /harbor_manager/travel - cria uma viagem. - **precisa de autorização**
   "id_ship": "1"
 }
 ```
-
-- O **_travel_code_** é gerado automaticamente e salva no banco dados, foi usado a biblioteca built-in secrets.
 
 - Corpo da resposta:
 
@@ -185,15 +185,100 @@ POST /harbor_manager/travel - cria uma viagem. - **precisa de autorização**
 }
 ```
 
-GET /harbor_manager/travel/<string:travel_code> - lista uma viagem específico. - **precisa de autorização**
+- Status: 201 CREATED
 
-PATCH /harbor_manager/travel/<string:travel_code> - atualiza uma viagem específico. - **precisa de autorização**
+- **\*_travel_code_** é gerado automaticamente e salvo no banco dados, foi usado a biblioteca built-in secrets.\*
 
-DELETE /harbor_manager/travel/<string:travel_code> - deleta uma viagem específico. - **precisa de autorização**
+<br>
+
+### GET `/harbor_manager/travel/<string:travel_code>`
+
+> Retorna uma viagem específica
+
+- Rota protegida
+- Exemplo de requisição
+
+        /harbor_manager/travel/i251LR
+
+  - Corpo da resposta:
+
+  ```json
+  {
+    "travel_code": "i251LR",
+    "destination": "Santos",
+    "id_ship": 1
+  }
+  ```
+
+<br>
+
+### PATCH `/harbor_manager/travel/<string:travel_code>`
+
+> Atualiza uma viagem específico.
+
+- Rota protegida
+- Exemplo de requisição
+
+        /harbor_manager/travel/i251LR
+
+  - Corpo da requisição:
+
+  ```json
+  {
+    "destination": "Paranaguá",
+    "id_ship": 2
+  }
+  ```
+
+  - Corpo da resposta:
+
+  ```json
+  {
+    "travel_code": "i251LR",
+    "destination": "Paranaguá",
+    "id_ship": 2
+  }
+  ```
+
+  - Status: 200 OK
+
+<br>
+
+### DELETE `/harbor_manager/travel/<string:travel_code>`
+
+> Deleta uma viagem específico..
+
+- Rota protegida
+- Exemplo de requisição
+
+        /harbor_manager/travel/i251LR
+
+  - Corpo da resposta:
+
+  ```json
+  {
+    "travel_code": "i251LR",
+    "destination": "Paranaguá",
+    "id_ship": 2
+  }
+  ```
+
+  - Status: 200 OK
+
+<br>
+
+**_Outras consultas relacionadas a Travel:_**
+
+### GET `/harbor_manager/travel/<string:travel_code>/containers`
+
+> Lista todos os containers da viagem.
+
+- Rota protegida
+
+<br>
+<br>
 
 ---
-
-GET /harbor_manager/travel/<string:travel_code>/containers - lista todos os containers da viagem. . - **precisa de autorização**
 
 ## Endpoints harbor (tabela porto)
 
