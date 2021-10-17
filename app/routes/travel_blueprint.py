@@ -1,5 +1,5 @@
+from app.controllers.travel_controller import get_one_travel
 from flask import Blueprint
-from app.controllers.viagem_controller import get_one_travel
 
 bp = Blueprint('travel_bp', __name__, url_prefix='/travel')
 

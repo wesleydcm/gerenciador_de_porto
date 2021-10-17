@@ -5,20 +5,20 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ContainerModel (db.Model):
+class Container(db.Model):
 
-    codigo_rastreio: int
+    tracking_code: int
     teu: int
-    tipo: str
+    type: str
 
     __tablename__ = 'containers'
 
     id_container = Column(Integer, primary_key=True)
-    codigo_rastreio = Column(Integer, nullable=False, unique=True)
+    tracking_code = Column(Integer, nullable=False, unique=True)
     teu = Column(Integer, nullable=False, default=1)
-    tipo = Column(String(255), nullable=False, default='dry box')
-    id_empresa_maritima = Column(
+    type = Column(String(255), nullable=False, default='dry box')
+    id_shipping_company = Column(
         Integer, ForeignKey(
-            "empresa_maritima.id_empresa_maritima", ondelete="cascade"
+            "shipping_company.id_shipping_company", ondelete="cascade"
         )
     )
