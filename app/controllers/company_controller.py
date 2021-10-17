@@ -1,19 +1,49 @@
-from dataclasses import asdict
+from flask import jsonify, request
 from http import HTTPStatus
+from datetime import datetime
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from dataclasses import asdict
+from app.exceptions.company_exc import CompanyNotFound
 
 from app.models.company_model import ShippingCompany
 from app.models.container_model import Container
-from flask import current_app, jsonify, request
+from app.controllers.user_controller import session
+from app.models.company_model import ShippingCompany
+from app.models.user_model import User
+
+import pdb
 
 
-def get_one_company(id:int):
+@jwt_required()
+def register_company():
+    data = request.get_json()
+    data["created_at"] = datetime.now().strftime("%d/%m/%Y")
 
-    company = ShippingCompany.query.get(id)
+    user_data = get_jwt_identity()
+    user = User.query.filter_by(username=user_data["username"]).first()
+    data["id_user"] = user.id_user
 
-    if not company:
-        return {'msg': 'shipping company not found'}, 404
-    
-    return jsonify(company), 200
+    new_company = ShippingCompany(**data)
+    session(new_company, "add")
+
+    return jsonify(new_company), HTTPStatus.CREATED
+
+
+@jwt_required()
+def get_company(trading_name: str):
+    try:
+        user_data = get_jwt_identity()
+        user = User.query.filter_by(username=user_data["username"]).first()
+
+        for company in user.company:
+            if company.trading_name == trading_name:
+                current_company = company
+
+        return jsonify(current_company), HTTPStatus.OK
+
+    except UnboundLocalError:
+        return {"Error": "Company not found!"}, HTTPStatus.BAD_REQUEST
+
 
 
 def list_containers_by_company(id: int):
