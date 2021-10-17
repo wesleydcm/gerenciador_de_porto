@@ -8,14 +8,14 @@ from sqlalchemy.sql.schema import ForeignKey
 @dataclass
 class Travel(db.Model):
 
+    travel_code: str
     destination: str
-    code: str
 
     __tablename__ = "travel"
 
     id_travel = Column(Integer, primary_key=True)
-    destination = Column(String, nullable=False, unique=True)
-    code = Column(Integer, nullable=False, unique=True)
+    destination = Column(String, nullable=False)
+    travel_code = Column(String, nullable=False, unique=True)
     id_ship = Column(
         Integer, ForeignKey("ships.id_ship", ondelete="cascade")
     )
