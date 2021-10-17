@@ -185,15 +185,15 @@ POST /harbor_manager/travel - cria uma viagem. - **precisa de autorização**
 }
 ```
 
-GET /harbor_manager/travel/<int:codigo> - lista uma viagem específico. - **precisa de autorização**
+GET /harbor_manager/travel/<string:travel_code> - lista uma viagem específico. - **precisa de autorização**
 
-PATCH /harbor_manager/travel/<int:codigo> - atualiza uma viagem específico. - **precisa de autorização**
+PATCH /harbor_manager/travel/<string:travel_code> - atualiza uma viagem específico. - **precisa de autorização**
 
-DELETE /harbor_manager/travel/<int:codigo> - deleta uma viagem específico. - **precisa de autorização**
+DELETE /harbor_manager/travel/<string:travel_code> - deleta uma viagem específico. - **precisa de autorização**
 
 ---
 
-GET /harbor_manager/travel/<int:codigo>/containers - lista todos os containers da viagem. . - **precisa de autorização**
+GET /harbor_manager/travel/<string:travel_code>/containers - lista todos os containers da viagem. . - **precisa de autorização**
 
 ## Endpoints harbor (tabela porto)
 
