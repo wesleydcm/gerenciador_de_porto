@@ -1,12 +1,16 @@
 from dataclasses import asdict
 from http import HTTPStatus
 
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 from app.models.travel_model import Travel
 from flask import current_app, jsonify, request
-
-from .utils import generate_random_alphanumeric, session
 from sqlalchemy.orm import exc
 
+from .utils import generate_random_alphanumeric, session
+
+
+@jwt_required()
 def get_by_travel_code(travel_code: str):
 
     travel = Travel.query.filter_by(travel_code = travel_code).first()
@@ -17,16 +21,22 @@ def get_by_travel_code(travel_code: str):
     return jsonify(travel), HTTPStatus.OK
 
 
+@jwt_required()
 def register_travel():
+
     data = request.json
+
     new_travel = Travel(**data)
     new_travel.generate_travel_code()
+
     session(new_travel, "add")
 
     return jsonify(new_travel), HTTPStatus.CREATED
 
 
+@jwt_required()
 def update_travel(travel_code: str):
+
     travel = Travel.query.filter_by(travel_code = travel_code).first()
 
     if not travel:
@@ -44,7 +54,9 @@ def update_travel(travel_code: str):
     return jsonify(travel), HTTPStatus.OK
 
 
+@jwt_required()
 def delete_travel(travel_code: str):
+
     try:
         travel = Travel.query.filter_by(travel_code=travel_code).first()
 
