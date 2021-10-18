@@ -69,7 +69,7 @@
 --     id_porto                integer                 NOT NULL REFERENCES porto(id_porto),
 -- );
 
-INSERT INTO users (name, username, password)
+INSERT INTO users (name, username, password_hash)
     VALUES
         ('Marco', 'mcos', 'navio123'),
         ('Chico', 'chimos', 'navio321');
@@ -96,7 +96,7 @@ INSERT INTO ships (name, draught, size, nationality, id_shipping_company)
         ('Navio 3', 12, 22, 'Chile', 2),
         ('Navio 4', 20, 30, 'China', 2);
 
-INSERT INTO travel (destination, code, id_ship)
+INSERT INTO travel (destination, travel_code, id_ship)
     VALUES
         ('Viagem X', 2040, 1),
         ('Viagem Y', 3085, 1),
