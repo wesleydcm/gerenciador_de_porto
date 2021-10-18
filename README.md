@@ -1,7 +1,5 @@
 # capstone_q3_gerenciador_de_porto
 
-
-
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
@@ -40,40 +38,50 @@ Use the built-in continuous integration in GitLab.
 - [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
 - [ ] [Use pull-based deployments for improved Kubernetes management](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/clusters/agent/)
 
-***
+---
 
 # Editing this README
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://www.makeareadme.com/) for this template.
+When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://www.makeareadme.com/) for this template.
 
 ## Suggestions for a good README
+
 Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
 
 ## Name
+
 Choose a self-explaining name for your project.
 
 ## Description
+
 Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
 ## Badges
+
 On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
 ## Visuals
+
 Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
 ## Installation
+
 Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
 ## Usage
+
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
 ## Support
+
 Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
 
 ## Roadmap
+
 If you have ideas for releases in the future, it is a good idea to list them in the README.
 
 ## Contributing
+
 State if you are open to contributions and what your requirements are for accepting them.
 
 For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
@@ -81,26 +89,31 @@ For people who want to make changes to your project, it's helpful to have some d
 You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
 ## Authors and acknowledgment
+
 Show your appreciation to those who have contributed to the project.
 
 ## License
+
 For open source projects, say how it is licensed.
 
 ## Project status
+
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
 
 ## Endpoints User (tabela usuário)
+
 POST /harbor_manager/users - cria um usuário.
 
 POST /harbor_manager/users/login - faz login.
 
-GET /harbor_manager/users - lista o próprio dado do usuário. - **precisa de autorização** 
+GET /harbor_manager/users - lista o próprio dado do usuário. - **precisa de autorização**
 
-PATCH /harbor_manager/users - atualiza os próprios dados. - **precisa de autorização** 
+PATCH /harbor_manager/users - atualiza os próprios dados. - **precisa de autorização**
 
 DELETE /harbor_manager/users - se deleta do banco de dados. - **precisa de autorização**
-                      
+
 ## Endpoints Marine Company (tabela empresa marítima)
+
 POST /harbor_manager/marine_company - cria empresas marítimas. - **precisa de autorização**
 
 GET /harbor_manager/marine_company - lista os dados de todas as empresas do usuário. - **precisa de autorização**
@@ -109,24 +122,28 @@ PATCH /harbor_manager/marine_company/<string:fantasy_name of the marine_company>
 
 DELETE /harbor_manager/marine_company/<string:fantasy_name of the marine_company> - deleta a empresa do usuário. - **precisa de autorização**
 
--------
-GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/containers - lista todos os containers da companhia. - **precisa de autorização** 
+---
 
-GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/ships - lista todos os navios da companhia. - **precisa de autorização** 
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/containers - lista todos os containers da companhia. - **precisa de autorização**
+
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/ships - lista todos os navios da companhia. - **precisa de autorização**
 
 ## Endpoints Ship (tabela navio)
-POST /harbor_manager/ship - cria navios. - **precisa de autorização**     
+
+POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
 GET /harbor_manager/ship/<string:name of the ship> - lista algumas informações de um navio específico. - **precisa de autorização**
 
-PATCH /harbor_manager/ship/<string:name of the ship> - altera dados do navio. - **precisa de autorização**     
+PATCH /harbor_manager/ship/<string:name of the ship> - altera dados do navio. - **precisa de autorização**
 
-DELETE /harbor_manager/ship/<string:name of the ship> - deleta o navio. - **precisa de autorização**  
+DELETE /harbor_manager/ship/<string:name of the ship> - deleta o navio. - **precisa de autorização**
 
------
+---
+
 GET /harbor_manager/ship/<string:name of the ship>/travels - lista todos as viagens que o navio fez. - **precisa de autorização**
 
 ## Endpoints Container (tabela container)
+
 POST /harbor_manager/container - cria containers. - **precisa de autorização**
 
 GET /harbor_manager/container/<int:codigo_rastreio> - lista um container específico. - **precisa de autorização**
@@ -135,29 +152,142 @@ PATCH /harbor_manager/container/<int:codigo_rastreio> - atualiza um container es
 
 DELETE /harbor_manager/container/<int:codigo_rastreio> - deleta um container específico. - **precisa de autorização**
 
---------
+---
+
 GET /harbor_manager/container/<int:codigo_rastreio>/travel - lista as viagens de um container
 
 GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os pátios nos quais o container esteve
 
 ## Endpoints Travel (tabela viagem)
-POST /harbor_manager/travel - cria uma viagem. - **precisa de autorização**
 
-GET /harbor_manager/travel/<int:codigo> - lista uma viagem específico. - **precisa de autorização**
+### POST `/harbor_manager/travel`
 
-PATCH /harbor_manager/travel/<int:codigo> - atualiza uma viagem específico. - **precisa de autorização**
+> Rota responsável pelo cadastros de viagens.
 
-DELETE /harbor_manager/travel/<int:codigo> - deleta uma viagem específico. - **precisa de autorização**
+- **Rota protegida**
 
-------
-GET /harbor_manager/travel/<int:codigo>/containers - lista todos os containers da viagem. . - **precisa de autorização**
+- Corpo requisição:
+
+```json
+{
+  "destination": "Santos",
+  "id_ship": "1"
+}
+```
+
+- Corpo da resposta:
+
+```json
+{
+  "travel_code": "0gF28O",
+  "destination": "Santos",
+  "id_ship": "1"
+}
+```
+
+- Status: 201 CREATED
+
+- **\*_travel_code_** é gerado automaticamente e salvo no banco dados, foi usado a biblioteca built-in secrets.\*
+
+<br>
+
+### GET `/harbor_manager/travel/<string:travel_code>`
+
+> Retorna uma viagem específica
+
+- Rota protegida
+- Exemplo de requisição
+
+        /harbor_manager/travel/i251LR
+
+  - Corpo da resposta:
+
+  ```json
+  {
+    "travel_code": "i251LR",
+    "destination": "Santos",
+    "id_ship": 1
+  }
+  ```
+
+<br>
+
+### PATCH `/harbor_manager/travel/<string:travel_code>`
+
+> Atualiza uma viagem específico.
+
+- Rota protegida
+- Exemplo de requisição
+
+        /harbor_manager/travel/i251LR
+
+  - Corpo da requisição:
+
+  ```json
+  {
+    "destination": "Paranaguá",
+    "id_ship": 2
+  }
+  ```
+
+  - Corpo da resposta:
+
+  ```json
+  {
+    "travel_code": "i251LR",
+    "destination": "Paranaguá",
+    "id_ship": 2
+  }
+  ```
+
+  - Status: 200 OK
+
+<br>
+
+### DELETE `/harbor_manager/travel/<string:travel_code>`
+
+> Deleta uma viagem específico..
+
+- Rota protegida
+- Exemplo de requisição
+
+        /harbor_manager/travel/i251LR
+
+  - Corpo da resposta:
+
+  ```json
+  {
+    "travel_code": "i251LR",
+    "destination": "Paranaguá",
+    "id_ship": 2
+  }
+  ```
+
+  - Status: 200 OK
+
+<br>
+
+**_Outras consultas relacionadas a Travel:_**
+
+### GET `/harbor_manager/travel/<string:travel_code>/containers`
+
+> Lista todos os containers da viagem.
+
+- Rota protegida
+
+<br>
+<br>
+
+---
 
 ## Endpoints harbor (tabela porto)
+
 POST /harbor_manager/harbor - cria um porto. - **precisa de autorização**
 
 GET /harbor_manager/harbor/<int:nome> - lista todos os dados de um porto específico. - **precisa de autorização**
 
 GET /harbor_manager/harbor/<int:nome> - lista alguns dados de um específico.
+
 - nome,
 - pais,
 - cidade
@@ -166,7 +296,8 @@ PATCH /harbor_manager/harbor/<int:nome> - atualiza um porto específico. - **pre
 
 DELETE /harbor_manager/harbor/<int:nome> - deleta um porto específico. - **precisa de autorização**
 
-------
+---
+
 GET /harbor_manager/harbor/<int:nome>/containers - lista todos os containers que estão no porto. - **precisa de autorização**
 
 GET /harbor_manager/harbor/<int:nome>/containers/history - histórico dos containers que passaram pelo porto. - **precisa de autorização**
@@ -174,7 +305,3 @@ GET /harbor_manager/harbor/<int:nome>/containers/history - histórico dos contai
 GET /harbor_manager/harbor/<int:nome>/ships - lista todos os navios que estão no porto. - **precisa de autorização**
 
 GET /harbor_manager/harbor/<int:nome>/ships/history - histórico dos navios que passaram pelo porto. - **precisa de autorização**
-
-
-
-
