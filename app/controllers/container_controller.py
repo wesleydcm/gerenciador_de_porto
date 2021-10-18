@@ -11,7 +11,7 @@ def list_containers():
     return jsonify(containers), HTTPStatus.OK
 
 
-def get_one_container(id_container:int):
+def get_one_container(id_container: int):
 
     container = Container.query.get(id_container)
 
