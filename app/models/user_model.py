@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Boolean
 from dataclasses import dataclass
 from sqlalchemy.orm import relationship
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -17,6 +17,7 @@ class User(db.Model):
     name = Column(String(255), nullable=False)
     username = Column(String(255), nullable=False, unique=True)
     password_hash = Column(String(512), nullable=False)
+    is_harbor = Column(Boolean, nullable=False)
 
     company = relationship("ShippingCompany")
 

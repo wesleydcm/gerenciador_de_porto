@@ -1,5 +1,6 @@
 from flask import jsonify, request, current_app
 from http import HTTPStatus
+from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import (
     create_access_token, jwt_required, get_jwt_identity
 )
@@ -25,11 +26,16 @@ def session(model, action):
 
 
 def register_user():
-    data = request.get_json()
-    new_user = User(**data)
-    session(new_user, "add")
+    try:
+        data = request.get_json()
+        new_user = User(**data)
+        session(new_user, "add")
 
-    return jsonify(new_user), HTTPStatus.CREATED
+        return jsonify(new_user), HTTPStatus.CREATED
+
+    except IntegrityError as err:
+        message = str(str(err.orig).split("\n")[0]).split()
+        return {"Error": " ".join(message[:5])}, HTTPStatus.BAD_REQUEST
 
 
 def login():
