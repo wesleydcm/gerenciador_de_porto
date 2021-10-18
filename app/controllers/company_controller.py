@@ -2,6 +2,7 @@ from flask import jsonify, request, current_app
 from http import HTTPStatus
 from datetime import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.exceptions.company_erros import UserIsHarbor
 
 from app.models.company_model import ShippingCompany
 from app.controllers.user_controller import session
@@ -11,17 +12,25 @@ from app.models.user_model import User
 
 @jwt_required()
 def register_company():
-    data = request.get_json()
-    data["created_at"] = datetime.now().strftime("%d/%m/%Y")
+    try:
+        data = request.get_json()
+        data["created_at"] = datetime.now().strftime("%d/%m/%Y")
 
-    user_data = get_jwt_identity()
-    user = User.query.filter_by(username=user_data["username"]).first()
-    data["id_user"] = user.id_user
+        user_data = get_jwt_identity()
+        user = User.query.filter_by(username=user_data["username"]).first()
 
-    new_company = ShippingCompany(**data)
-    session(new_company, "add")
+        if user.is_harbor:
+            raise UserIsHarbor
 
-    return jsonify(new_company), HTTPStatus.CREATED
+        data["id_user"] = user.id_user
+
+        new_company = ShippingCompany(**data)
+        session(new_company, "add")
+
+        return jsonify(new_company), HTTPStatus.CREATED
+
+    except UserIsHarbor:
+        return {"Error": "This user cannot create a company"}
 
 
 @jwt_required()
