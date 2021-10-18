@@ -21,4 +21,4 @@ def get_one_user(id:int):
     if not user:
         return {'msg': 'user not found'}, 404
     
-    return jsonify(user), 200
+    return jsonify(user), HTTPStatus.CREATED
