@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from http import HTTPStatus
 
 from app.models.company_model import ShippingCompany
@@ -6,7 +5,7 @@ from app.models.container_model import Container
 from flask import current_app, jsonify, request
 
 
-def get_one_company(id:int):
+def get_one_company(id: int):
 
     company = ShippingCompany.query.get(id)
 
