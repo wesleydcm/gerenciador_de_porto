@@ -1,3 +1,4 @@
+from sqlalchemy.orm import relationship
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.sql.schema import ForeignKey
@@ -16,3 +17,6 @@ class ShippingCompany(db.Model):
     created_at = Column(Date, nullable=False)
     trading_name = Column(String(255), nullable=False, unique=True)
     id_user = Column(Integer, ForeignKey('users.id_user', ondelete='cascade'))
+
+    containers = relationship("Container")
+    ships = relationship("Ship")

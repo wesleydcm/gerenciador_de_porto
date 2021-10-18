@@ -2,15 +2,11 @@ from flask import jsonify, request, current_app
 from http import HTTPStatus
 from datetime import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.exceptions.comapny_erros import CompanyNotFound
 
 from app.models.company_model import ShippingCompany
-from app.models.container_model import Container
 from app.controllers.user_controller import session
 from app.models.company_model import ShippingCompany
 from app.models.user_model import User
-
-import pdb
 
 
 @jwt_required()
@@ -66,17 +62,49 @@ def update(trading_name: str):
         return {"Error": "Company not found!"}, HTTPStatus.BAD_REQUEST
 
 
+@jwt_required()
+def delete(trading_name: str):
+    try:
+        user_data = get_jwt_identity()
+        user = User.query.filter_by(username=user_data["username"]).first()
+
+        for company in user.company:
+                if company.trading_name == trading_name:
+                    current_company = company
+
+        session(current_company, "remove")
+        return {"trading_name": current_company.trading_name}, HTTPStatus.OK
+    except UnboundLocalError:
+        return {"Error": "Company not found!"}, HTTPStatus.BAD_REQUEST
 
 
+@jwt_required()
+def list_containers_by_company(trading_name: str):
+    try:
+        user_data = get_jwt_identity()
+        user = User.query.filter_by(username=user_data["username"]).first()
+
+        for company in user.company:
+            if company.trading_name == trading_name:
+                current_company = company
+
+        return jsonify(current_company.containers), HTTPStatus.OK
+
+    except UnboundLocalError:
+        return {"Error": "Company not found!"}, HTTPStatus.BAD_REQUEST
 
 
-def list_containers_by_company(id: int):
+@jwt_required()
+def list_ships_by_company(trading_name: str):
+    try:
+        user_data = get_jwt_identity()
+        user = User.query.filter_by(username=user_data["username"]).first()
 
-    company: ShippingCompany = ShippingCompany.query.get(id)
+        for company in user.company:
+            if company.trading_name == trading_name:
+                current_company = company
 
-    containers = Container.query.filter_by(id_shipping_company = company.id_shipping_company).all()
+        return jsonify(current_company.ships), HTTPStatus.OK
 
-    if not containers:
-        return {'msg': "company does not have registered containers"}, HTTPStatus.NOT_FOUND
-
-    return jsonify(containers), HTTPStatus.OK
+    except UnboundLocalError:
+        return {"Error": "Company not found!"}, HTTPStatus.BAD_REQUEST
