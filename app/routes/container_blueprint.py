@@ -6,8 +6,6 @@ from flask import Blueprint
 
 bp = Blueprint('container_bp', __name__, url_prefix='/container')
 
-# bp.get('')(list_containers)
-# bp.get('/<int:id_container>')(get_one_container)
 bp.post('')(create_container)
 bp.get('/<int:tracking_code>')(get_container_by_tracking_code)
 bp.patch('/<int:tracking_code>')(update_container_by_tracking_code)

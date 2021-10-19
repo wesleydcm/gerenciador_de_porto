@@ -4,10 +4,11 @@ import sqlalchemy
 from app.models.company_model import ShippingCompany
 from app.models.container_model import Container
 from app.models.user_model import User
-from flask import current_app, jsonify, request
+from flask import jsonify, request
 from flask_jwt_extended.utils import get_jwt_identity
 from flask_jwt_extended.view_decorators import jwt_required
 from psycopg2.errors import NotNullViolation, UniqueViolation
+from app.controllers.utils import session
 
 
 def check_owner(user_from_jwt, tracking):
@@ -16,7 +17,6 @@ def check_owner(user_from_jwt, tracking):
     container = Container.query.filter_by(tracking_code=tracking).first()
 
     if not container:
-        # colcoar um raise e criar um exception
         return {'msg': 'Container not found'}, HTTPStatus.NOT_FOUND
 
     shipping_company = ShippingCompany.query\
@@ -25,24 +25,6 @@ def check_owner(user_from_jwt, tracking):
     if shipping_company.id_shipping_company != container.id_shipping_company:
         return {'msg': f'This tracking code {tracking} does not belong to \
             your company'}, HTTPStatus.BAD_REQUEST
-
-
-# Não esta verificando os containers da empresa
-def list_containers():
-    containers = Container.query.all()
-
-    return jsonify(containers), HTTPStatus.OK
-
-
-# Tem a mesma função do get_container_by_tracking_code
-def get_one_container(id_container: int):
-
-    container = Container.query.get(id_container)
-
-    if not container:
-        return {'msg': 'container not found'}, 404
-
-    return jsonify(container), 200
 
 
 @jwt_required()
@@ -58,11 +40,9 @@ def create_container():
     data['id_shipping_company'] = shipping_company.id_shipping_company
 
     try:
-        # utilizar a função session em controllers/utils
         new_container = Container(**data)
 
-        current_app.db.session.add(new_container)
-        current_app.db.session.commit()
+        session(new_container, "add")
 
         return jsonify(new_container), HTTPStatus.CREATED
 
@@ -114,9 +94,7 @@ def delete_container_by_tracking_code(tracking_code: int):
 
     container = Container.query.filter_by(tracking_code=tracking_code).first()
 
-    # utilizar função session
-    current_app.db.session.delete(container)
-    current_app.db.session.commit()
+    session(container, "remove")
 
     return {}, HTTPStatus.NO_CONTENT
 
