@@ -71,14 +71,9 @@
 
 INSERT INTO users (name, username, password_hash, is_harbor)
     VALUES
-<<<<<<< HEAD
-        ('Marco', 'mcos', 'navio123', FALSE),
-        ('Chico', 'chimos', 'navio321', TRUE);
-=======
         ('Pedro de Lara', 'pelara', 'pbkdf2:sha256:260000$n74UoXFoFrUswp8P$b607b266208c724bb5a5ff00d4384570a1ba8c7bd5faf182859de1713951ad6d', true), ---senha: porto123
         ('Chico', 'chimos', 'pbkdf2:sha256:260000$RHI9QdmKB0lrwJ6x$3589f12cf9eda15c12a333068c23d79e52c8798cc2afef0feaefa9b74f6ccddc', false), ---navio321
         ('Marco', 'mcos', 'pbkdf2:sha256:260000$hxzHCkeUfjK0dcVw$ce6544d0d59807b93c6ed549f9fbbdf93e8ec74bed87df3e21ef7e8d3ec6656d', false); ---navio123
->>>>>>> 1240ae302f80d644d8762ffd0821dd0d5e281d2c
 
 INSERT INTO shipping_company (created_at, trading_name, id_user)
     VALUES
