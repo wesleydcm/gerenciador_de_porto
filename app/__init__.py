@@ -3,6 +3,7 @@ from app.configs import env_configs, database, migration, jwt_auth
 from app.routes import api_blueprint
 from flask_cors import CORS
 
+
 def create_app():
 
     app = Flask(__name__)
