@@ -8,14 +8,14 @@ from dataclasses import dataclass
 @dataclass
 class Container(db.Model):
 
-    tracking_code: int
+    tracking_code: str
     teu: int
     type: str
 
     __tablename__ = 'containers'
 
     id_container = Column(Integer, primary_key=True)
-    tracking_code = Column(Integer, nullable=False, unique=True)
+    tracking_code = Column(String, nullable=False, unique=True)
     teu = Column(Integer, nullable=False, default=1)
     type = Column(String(255), nullable=False, default='dry box')
     id_shipping_company = Column(
@@ -27,6 +27,5 @@ class Container(db.Model):
     travels = relationship('Travel',
                            secondary='container_travel', backref='containers')
 
-    # não pode ter dois backrefs iguais
     harbors = relationship('Harbor',
                            secondary='container_harbor', backref='containers')
