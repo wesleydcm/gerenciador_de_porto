@@ -9,6 +9,8 @@ from app.controllers.utils import session
 from flask import jsonify, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
+import psycopg2
+import sqlalchemy
 
 
 @jwt_required()
@@ -20,24 +22,45 @@ def create_harbor():
 
     if user.is_harbor:
 
-        data = request.json
+        try:
 
-        harbor_availability = data['teus']
-        
-        harbor_name = data['name'].capitalize()
+            data = request.json
 
-        data['availability'] = harbor_availability
+            if data.get('teus') == None:
+                return {"msg": "null value in column \"teus\" of relation \"harbor\" violates not-null constraint"}, HTTPStatus.BAD_REQUEST
 
-        data['name'] = harbor_name
+            if data.get('name') == None:
+                return {"msg": "null value in column \"name\" of relation \"harbor\" violates not-null constraint"}, HTTPStatus.BAD_REQUEST
+            
+            harbor_availability = data['teus']
 
-        data['id_user'] = user.id_user
- 
-        harbor = Harbor(**data)
+            harbor_name = data['name'].capitalize()
 
-        session(harbor, 'add')
+            data['availability'] = harbor_availability
 
-        return jsonify(harbor), HTTPStatus.CREATED
+            data['name'] = harbor_name
 
+            data['id_user'] = user.id_user
+
+            harbor = Harbor(**data)
+
+            session(harbor, 'add')
+
+            return jsonify(harbor), HTTPStatus.CREATED
+
+        except sqlalchemy.exc.IntegrityError as e:
+
+            if type(e.orig) == psycopg2.errors.NotNullViolation:
+                return {'msg': str(e.orig).split('\n')[0]}, HTTPStatus.BAD_REQUEST
+
+            return {'msg': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
+
+        except TypeError as e:
+             return {'msg': str(e)}, HTTPStatus.BAD_REQUEST
+
+    else:
+        return {'msg': 'You are a company user. You are not allowed to create harbors.'}, HTTPStatus.UNAUTHORIZED
+            
 
 @jwt_required()
 def get_one_harbor(harbor_name:str):
@@ -103,20 +126,27 @@ def update_one_harbor(harbor_name:str):
             new_name = ''
 
             if data.get('name'):
-                new_name = data['name']
+                new_name = data['name'].capitalize()
+                data['name'] = data['name'].capitalize()
             else:
-                new_name  = harbor.name
+                new_name  = harbor.name.capitalize()
 
             Harbor.query.filter_by(name=harbor_name.capitalize()).update(data)
             
             current_app.db.session.commit()
 
-            harbor = Harbor.query.filter_by(name=new_name.capitalize()).first()
+            harbor = Harbor.query.filter_by(name=new_name).first()
 
             return jsonify(harbor), HTTPStatus.OK
         
     except AttributeError:
         return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
+
+    except sqlalchemy.exc.IntegrityError as e:
+        return {'msg': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
+
+    except sqlalchemy.exc.InvalidRequestError as e:
+        return {'msg': str(e)}, HTTPStatus.BAD_REQUEST
 
 
 @jwt_required()
@@ -124,24 +154,30 @@ def get_containers_on_harbor_now(harbor_name:str):
 
     harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
 
-    current_username = get_jwt_identity()['username']
+    try:
 
-    if current_username == harbor.user.username:
+        current_username = get_jwt_identity()['username']
 
-        container_harbor_list = ContainerHarbor.query.filter(ContainerHarbor.id_harbor == harbor.id_harbor,
-            ContainerHarbor.exit_date == None).all()
+        if current_username == harbor.user.username:
 
-        result_list = []
+            container_harbor_list = ContainerHarbor.query.filter(ContainerHarbor.id_harbor == harbor.id_harbor,
+                ContainerHarbor.exit_date == None).all()
 
-        for container_harbor in container_harbor_list:
+            result_list = []
+
+            for container_harbor in container_harbor_list:
+                
+                container_dict = {
+                    'container': container_harbor.container.tracking_code, 
+                    'entry_date': container_harbor.entry_date,
+                    'exit_date': container_harbor.exit_date 
+                    }
+                result_list.append(container_dict)
             
-            container_dict = {
-                'container': container_harbor.container.tracking_code, 
-                'entry_date': container_harbor.entry_date 
-                }
-            result_list.append(container_dict)
-        
-        return jsonify(result_list), HTTPStatus.OK
+            return jsonify(result_list), HTTPStatus.OK
+
+    except AttributeError:
+        return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
 
 
 @jwt_required()
@@ -149,25 +185,30 @@ def get_containers_on_harbor_all_times(harbor_name:str):
 
     harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
 
-    current_username = get_jwt_identity()['username']
+    try:
 
-    if current_username == harbor.user.username:
+        current_username = get_jwt_identity()['username']
 
-        container_harbor_list = ContainerHarbor.query.filter(ContainerHarbor.id_harbor == harbor.id_harbor,
-            ContainerHarbor.exit_date == None).all()
+        if current_username == harbor.user.username:
 
-        result_list = []
+            container_harbor_list = ContainerHarbor.query.filter(ContainerHarbor.id_harbor == harbor.id_harbor,
+                ContainerHarbor.exit_date == None).all()
 
-        for container_harbor in container_harbor_list:
+            result_list = []
+
+            for container_harbor in container_harbor_list:
+                
+                container_dict = {
+                    'container': container_harbor.container.tracking_code, 
+                    'entry_date': container_harbor.entry_date,
+                    'exit_date': container_harbor.exit_date  
+                    }
+                result_list.append(container_dict)
             
-            container_dict = {
-                'container': container_harbor.container.tracking_code, 
-                'entry_date': container_harbor.entry_date,
-                'exit_date': container_harbor.exit_date  
-                }
-            result_list.append(container_dict)
-        
-        return jsonify(result_list), HTTPStatus.OK
+            return jsonify(result_list), HTTPStatus.OK
+
+    except AttributeError:
+        return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
 
 
 @jwt_required()
@@ -191,6 +232,8 @@ def update_containers_on_harbor(harbor_name:str):
 
             harbor.container_harbor_items.append(item)
 
+            harbor.availability -= container.teu
+
             current_app.db.session.commit()
 
             new_item = {'container': container.tracking_code,                        
@@ -211,7 +254,9 @@ def update_containers_on_harbor(harbor_name:str):
 
             item.container = container
 
-            harbor.ship_harbor_items.append(item)
+            harbor.container_harbor_items.append(item)
+
+            harbor.availability += container.teu
 
             current_app.db.session.commit()
 
@@ -228,24 +273,30 @@ def get_ships_on_harbor_now(harbor_name:str):
 
     harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
 
-    current_username = get_jwt_identity()['username']
+    try:
 
-    if current_username == harbor.user.username:
+        current_username = get_jwt_identity()['username']
 
-        ship_harbor_list = ShipHarbor.query.filter(ShipHarbor.id_harbor == harbor.id_harbor,
-                ShipHarbor.exit_date == None).all()
+        if current_username == harbor.user.username:
 
-        result_list = []
+            ship_harbor_list = ShipHarbor.query.filter(ShipHarbor.id_harbor == harbor.id_harbor,
+                    ShipHarbor.exit_date == None).all()
 
-        for ship_harbor in ship_harbor_list:
+            result_list = []
+
+            for ship_harbor in ship_harbor_list:
+                
+                ship_dict = {
+                    'ship': ship_harbor.ship.name, 
+                    'entry_date': ship_harbor.entry_date,
+                    'exit_date': ship_harbor.exit_date 
+                    }
+                result_list.append(ship_dict)
             
-            ship_dict = {
-                'ship': ship_harbor.ship.name, 
-                'entry_date': ship_harbor.entry_date 
-                }
-            result_list.append(ship_dict)
-        
-        return jsonify(result_list), HTTPStatus.OK
+            return jsonify(result_list), HTTPStatus.OK
+
+    except AttributeError:
+        return {'msg': 'Ship not found'}, HTTPStatus.NOT_FOUND
 
 
 @jwt_required()
@@ -253,25 +304,30 @@ def get_ships_on_harbor_all_times(harbor_name:str):
 
     harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
 
-    current_username = get_jwt_identity()['username']
+    try:
 
-    if current_username == harbor.user.username:
+        current_username = get_jwt_identity()['username']
 
-        ship_harbor_list = ShipHarbor.query.filter(ShipHarbor.id_harbor == harbor.id_harbor,
-                ShipHarbor.exit_date == None).all()
+        if current_username == harbor.user.username:
 
-        result_list = []
+            ship_harbor_list = ShipHarbor.query.filter(ShipHarbor.id_harbor == harbor.id_harbor,
+                    ShipHarbor.exit_date == None).all()
 
-        for ship_harbor in ship_harbor_list:
+            result_list = []
+
+            for ship_harbor in ship_harbor_list:
+                
+                ship_dict = {
+                    'ship': ship_harbor.ship.name, 
+                    'entry_date': ship_harbor.entry_date,
+                    'exit_date': ship_harbor.exit_date  
+                    }
+                result_list.append(ship_dict)
             
-            ship_dict = {
-                'ship': ship_harbor.ship.name, 
-                'entry_date': ship_harbor.entry_date,
-                'exit_date': ship_harbor.exit_date  
-                }
-            result_list.append(ship_dict)
-        
-        return jsonify(result_list), HTTPStatus.OK
+            return jsonify(result_list), HTTPStatus.OK
+
+    except AttributeError:
+        return {'msg': 'Ship not found'}, HTTPStatus.NOT_FOUND
 
 
 @jwt_required()
@@ -287,7 +343,7 @@ def update_ships_on_harbor(harbor_name:str):
 
     if current_username == harbor.user.username:
 
-        if data['entry_date']:
+        if data.get('entry_date'):
 
             item = ShipHarbor(entry_date=data['entry_date'])
 
@@ -304,7 +360,7 @@ def update_ships_on_harbor(harbor_name:str):
 
             return jsonify(new_item), HTTPStatus.OK
 
-        elif data['exit_date']:
+        elif data.get('exit_date'):
             
             ship_harbor_item = ShipHarbor.query.filter(ShipHarbor.id_ship == ship.id_ship,
                 ShipHarbor.exit_date == None).all()
