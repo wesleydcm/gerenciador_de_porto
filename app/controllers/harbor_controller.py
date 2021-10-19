@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from app.models.user_model import User
 from app.models.harbor_model import Harbor
 from app.models.ship_harbor_model import ShipHarbor
@@ -13,47 +12,36 @@ from http import HTTPStatus
 
 @jwt_required()
 def create_harbor():
-
     current_username = get_jwt_identity()['username']
-    
     user = User.query.filter_by(username=current_username).first()
 
     if user.is_harbor:
-
         data = request.json
-
         harbor_availability = data['teus']
-        
         harbor_name = data['name'].capitalize()
-
         data['availability'] = harbor_availability
-
         data['name'] = harbor_name
-
         data['id_user'] = user.id_user
- 
         harbor = Harbor(**data)
 
         session(harbor, 'add')
-
         return jsonify(harbor), HTTPStatus.CREATED
 
 
 @jwt_required()
 def get_one_harbor(harbor_name:str):
-
     harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
 
     try:
         current_username = get_jwt_identity()['username']
-
-        if current_username == harbor.user.username:
+        user = User.query.filter_by(username=current_username).first()
+        if user.is_harbor:
             return jsonify(harbor), HTTPStatus.OK
 
     except AttributeError:
            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
-        
-        
+
+
 @jwt_required()
 def delete_one_harbor(harbor_name:str):
 
