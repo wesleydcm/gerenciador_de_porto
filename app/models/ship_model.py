@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.orm import relationship
 
 
 @dataclass
@@ -26,5 +25,3 @@ class Ship(db.Model):
             "shipping_company.id_shipping_company", ondelete="cascade"
         )
     )
-
-    travel = relationship("Travel")
