@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 import sqlalchemy
+from app.exceptions.containers_errors import CompanyNotPermission
 from app.models.company_model import ShippingCompany
 from app.models.container_model import Container
 from app.models.user_model import User
@@ -30,28 +31,31 @@ def check_owner(user_from_jwt, tracking):
 
 @jwt_required()
 def create_container():
-    current_tracking_code = generate_random_alphanumeric(5)
-    user_from_jwt = get_jwt_identity()
-    user = User.query.filter_by(username=user_from_jwt['username']).first()
-
-    data = request.json
-
-    shipping_company = ShippingCompany.query\
-        .filter_by(id_user=user.id_user).first()
-
-    data['id_shipping_company'] = shipping_company.id_shipping_company
-
-    all_containers = Container.query.all()
-
-    tracking = [code.tracking_code for code in all_containers]
-    while current_tracking_code in tracking:
-        current_tracking_code = generate_random_alphanumeric(5)
-
-    data["tracking_code"] = current_tracking_code
-
     try:
-        new_container = Container(**data)
+        current_tracking_code = generate_random_alphanumeric(5)
+        user_from_jwt = get_jwt_identity()
+        user = User.query.filter_by(username=user_from_jwt['username']).first()
 
+        data = request.json
+
+        shipping_company = ShippingCompany.query\
+            .filter_by(trading_name=data["company"]).first()
+
+        if user.id_user != shipping_company.id_user:
+            raise CompanyNotPermission
+
+        data['id_shipping_company'] = shipping_company.id_shipping_company
+
+        all_containers = Container.query.all()
+
+        tracking = [code.tracking_code for code in all_containers]
+        while current_tracking_code in tracking:
+            current_tracking_code = generate_random_alphanumeric(5)
+
+        data["tracking_code"] = current_tracking_code
+        del(data["company"])
+
+        new_container = Container(**data)
         session(new_container, "add")
 
         return jsonify(new_container), HTTPStatus.CREATED
@@ -62,6 +66,11 @@ def create_container():
         if type(e.orig) == UniqueViolation:
             return {'msg': 'Tracking code already registered'},
             HTTPStatus.BAD_REQUEST
+
+    except CompanyNotPermission:
+        return {
+            "Error": "This company does not belong you!"
+        }, HTTPStatus.BAD_REQUEST
 
 
 @jwt_required()
