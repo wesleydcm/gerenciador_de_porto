@@ -16,6 +16,7 @@ def check_owner(user_from_jwt, tracking):
     container = Container.query.filter_by(tracking_code=tracking).first()
 
     if not container:
+        # colcoar um raise e criar um exception
         return {'msg': 'Container not found'}, HTTPStatus.NOT_FOUND
 
     shipping_company = ShippingCompany.query\
@@ -26,12 +27,14 @@ def check_owner(user_from_jwt, tracking):
             your company'}, HTTPStatus.BAD_REQUEST
 
 
+# Não esta verificando os containers da empresa
 def list_containers():
     containers = Container.query.all()
 
     return jsonify(containers), HTTPStatus.OK
 
 
+# Tem a mesma função do get_container_by_tracking_code
 def get_one_container(id_container: int):
 
     container = Container.query.get(id_container)
@@ -55,6 +58,7 @@ def create_container():
     data['id_shipping_company'] = shipping_company.id_shipping_company
 
     try:
+        # utilizar a função session em controllers/utils
         new_container = Container(**data)
 
         current_app.db.session.add(new_container)
@@ -110,6 +114,7 @@ def delete_container_by_tracking_code(tracking_code: int):
 
     container = Container.query.filter_by(tracking_code=tracking_code).first()
 
+    # utilizar função session
     current_app.db.session.delete(container)
     current_app.db.session.commit()
 

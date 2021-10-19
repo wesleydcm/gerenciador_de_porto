@@ -305,7 +305,6 @@ def update_ships_on_harbor(harbor_name:str):
             return jsonify(new_item), HTTPStatus.OK
 
         elif data['exit_date']:
-            
             ship_harbor_item = ShipHarbor.query.filter(ShipHarbor.id_ship == ship.id_ship,
                 ShipHarbor.exit_date == None).all()
 
@@ -319,7 +318,7 @@ def update_ships_on_harbor(harbor_name:str):
 
             current_app.db.session.commit()
 
-            new_item = {'ship': ship.name,                        
+            new_item = {'ship': ship.name,
                         'entry_date': ship.container_harbor_items.entry_date,
                         'exit_date': ship.container_harbor_items.exit_date
                         }
