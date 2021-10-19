@@ -1,3 +1,4 @@
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String
@@ -22,3 +23,9 @@ class Container(db.Model):
             "shipping_company.id_shipping_company", ondelete="cascade"
         )
     )
+
+    travels = relationship('Travel',
+                           secondary='container_travel', backref='containers')
+
+    harbors = relationship('Harbor',
+                           secondary='container_harbor', backref='containers')
