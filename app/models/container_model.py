@@ -27,5 +27,6 @@ class Container(db.Model):
     travels = relationship('Travel',
                            secondary='container_travel', backref='containers')
 
+    # não pode ter dois backrefs iguais
     harbors = relationship('Harbor',
                            secondary='container_harbor', backref='containers')
