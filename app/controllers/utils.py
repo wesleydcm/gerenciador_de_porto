@@ -2,7 +2,8 @@ import string
 import secrets
 from flask import current_app
 
-def generate_random_alphanumeric(length: int)-> str:
+
+def generate_random_alphanumeric(length: int) -> str:
     """
         receives the length and generates randomly,
         an alphanumeric string with the given length
