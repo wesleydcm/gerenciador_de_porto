@@ -10,7 +10,7 @@ class ContainerHarbor(db.Model):
 
     entry_date: Date
     exit_date: Date
-    
+
     __tablename__ = 'container_harbor'
 
     id_container_travel = Column(Integer, primary_key=True)

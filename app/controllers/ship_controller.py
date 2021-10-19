@@ -10,6 +10,8 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError
 @jwt_required()
 def create_ship():
     try:
+        # Faltou pegar o id da empresa altomaticamente
+        # Podia colocar o nome da companhia para isso, ou fazer nela
         data = request.json
         new_ship = Ship(**data)
         session(new_ship, "add")
@@ -69,4 +71,3 @@ def all_ship_travel(name_ship: str):
         return {"msg": "No trip recorded."}, HTTPStatus.NOT_FOUND
 
     return jsonify(ship.travel), HTTPStatus.OK
-
