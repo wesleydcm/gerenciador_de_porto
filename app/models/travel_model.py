@@ -28,7 +28,6 @@ class Travel(db.Model):
         Integer, ForeignKey("ships.id_ship", ondelete="cascade")
     )
 
-
     def generate_travel_code(self):
         length_travel_code = 6
         self.travel_code = generate_random_alphanumeric(length_travel_code)

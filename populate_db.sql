@@ -71,13 +71,21 @@
 
 INSERT INTO users (name, username, password_hash, is_harbor)
     VALUES
+<<<<<<< HEAD
         ('Marco', 'mcos', 'navio123', FALSE),
         ('Chico', 'chimos', 'navio321', TRUE);
+=======
+        ('Pedro de Lara', 'pelara', 'pbkdf2:sha256:260000$n74UoXFoFrUswp8P$b607b266208c724bb5a5ff00d4384570a1ba8c7bd5faf182859de1713951ad6d', true), ---senha: porto123
+        ('Chico', 'chimos', 'pbkdf2:sha256:260000$RHI9QdmKB0lrwJ6x$3589f12cf9eda15c12a333068c23d79e52c8798cc2afef0feaefa9b74f6ccddc', false), ---navio321
+        ('Marco', 'mcos', 'pbkdf2:sha256:260000$hxzHCkeUfjK0dcVw$ce6544d0d59807b93c6ed549f9fbbdf93e8ec74bed87df3e21ef7e8d3ec6656d', false); ---navio123
+>>>>>>> 1240ae302f80d644d8762ffd0821dd0d5e281d2c
 
 INSERT INTO shipping_company (created_at, trading_name, id_user)
     VALUES
         ('10-10-2010', 'Empresa X', 1),
-        ('20-10-2014', 'Empresa Y', 2);
+        ('20-10-2014', 'Empresa Y', 2),
+        ('20-10-2016', 'Empresa Z', 3),
+        ('20-10-2016', 'Empresa H', 3);
 
 INSERT INTO containers (tracking_code, teu, type, id_shipping_company)
     VALUES
@@ -86,7 +94,9 @@ INSERT INTO containers (tracking_code, teu, type, id_shipping_company)
         (21458, 1, 'DRY BOX', 1),
         (74125, 2, 'DRY BOX', 2),
         (36985, 1, 'DRY BOX', 2),
-        (73165, 2, 'DRY BOX', 2);
+        (73165, 2, 'DRY BOX', 2),
+        (25665, 2, 'DRY BOX', 3),
+        (98568, 1, 'DRY BOX', 3);
 
 
 INSERT INTO ships (name, draught, size, nationality, id_shipping_company)
@@ -94,14 +104,18 @@ INSERT INTO ships (name, draught, size, nationality, id_shipping_company)
         ('Navio 1', 10, 20, 'Brasil', 1),
         ('Navio 2', 5, 15, 'Venezuela', 1),
         ('Navio 3', 12, 22, 'Chile', 2),
-        ('Navio 4', 20, 30, 'China', 2);
+        ('Navio 4', 20, 30, 'China', 2),
+        ('Navio 5', 20, 35, 'Estados Unidos', 3);
 
 INSERT INTO travel (destination, travel_code, id_ship)
     VALUES
-        ('Viagem X', 2040, 1),
-        ('Viagem Y', 3085, 1),
-        ('Viagem Z', 4587, 2),
-        ('Viagem B', 7496, 2);
+        ('Russia', 2040, 1),
+        ('Inglaterra', 3085, 2),
+        ('Alemanha', 4587, 3),
+        ('Ilhas Fiji', 7496, 3),
+        ('México', 76546, 4),
+        ('Japão', 9859, 4),
+        ('Japão', 6587, 5);
 
 INSERT INTO container_travel (created_at, last_update, id_container, id_travel)
     VALUES
@@ -111,8 +125,18 @@ INSERT INTO container_travel (created_at, last_update, id_container, id_travel)
         ('02-09-2020', '07-09-2020', 4, 2),
         ('02-04-2000', '07-04-2000', 5, 3),
         ('02-02-2008', '07-02-2008', 6, 3),
-        ('02-05-2001', '07-05-2001', 1, 4),
-        ('02-12-2019', '07-12-2019', 2, 4);
+        ('02-05-2001', '07-05-2001', 7, 4),
+        ('02-12-2019', '07-12-2019', 8, 4),
+        ('02-12-2019', '07-12-2019', 1, 5),
+        ('02-12-2019', '07-12-2019', 2, 5),
+        ('02-12-2019', '07-12-2019', 3, 6),
+        ('02-12-2019', '07-12-2019', 4, 6),
+        ('02-12-2019', '07-12-2019', 5, 7),
+        ('02-12-2019', '07-12-2019', 6, 7),
+        ('02-12-2019', '07-12-2019', 7, 1),
+        ('02-11-2017', '07-12-2018', 8, 1),
+        ('02-11-2019', '07-12-2019', 1, 4),
+        ('02-12-2019', '07-12-2019', 3, 7);
 
 INSERT INTO harbor (name, country, city, teus, availability)
     VALUES

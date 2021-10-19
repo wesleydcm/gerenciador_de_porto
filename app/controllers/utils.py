@@ -2,7 +2,8 @@ import string
 import secrets
 from flask import current_app
 
-def generate_random_alphanumeric(length: int)-> str:
+
+def generate_random_alphanumeric(length: int) -> str:
     """
         receives the length and generates randomly,
         an alphanumeric string with the given length
@@ -11,8 +12,10 @@ def generate_random_alphanumeric(length: int)-> str:
     alphanumeric = string.ascii_letters + string.digits
 
     while True:
-        random_alphanumeric = ''.join(secrets.choice(alphanumeric) for _ in range(length))
-        
+        random_alphanumeric = ''.join(
+            secrets.choice(alphanumeric) for _ in range(length)
+        )
+
         if (any(c.islower() for c in random_alphanumeric)
                 and any(c.isupper() for c in random_alphanumeric)
                 and sum(c.isdigit() for c in random_alphanumeric) >= 3):

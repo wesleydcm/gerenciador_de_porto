@@ -1,23 +1,21 @@
-from dataclasses import asdict
 from http import HTTPStatus
-
-from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.models.travel_model import Travel
 from flask import current_app, jsonify, request
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.orm import exc
 
-from .utils import generate_random_alphanumeric, session
+from .utils import session
 
 
 @jwt_required()
 def get_by_travel_code(travel_code: str):
 
-    travel = Travel.query.filter_by(travel_code = travel_code).first()
+    travel = Travel.query.filter_by(travel_code=travel_code).first()
 
     if not travel:
         return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
-    
+
     return jsonify(travel), HTTPStatus.OK
 
 
@@ -71,3 +69,14 @@ def delete_travel(travel_code: str):
 
     except exc.UnmappedInstanceError:
         return {'msg': 'travel not found, please review travel_code'}, HTTPStatus.BAD_REQUEST
+
+
+@jwt_required()
+def get_all_containers_in_travel(travel_code: str):
+
+    travel = Travel.query.filter_by(travel_code=travel_code).first()
+
+    if not travel:
+        return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
+
+    return jsonify(travel.containers), HTTPStatus.OK
