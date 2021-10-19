@@ -78,8 +78,8 @@ def delete(trading_name: str):
         user = User.query.filter_by(username=user_data["username"]).first()
 
         for company in user.company:
-                if company.trading_name == trading_name:
-                    current_company = company
+            if company.trading_name == trading_name:
+                current_company = company
 
         session(current_company, "remove")
         return {"trading_name": current_company.trading_name}, HTTPStatus.OK

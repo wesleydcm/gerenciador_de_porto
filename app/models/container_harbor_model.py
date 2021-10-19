@@ -1,3 +1,4 @@
+from sqlalchemy.orm import relationship
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.sql.schema import ForeignKey
@@ -17,3 +18,6 @@ class ContainerHarbor(db.Model):
     exit_date = Column(Date)
     id_container = Column(Integer, ForeignKey('containers.id_container', ondelete='cascade'))
     id_harbor = Column(Integer, ForeignKey('harbor.id_harbor', ondelete='cascade'))
+
+    container = relationship('Container')
+
