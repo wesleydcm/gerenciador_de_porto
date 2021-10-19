@@ -10,6 +10,22 @@ from flask_jwt_extended.view_decorators import jwt_required
 from psycopg2.errors import NotNullViolation, UniqueViolation
 
 
+def check_owner(user_from_jwt, tracking):
+    user = User.query.filter_by(username=user_from_jwt['username']).first()
+
+    container = Container.query.filter_by(tracking_code=tracking).first()
+
+    if not container:
+        return {'msg': 'Container not found'}, HTTPStatus.NOT_FOUND
+
+    shipping_company = ShippingCompany.query\
+        .filter_by(id_user=user.id_user).first()
+
+    if shipping_company.id_shipping_company != container.id_shipping_company:
+        return {'msg': f'This tracking code {tracking} does not belong to \
+            your company'}, HTTPStatus.BAD_REQUEST
+
+
 def list_containers():
     containers = Container.query.all()
 
@@ -50,24 +66,17 @@ def create_container():
         if type(e.orig) == NotNullViolation:
             return {'msg': 'Tracking code is required'}, HTTPStatus.BAD_REQUEST
         if type(e.orig) == UniqueViolation:
-            return {'msg': 'Tracking code already registered'}, HTTPStatus.BAD_REQUEST
+            return {'msg': 'Tracking code already registered'},
+            HTTPStatus.BAD_REQUEST
 
 
 @jwt_required()
 def get_container_by_tracking_code(tracking_code: int):
     user_from_jwt = get_jwt_identity()
-    user = User.query.filter_by(username=user_from_jwt['username']).first()
-
-    shipping_company = ShippingCompany.query\
-        .filter_by(id_user=user.id_user).first()
 
     container = Container.query.filter_by(tracking_code=tracking_code).first()
-    
-    if not container:
-        return {'msg': 'Container not found'}, HTTPStatus.NOT_FOUND
 
-    if shipping_company.id_shipping_company != container.id_shipping_company:
-        return {'msg': f'This tracking code {tracking_code} does not belong to your company'}, HTTPStatus.BAD_REQUEST
+    check_owner(user_from_jwt, tracking_code)
 
     return jsonify(container), HTTPStatus.OK
 
@@ -75,20 +84,11 @@ def get_container_by_tracking_code(tracking_code: int):
 @jwt_required()
 def update_container_by_tracking_code(tracking_code: int):
     user_from_jwt = get_jwt_identity()
-    user = User.query.filter_by(username=user_from_jwt['username']).first()
 
     data = request.json
 
-    container = Container.query.filter_by(tracking_code=tracking_code).first()
+    check_owner(user_from_jwt, tracking_code)
 
-    shipping_company = ShippingCompany.query\
-        .filter_by(id_user=user.id_user).first()
-
-    if not container:
-        return {'msg': 'Container not found'}, HTTPStatus.NOT_FOUND
-
-    if shipping_company.id_shipping_company != container.id_shipping_company:
-        return {'msg': f'This tracking code {tracking_code} does not belong to your company'}, HTTPStatus.BAD_REQUEST
     try:
         Container.query.filter_by(tracking_code=tracking_code).update(data)
 
@@ -105,19 +105,10 @@ def update_container_by_tracking_code(tracking_code: int):
 @jwt_required()
 def delete_container_by_tracking_code(tracking_code: int):
     user_from_jwt = get_jwt_identity()
-    user = User.query.filter_by(username=user_from_jwt['username']).first()
+
+    check_owner(user_from_jwt, tracking_code)
 
     container = Container.query.filter_by(tracking_code=tracking_code).first()
-
-    if not container:
-        return {'msg': 'Container not found'}, HTTPStatus.NOT_FOUND
-
-    shipping_company = ShippingCompany.query\
-        .filter_by(id_user=user.id_user)\
-        .first()
-
-    if shipping_company.id_shipping_company != container.id_shipping_company:
-        return {'msg': f'This tracking code {tracking_code} does not belong to your company'}, HTTPStatus.BAD_REQUEST
 
     current_app.db.session.delete(container)
     current_app.db.session.commit()
@@ -128,18 +119,20 @@ def delete_container_by_tracking_code(tracking_code: int):
 @jwt_required()
 def get_travels_of_container(tracking_code: int):
     user_from_jwt = get_jwt_identity()
-    user = User.query.filter_by(username=user_from_jwt['username']).first()
 
-    shipping_company = ShippingCompany.query\
-        .filter_by(id_user=user.id_user)\
-        .first()
+    check_owner(user_from_jwt, tracking_code)
 
     container = Container.query.filter_by(tracking_code=tracking_code).first()
 
-    if not container:
-        return {'msg': 'Container not found'}, HTTPStatus.NOT_FOUND
-
-    if shipping_company.id_shipping_company != container.id_shipping_company:
-        return {'msg': f'This tracking code {tracking_code} does not belong to your company'}, HTTPStatus.BAD_REQUEST
-
     return jsonify(container.travels), HTTPStatus.OK
+
+
+@jwt_required()
+def get_every_harbor_container_has_been(tracking_code: int):
+    user_from_jwt = get_jwt_identity()
+
+    check_owner(user_from_jwt, tracking_code)
+
+    container = Container.query.filter_by(tracking_code=tracking_code).first()
+
+    return jsonify(container.harbors), HTTPStatus.OK
