@@ -69,3 +69,4 @@ def all_ship_travel(name_ship: str):
         return {"msg": "No trip recorded."}, HTTPStatus.NOT_FOUND
 
     return jsonify(ship.travel), HTTPStatus.OK
+
