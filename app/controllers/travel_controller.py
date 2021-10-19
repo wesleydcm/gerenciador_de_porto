@@ -23,10 +23,11 @@ def get_by_travel_code(travel_code: str):
 
 @jwt_required()
 def register_travel():
-
+    requester_username = get_jwt_identity()['username']
     data = request.json
 
     new_travel = Travel(**data)
+    new_travel.check_authorization(requester_username)
     new_travel.generate_travel_code()
 
     session(new_travel, "add")
@@ -36,13 +37,17 @@ def register_travel():
 
 @jwt_required()
 def update_travel(travel_code: str):
+    requester_username = get_jwt_identity()['username']
 
-    travel = Travel.query.filter_by(travel_code = travel_code).first()
+    travel: Travel = Travel.query.filter_by(travel_code = travel_code).first()
 
     if not travel:
         return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
 
+    travel.check_authorization(requester_username)
+
     data = request.json
+
 
     if data:
         for key, value in data.items():

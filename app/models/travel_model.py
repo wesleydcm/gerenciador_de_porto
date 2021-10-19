@@ -1,10 +1,15 @@
 from dataclasses import dataclass
 
 from app.configs.database import db
+from app.controllers.utils import generate_random_alphanumeric
+from app.models.company_model import ShippingCompany
+from app.models.ship_model import Ship
+from flask import current_app
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.sql.elements import and_
 from sqlalchemy.sql.schema import ForeignKey
 
-from app.controllers.utils import generate_random_alphanumeric
+from app.models.user_model import User
 
 
 @dataclass
@@ -27,3 +32,27 @@ class Travel(db.Model):
     def generate_travel_code(self):
         length_travel_code = 6
         self.travel_code = generate_random_alphanumeric(length_travel_code)
+
+
+
+    def check_authorization(self, requester_username):
+
+        session = current_app.db.session
+
+        query = session.query(Ship, ShippingCompany, User)\
+            .select_from(Ship)\
+            .join(ShippingCompany)\
+            .join(User)\
+            .filter(and_(
+                Ship.id_ship == self.id_ship),
+                ShippingCompany.id_shipping_company == Ship.id_shipping_company,\
+                ShippingCompany.id_shipping_company == User.id_user,
+                )\
+            .all()
+
+
+        owner_travel = [username for _, _, username in query]
+
+        print(owner_travel)
+
+

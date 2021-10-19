@@ -69,10 +69,10 @@
 --     id_porto                integer                 NOT NULL REFERENCES porto(id_porto),
 -- );
 
-INSERT INTO users (name, username, password_hash)
+INSERT INTO users (name, username, password_hash, is_harbor)
     VALUES
-        ('Marco', 'mcos', 'navio123'),
-        ('Chico', 'chimos', 'navio321');
+        ('Marco', 'mcos', 'navio123', FALSE),
+        ('Chico', 'chimos', 'navio321', TRUE);
 
 INSERT INTO shipping_company (created_at, trading_name, id_user)
     VALUES
