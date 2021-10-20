@@ -1,5 +1,4 @@
 from http import HTTPStatus
-
 from app.controllers.utils import session
 from app.models.ship_model import Ship
 from flask import jsonify, request, current_app
@@ -7,6 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from app.models.company_model import ShippingCompany
 from app.models.user_model import User
+from app.models.ship_harbor_model import ShipHarbor
 
 
 @jwt_required()
@@ -132,3 +132,29 @@ def all_ship_travel(name_ship: str):
             return {"msg": "No trip recorded."}, HTTPStatus.NOT_FOUND
 
         return jsonify(ship.travel), HTTPStatus.OK
+
+
+@jwt_required()
+def ship_locate(name_ship: str):
+    data_user = get_jwt_identity()["username"]
+    data = request.json
+    companyName = data.pop("company")
+
+    user = User.query.filter_by(username=data_user).first()
+    ship = Ship.query.filter_by(name=name_ship).first()
+    company = ShippingCompany.query.filter_by(
+        trading_name=companyName
+    ).first()
+    if not ship:
+        return {'msg': 'Ship not found.'}, HTTPStatus.NOT_FOUND
+
+    if company.id_shipping_company == ship.id_shipping_company and user.id_user == company.id_user:
+        
+        ship_harbor_item = ShipHarbor.query.filter(ShipHarbor.id_ship == ship.id_ship)\
+            .order_by(ShipHarbor.id_ship_harbor.desc()).first()
+        
+        if ship_harbor_item and ship_harbor_item.exit_date == None:
+            return {'msg': f'{ship.name} is on harbor {ship_harbor_item.harbor.name}.'}, HTTPStatus.OK
+        else:
+            return {'msg': f'{ship.name} is with his owner.'}, HTTPStatus.OK
+

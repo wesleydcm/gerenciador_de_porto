@@ -30,5 +30,5 @@ class Harbor(db.Model):
 
     container_harbor_items = relationship('ContainerHarbor', cascade='all, delete-orphan')
 
-    ship_harbor_items = relationship('ShipHarbor', cascade='all, delete-orphan')
+    ship_harbor_items = relationship('ShipHarbor', backref='harbor', cascade='all, delete-orphan')
 
