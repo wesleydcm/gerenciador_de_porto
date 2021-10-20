@@ -10,13 +10,20 @@ from .utils import session
 
 @jwt_required()
 def get_by_travel_code(travel_code: str):
+    try:
+        requester_username = get_jwt_identity()['username']
 
-    travel = Travel.query.filter_by(travel_code=travel_code).first()
+        travel: Travel = Travel.query.filter_by(travel_code=travel_code).first()
 
-    if not travel:
-        return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
+        if not travel:
+            return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
 
-    return jsonify(travel), HTTPStatus.OK
+        travel.check_authorization(requester_username)
+
+        return jsonify(travel), HTTPStatus.OK
+    
+    except PermissionError as e:
+        return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
 
 
 @jwt_required()
@@ -35,26 +42,30 @@ def register_travel():
 
 @jwt_required()
 def update_travel(travel_code: str):
-    requester_username = get_jwt_identity()['username']
+    try:
+        requester_username = get_jwt_identity()['username']
 
-    travel: Travel = Travel.query.filter_by(travel_code = travel_code).first()
+        travel: Travel = Travel.query.filter_by(travel_code = travel_code).first()
 
-    if not travel:
-        return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
+        if not travel:
+            return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
 
-    travel.check_authorization(requester_username)
+        travel.check_authorization(requester_username)
 
-    data = request.json
+        data = request.json
 
 
-    if data:
-        for key, value in data.items():
-            setattr(travel, key, value)
+        if data:
+            for key, value in data.items():
+                setattr(travel, key, value)
 
-        Travel.query.filter_by(travel_code=travel_code).update(data)
-        current_app.db.session.commit()
+            Travel.query.filter_by(travel_code=travel_code).update(data)
+            current_app.db.session.commit()
 
-    return jsonify(travel), HTTPStatus.OK
+        return jsonify(travel), HTTPStatus.OK
+    
+    except PermissionError as e:
+        return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
 
 
 @jwt_required()
