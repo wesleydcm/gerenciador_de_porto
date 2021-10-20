@@ -81,22 +81,27 @@ def get_one_harbor(harbor_name:str):
 
 
 @jwt_required()
-def delete_one_harbor(harbor_name:str):
-
+def delete_one_harbor(harbor_name: str):
     current_username = get_jwt_identity()['username']
     user = User.query.filter_by(username=current_username).first()
 
     if user.is_harbor:
         try:
-            harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).one()
+            harbor = Harbor.query.filter_by(name=harbor_name.capitalize())\
+                .first()
+
             session(harbor, "remove")
 
-            return {"msg": f'Harbor {harbor.name} no longer exists.'}, HTTPStatus.NO_CONTENT
+            return {
+                "msg": f'Harbor {harbor.name} no longer exists.'
+            }, HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
             return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
     else:
-         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
+        return {
+             'msg': 'You are a company user. You are not allowed to handle harbors data.'
+        }, HTTPStatus.UNAUTHORIZED
 
 
 @jwt_required()
@@ -198,14 +203,14 @@ def get_containers_on_harbor_all_times(harbor_name:str):
     if user.is_harbor:
         try:
             harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).one()
-    
+
             session = current_app.db.session
             query_list = session.query(Container.tracking_code,\
                                        ContainerHarbor.entry_date,\
                                        sqlalchemy.func.max(ContainerHarbor.exit_date))\
                                        .join(Container, Container.id_container == ContainerHarbor.id_container)\
                                        .filter(ContainerHarbor.id_harbor == harbor.id_harbor)\
-                                       .group_by(Container.name, ContainerHarbor.entry_date)\
+                                       .group_by(Container.tracking_code, ContainerHarbor.entry_date)\
                                        .all()
 
             result_list = [{'container': query[0], 
