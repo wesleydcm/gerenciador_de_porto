@@ -222,21 +222,17 @@ def update_containers_on_harbor(harbor_name: str):
         harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
         container = Container.query.filter_by(tracking_code=data['tracking_code']).first()
         travel = Travel.query.filter_by(tracking_code=data['tracking_code']).first()
-        
+
         container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
             .order_by(ContainerHarbor.id_container_harbor.desc()).first()
-                            
+
         if container_harbor_item and container_harbor_item.exit_date == None:
-
-        container = Container.query.filter_by(
-            tracking_code=data['tracking_code']
-        ).first()
-
-        container_harbor_item = ContainerHarbor.query.filter(
-            ContainerHarbor.id_container == container.id_container
-            )\
-            .order_by(ContainerHarbor.id_container_harbor.desc())\
-            .first()
+            container = Container.query.filter_by(tracking_code=data['tracking_code']).first()
+            container_harbor_item = ContainerHarbor.query.filter(
+                ContainerHarbor.id_container == container.id_container
+                )\
+                .order_by(ContainerHarbor.id_container_harbor.desc())\
+                .first()
 
         if container_harbor_item and container_harbor_item.exit_date == None:
             data['entry_date'] = container_harbor_item.entry_date
