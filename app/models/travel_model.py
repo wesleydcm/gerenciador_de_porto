@@ -28,6 +28,7 @@ class Travel(db.Model):
         Integer, ForeignKey("ships.id_ship", ondelete="cascade")
     )
 
+
     def generate_travel_code(self):
 
         length_travel_code = 6

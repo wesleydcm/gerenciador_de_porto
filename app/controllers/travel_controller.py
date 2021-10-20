@@ -2,10 +2,10 @@ from http import HTTPStatus
 
 from app.models.travel_model import Travel
 from flask import current_app, jsonify, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from sqlalchemy.orm import exc
 
-from .utils import session
+from .utils import error_messages, session
 
 
 @jwt_required()
@@ -16,7 +16,7 @@ def get_by_travel_code(travel_code: str):
         travel: Travel = Travel.query.filter_by(travel_code=travel_code).first()
 
         if not travel:
-            return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
+            return {'msg': error_messages['travel_not_found']}, HTTPStatus.NOT_FOUND
 
         travel.check_authorization(requester_username)
 
@@ -42,18 +42,15 @@ def register_travel():
 
 @jwt_required()
 def update_travel(travel_code: str):
+
     try:
         requester_username = get_jwt_identity()['username']
 
         travel: Travel = Travel.query.filter_by(travel_code = travel_code).first()
 
-        if not travel:
-            return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
-
         travel.check_authorization(requester_username)
 
         data = request.json
-
 
         if data:
             for key, value in data.items():
@@ -64,6 +61,9 @@ def update_travel(travel_code: str):
 
         return jsonify(travel), HTTPStatus.OK
     
+    except exc.UnmappedInstanceError:
+        return {'msg': error_messages['travel_not_found']}, HTTPStatus.BAD_REQUEST
+
     except PermissionError as e:
         return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
 
@@ -72,22 +72,39 @@ def update_travel(travel_code: str):
 def delete_travel(travel_code: str):
 
     try:
-        travel = Travel.query.filter_by(travel_code=travel_code).first()
+        requester_username = get_jwt_identity()['username']
+
+        travel: Travel = Travel.query.filter_by(travel_code=travel_code).first()
+
+        travel.check_authorization(requester_username)
 
         session(travel, "remove")
 
         return jsonify(travel), HTTPStatus.OK
 
     except exc.UnmappedInstanceError:
-        return {'msg': 'travel not found, please review travel_code'}, HTTPStatus.BAD_REQUEST
+        return {'msg': error_messages['travel_not_found']}, HTTPStatus.BAD_REQUEST
+
+    except PermissionError as e:
+        return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
 
 
+
+# Falta terminar
 @jwt_required()
 def get_all_containers_in_travel(travel_code: str):
 
-    travel = Travel.query.filter_by(travel_code=travel_code).first()
+    try:
+        requester_username = get_jwt_identity()['username']
 
-    if not travel:
-        return {'msg': 'travel not found'}, HTTPStatus.NOT_FOUND
+        travel: Travel = Travel.query.filter_by(travel_code=travel_code).first()
 
-    return jsonify(travel.containers), HTTPStatus.OK
+        travel.check_authorization(requester_username)
+
+        return jsonify(travel.containers), HTTPStatus.OK
+
+    except exc.UnmappedInstanceError:
+        return {'msg': error_messages['travel_not_found']}, HTTPStatus.BAD_REQUEST
+
+    except PermissionError as e:
+        return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
