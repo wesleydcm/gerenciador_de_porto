@@ -535,7 +535,7 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 
 ## POST `/harbor_manager/harbor/<str:nome>/container`
 
-> Informa entrada e saída de um container em um porto. Atualiza o 'last_update' na tabela ContainerTravel. Atualiza o 'availability' de um porto.
+> Informa entrada e saída de um container em um porto. 
 
 - **Rota protegida**
 
@@ -567,9 +567,7 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 ```
 
 - Status: 201 CREATED
+- **\*_availability_** do porto é atualizada automaticamente e salva no banco dados. 
+- **\*_last_update_** do container é atualizada automaticamente e salva no banco dados. 
 
 <br>
-
-GET /harbor_manager/harbor/<int:nome>/ships - lista todos os navios que estão no porto. - **precisa de autorização**
-
-GET /harbor_manager/harbor/<int:nome>/ships/history - histórico dos navios que passaram pelo porto. - **precisa de autorização**
