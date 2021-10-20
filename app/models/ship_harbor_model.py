@@ -2,6 +2,7 @@ from datetime import date
 from sqlalchemy import Column, Date, Integer
 from dataclasses import dataclass
 from sqlalchemy.sql.schema import ForeignKey
+from sqlalchemy.orm import relationship
 
 from app.configs.database import db
 
@@ -23,3 +24,5 @@ class ShipHarbor(db.Model):
     id_harbor = Column(
         Integer, ForeignKey("harbor.id_harbor", ondelete="cascade")
     )
+
+    ship = relationship('Ship')
