@@ -27,16 +27,6 @@ class Harbor(db.Model):
 
     user = relationship('User', backref='harbor')
 
-<<<<<<< HEAD
-    container_harbor_items = relationship(
-        'ContainerHarbor', cascade='all, delete-orphan'
-    )
-=======
     container_harbor_items = relationship('ContainerHarbor', cascade='all, delete-orphan')
 
     ship_harbor_items = relationship('ShipHarbor', backref='harbor', cascade='all, delete-orphan')
->>>>>>> 5e325a1edb6d0f69d70536bc20173101e8520f5a
-
-    ship_harbor_items = relationship(
-        'ShipHarbor', cascade='all, delete-orphan'
-    )

@@ -13,6 +13,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
 import psycopg2
 import sqlalchemy
+import pdb
 
 
 @jwt_required()
@@ -159,18 +160,27 @@ def get_containers_on_harbor_now(harbor_name:str):
             harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).one()
 
             session = current_app.db.session
-            query_list = session.query(Container.tracking_code,\
-                                       ContainerHarbor.entry_date,\
-                                       sqlalchemy.func.max(ContainerHarbor.exit_date))\
-                                       .join(Container, Container.id_container == ContainerHarbor.id_container)\
-                                       .filter(ContainerHarbor.id_harbor == harbor.id_harbor)\
-                                       .group_by(Container.name, ContainerHarbor.entry_date)\
-                                       .all()
+            query_list = session.query(
+                Container.tracking_code,
+                ContainerHarbor.entry_date,
+                sqlalchemy.func.max(ContainerHarbor.exit_date)
+                )\
+                .join(
+                    Container,
+                    Container.id_container == ContainerHarbor.id_container
+                )\
+                .filter(ContainerHarbor.id_harbor == harbor.id_harbor)\
+                .group_by(Container.tracking_code, ContainerHarbor.entry_date)\
+                .all()
 
-            result_list = [{'container': query[0], 
-                            'entry_date': query[1]} 
-                            for query in query_list if query[2] == None]
-            
+            result_list = [
+                {
+                    'container': query[0],
+                    'entry_date': query[1]
+                }
+                for query in query_list if query[2] == None
+            ]
+
             return jsonify(result_list), HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
@@ -221,18 +231,12 @@ def update_containers_on_harbor(harbor_name: str):
     if user.is_harbor:
         harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
         container = Container.query.filter_by(tracking_code=data['tracking_code']).first()
-        travel = Travel.query.filter_by(tracking_code=data['tracking_code']).first()
+        travel = Travel.query.filter_by(travel_code=data['travel_code']).first()
 
-        container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
-            .order_by(ContainerHarbor.id_container_harbor.desc()).first()
-
-        if container_harbor_item and container_harbor_item.exit_date == None:
-            container = Container.query.filter_by(tracking_code=data['tracking_code']).first()
-            container_harbor_item = ContainerHarbor.query.filter(
-                ContainerHarbor.id_container == container.id_container
-                )\
-                .order_by(ContainerHarbor.id_container_harbor.desc())\
-                .first()
+        # pdb.set_trace()
+        container_harbor_item = ContainerHarbor.query\
+            .filter(ContainerHarbor.id_container == container.id_container)\
+            .order_by(ContainerHarbor.id_container_travel.desc()).first()
 
         if container_harbor_item and container_harbor_item.exit_date == None:
             data['entry_date'] = container_harbor_item.entry_date
@@ -250,7 +254,7 @@ def update_containers_on_harbor(harbor_name: str):
             container_harbor_item = ContainerHarbor.query.filter(
                 ContainerHarbor.id_container == container.id_container
                 )\
-                .order_by(ContainerHarbor.id_container_harbor.desc())\
+                .order_by(ContainerHarbor.id_container_travel.desc())\
                 .first()
 
             new_item = {
@@ -259,7 +263,7 @@ def update_containers_on_harbor(harbor_name: str):
                 'exit_date': container_harbor_item.exit_date
             }
 
-            return jsonify(new_item), HTTPStatus.OK
+            return jsonify(new_item), HTTPStatus.CREATED
 
         elif not container_harbor_item or container_harbor_item.exit_date != None:
             container_entry_date = datetime.utcnow()
@@ -271,14 +275,14 @@ def update_containers_on_harbor(harbor_name: str):
             container_travel_item = ContainerTravel.query.filter(ContainerTravel.id_travel == travel.id_travel)\
             .filter(ContainerTravel.id_container == container.id_container).first()
 
-            container_travel_item.last_update = container_entry_date
-
+            container_travel_item.created_at = container_entry_date
+            container_travel_item.last_update = datetime.utcnow()
             current_app.db.session.commit()
 
             container_harbor_item = ContainerHarbor.query.filter(
                 ContainerHarbor.id_container == container.id_container
                 )\
-                .order_by(ContainerHarbor.id_container_harbor.desc())\
+                .order_by(ContainerHarbor.id_container_travel.desc())\
                 .first()
 
             new_item = {
@@ -286,7 +290,7 @@ def update_containers_on_harbor(harbor_name: str):
                 'entry_date': container_harbor_item.entry_date
             }
 
-            return jsonify(new_item), HTTPStatus.OK
+            return jsonify(new_item), HTTPStatus.CREATED
     else:
         return {
             'msg': 'You are a company user. You are not allowed to handle harbors data.'
@@ -366,11 +370,11 @@ def update_ships_on_harbor(harbor_name:str):
     if user.is_harbor:
         try:
             harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
-            ship = Ship.query.filter_by(name=data['name']).first()
+            ship = Ship.query.filter_by(name=data['ship']).first()
 
             ship_harbor_item = ShipHarbor.query.filter(ShipHarbor.id_ship == ship.id_ship)\
                 .order_by(ShipHarbor.id_ship_harbor.desc()).first()
-                            
+
             if ship_harbor_item and ship_harbor_item.exit_date == None:
                 ship_entry_date = ship_harbor_item.entry_date
                 ship_exit_date = datetime.utcnow()

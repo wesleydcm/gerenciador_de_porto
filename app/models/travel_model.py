@@ -15,7 +15,7 @@ class Travel(db.Model):
     __tablename__ = "travel"
 
     id_travel = Column(Integer, primary_key=True)
-    travel_code = Column(String(127), nullable=False, unique=True)
+    travel_code = Column(String(127), nullable=True, unique=True)
     destination = Column(String(63), nullable=False)
     id_ship = Column(
         Integer, ForeignKey("ships.id_ship", ondelete="cascade")
