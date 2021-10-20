@@ -14,4 +14,4 @@ def init_app(app:Flask):
     from app.models.container_travel_model import ContainerTravel
     from app.models.container_harbor_model import ContainerHarbor
 
-    Migrate(app, app.db)
+    Migrate(app, app.db, compare_type=True)
