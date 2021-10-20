@@ -280,27 +280,295 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 
 ---
 
-## Endpoints harbor (tabela porto)
+## POST `/harbor_manager/harbor`
 
-POST /harbor_manager/harbor - cria um porto. - **precisa de autorização**
+> Rota responsável pela criação de portos.
 
-GET /harbor_manager/harbor/<int:nome> - lista todos os dados de um porto específico. - **precisa de autorização**
+- **Rota protegida**
 
-GET /harbor_manager/harbor/<int:nome> - lista alguns dados de um específico.
+- Corpo requisição:
 
-- nome,
-- pais,
-- cidade
+```json
+  {
+    "name": "Roterda",
+    "country": "Holanda",
+    "city": "Roterda",
+    "teus": 100
+  } 
+```
 
-PATCH /harbor_manager/harbor/<int:nome> - atualiza um porto específico. - **precisa de autorização**
+- Corpo da resposta:
 
-DELETE /harbor_manager/harbor/<int:nome> - deleta um porto específico. - **precisa de autorização**
+```json
+  {
+    "name": "Roterda",
+    "country": "Holanda",
+    "city": "Roterda",
+    "teus": 100,
+    "availability": 100,
+  } 
+```
 
----
+- Status: 201 CREATED
 
-GET /harbor_manager/harbor/<int:nome>/containers - lista todos os containers que estão no porto. - **precisa de autorização**
+- **\*_availability_** é gerada automaticamente e salva no banco dados. 
 
-GET /harbor_manager/harbor/<int:nome>/containers/history - histórico dos containers que passaram pelo porto. - **precisa de autorização**
+<br>
+
+## GET `/harbor_manager/harbor/<str:nome>`
+
+> Lista um porto específico.
+
+- **Rota protegida**
+
+- Requisição sem corpo.
+
+- Corpo da resposta:
+
+```json
+  {
+    "name": "Roterda",
+    "country": "Holanda",
+    "city": "Roterda",
+    "teus": 100,
+    "availability": 100,
+  } 
+```
+
+- Status: 200 OK
+
+<br>
+
+## DELETE `/harbor_manager/harbor/<str:nome>`
+
+> Deleta um porto específico.
+
+- **Rota protegida**
+
+- Requisição sem corpo.
+
+- Resposta sem corpo.
+
+- Status: 204 NO CONTENT
+
+<br>
+
+## PATCH `/harbor_manager/harbor/<str:nome>`
+
+> Atualiza um porto específico.
+
+- **Rota protegida**
+
+- Corpo requisição:
+
+```json
+  {
+    "country": "Alemanha",
+    "city": "Munique",
+    "teus": 120
+  } 
+```
+
+- Corpo da resposta:
+
+```json
+  {
+    "name": "Roterda",
+    "country": "Alemanha",
+    "city": "Munique",
+    "teus": 120,
+    "availability": 120,
+  } 
+```
+
+- Status: 200 OK
+
+- **\*_availability_** é atualizada automaticamente e salva no banco dados. 
+
+<br>
+
+## GET `/harbor_manager/harbor/<str:tracking_code>/containers/history`
+
+> Lista todos os containers que estiveram em um porto.
+
+- **Rota protegida**
+
+- Requisição sem corpo.
+
+- Corpo da resposta:
+
+```json
+  [
+    {
+      "ship": "123HTR",
+      "entry_code": "01/10/2021",
+      "exit_code": None      
+    },
+    {
+      "ship": "245OPR",
+      "entry_code": "01/10/2021",
+      "exit_code": "10/10/2021"   
+    }  
+  ]
+```
+
+- Status: 200 OK
+
+<br>
+
+## GET `/harbor_manager/harbor/<str:tracking_code>/containers`
+
+> Lista todos os containers que estão em um porto.
+
+- **Rota protegida**
+
+- Requisição sem corpo.
+
+- Corpo da resposta:
+
+```json
+  [
+    {
+      "ship": "123HTR",
+      "entry_code": "01/10/2021"
+    },
+    {
+      "ship": "245OPR",
+      "entry_code": "01/10/2021"   
+    }  
+  ]
+```
+
+- Status: 200 OK
+
+<br>
+
+## GET `/harbor_manager/harbor/<str:nome>/ships/history`
+
+> Lista todos os navios que estiveram em um porto.
+
+- **Rota protegida**
+
+- Requisição sem corpo.
+
+- Corpo da resposta:
+
+```json
+  [
+    {
+      "ship": "Rei dos Mares",
+      "entry_code": "01/10/2021",
+      "exit_code": None      
+    },
+    {
+      "ship": "Príncipe dos Mares",
+      "entry_code": "01/10/2021",
+      "exit_code": "10/10/2021"   
+    }  
+  ]
+```
+
+- Status: 200 OK
+
+<br>
+
+## GET `/harbor_manager/harbor/<str:nome>/ships`
+
+> Lista todos os navios que estão em um porto.
+
+- **Rota protegida**
+
+- Requisição sem corpo.
+
+- Corpo da resposta:
+
+```json
+  [
+    {
+      "ship": "Rei dos Mares",
+      "entry_code": "01/10/2021"
+    },
+    {
+      "ship": "Príncipe dos Mares",
+      "entry_code": "01/10/2021"   
+    }  
+  ]
+```
+
+- Status: 200 OK
+
+## POST `/harbor_manager/harbor/<str:nome>/ship`
+
+> Informa entrada e saída de um navio em um porto.
+
+- **Rota protegida**
+
+- Corpo da requisição:
+
+```json
+  {
+    "ship": "Rei dos Mares"
+  }
+```
+
+- Corpo da resposta (varia se o navio está chegando ou saindo):
+
+```json
+  {
+    "ship": "Rei dos Mares",
+    "entry_code": "01/10/2021",
+    "exit_code": None  
+  }
+```
+
+```json
+  {
+    "ship": "Rei dos Mares",
+    "entry_code": "01/10/2021",
+    "exit_code": "10/10/2021"  
+  }
+```
+
+- Status: 201 CREATED
+
+<br>
+
+## POST `/harbor_manager/harbor/<str:nome>/container`
+
+> Informa entrada e saída de um container em um porto. Atualiza o 'last_update' na tabela ContainerTravel. Atualiza o 'availability' de um porto.
+
+- **Rota protegida**
+
+- Corpo da requisição:
+
+```json
+  {
+    "tracking_code": "452KGR"
+    "travel_code": "KGR789"
+  }
+```
+
+- Corpo da resposta (varia se o vacio está chegando ou saindo):
+
+```json
+  {
+    "container": "452KGR",
+    "entry_code": "01/10/2021",
+    "exit_code": None  
+  }
+```
+
+```json
+  {
+    "container": "452KGR",
+    "entry_code": "01/10/2021",
+    "exit_code": "10/10/2021"  
+  }
+```
+
+- Status: 201 CREATED
+
+<br>
 
 GET /harbor_manager/harbor/<int:nome>/ships - lista todos os navios que estão no porto. - **precisa de autorização**
 
