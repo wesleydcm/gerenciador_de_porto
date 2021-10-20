@@ -1,9 +1,9 @@
 from http import HTTPStatus
-
 import sqlalchemy
 from app.exceptions.containers_errors import CompanyNotPermission
 from app.models.company_model import ShippingCompany
 from app.models.container_model import Container
+from app.models.container_harbor_model import ContainerHarbor
 from app.models.user_model import User
 from flask import jsonify, request
 from flask_jwt_extended.utils import get_jwt_identity
@@ -56,6 +56,7 @@ def create_container():
         del(data["company"])
 
         new_container = Container(**data)
+        print(new_container)
         session(new_container, "add")
 
         return jsonify(new_container), HTTPStatus.CREATED
@@ -152,3 +153,24 @@ def get_every_harbor_container_has_been(tracking_code: int):
     container = Container.query.filter_by(tracking_code=tracking_code).first()
 
     return jsonify(container.harbors), HTTPStatus.OK
+
+
+@jwt_required()
+def container_locate(tracking_code: str):
+    user_from_jwt = get_jwt_identity()
+    check = check_owner(user_from_jwt, tracking_code)
+
+    if check:
+        return check
+
+    container = Container.query.filter_by(tracking_code=tracking_code).first()
+
+    container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
+            .order_by(ContainerHarbor.id_container_harbor.desc()).first()
+        
+    if container_harbor_item and container_harbor_item.exit_date == None:
+        return {'msg': f'Container {container.tracking_code} is on harbor {container.harbors.name}.'}, HTTPStatus.OK
+    else:
+        return {'msg': f'Container {container.tracking_code} is with his owner.'}, HTTPStatus.OK
+
+    
