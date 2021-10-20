@@ -7,7 +7,6 @@ from app.configs.database import db
 
 @dataclass
 class Harbor(db.Model):
-    
     name: str
     country: str
     city: str
@@ -28,7 +27,10 @@ class Harbor(db.Model):
 
     user = relationship('User', backref='harbor')
 
-    container_harbor_items = relationship('ContainerHarbor', cascade='all, delete-orphan')
+    container_harbor_items = relationship(
+        'ContainerHarbor', cascade='all, delete-orphan'
+    )
 
-    ship_harbor_items = relationship('ShipHarbor', cascade='all, delete-orphan')
-
+    ship_harbor_items = relationship(
+        'ShipHarbor', cascade='all, delete-orphan'
+    )

@@ -20,4 +20,3 @@ class ContainerHarbor(db.Model):
     id_harbor = Column(Integer, ForeignKey('harbor.id_harbor', ondelete='cascade'))
 
     container = relationship('Container')
-

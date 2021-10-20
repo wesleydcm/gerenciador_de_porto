@@ -20,17 +20,19 @@ def create_harbor():
     user = User.query.filter_by(username=current_username).first()
 
     if user.is_harbor:
-
         try:
-
             data = request.json
 
             if data.get('teus') == None:
-                return {"msg": "null value in column \"teus\" of relation \"harbor\" violates not-null constraint"}, HTTPStatus.BAD_REQUEST
+                return {
+                    "Error": "null value in column \"teus\" of relation \"harbor\" violates not-null constraint"
+                }, HTTPStatus.BAD_REQUEST
 
             if data.get('name') == None:
-                return {"msg": "null value in column \"name\" of relation \"harbor\" violates not-null constraint"}, HTTPStatus.BAD_REQUEST
-            
+                return {
+                    "Error": "null value in column \"name\" of relation \"harbor\" violates not-null constraint"
+                }, HTTPStatus.BAD_REQUEST
+
             harbor_availability = data['teus']
             harbor_name = data['name'].capitalize()
             data['availability'] = harbor_availability
@@ -45,20 +47,23 @@ def create_harbor():
         except sqlalchemy.exc.IntegrityError as e:
 
             if type(e.orig) == psycopg2.errors.NotNullViolation:
-                return {'msg': str(e.orig).split('\n')[0]}, HTTPStatus.BAD_REQUEST
+                return {
+                    'Error': str(e.orig).split('\n')[0]
+                }, HTTPStatus.BAD_REQUEST
 
-            return {'msg': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
+            return {'Error': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
 
         except TypeError as e:
-             return {'msg': str(e)}, HTTPStatus.BAD_REQUEST
+             return {'Error': str(e)}, HTTPStatus.BAD_REQUEST
 
     else:
-        return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
-            
+        return {
+            'Error': 'You are a company user. You are not allowed to handle harbors data.'
+        }, HTTPStatus.UNAUTHORIZED
+
 
 @jwt_required()
 def get_one_harbor(harbor_name:str):
-
     current_username = get_jwt_identity()['username']
     user = User.query.filter_by(username=current_username).first()
 
@@ -71,8 +76,8 @@ def get_one_harbor(harbor_name:str):
             return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
-        
-        
+
+
 @jwt_required()
 def delete_one_harbor(harbor_name:str):
 
@@ -206,8 +211,7 @@ def get_containers_on_harbor_all_times(harbor_name:str):
 
 
 @jwt_required()
-def update_containers_on_harbor(harbor_name:str):
-
+def update_containers_on_harbor(harbor_name: str):
     current_username = get_jwt_identity()['username']
     user = User.query.filter_by(username=current_username).first()
 
@@ -215,32 +219,44 @@ def update_containers_on_harbor(harbor_name:str):
 
     if user.is_harbor:
         harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
-        container = Container.query.filter_by(tracking_code=data['tracking_code']).first()
-        
-        container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
-            .order_by(ContainerHarbor.id_container_harbor.desc()).first()
-                            
-        if container_harbor_item and container_harbor_item.exit_date == None:
 
+        container = Container.query.filter_by(
+            tracking_code=data['tracking_code']
+        ).first()
+
+        container_harbor_item = ContainerHarbor.query.filter(
+            ContainerHarbor.id_container == container.id_container
+            )\
+            .order_by(ContainerHarbor.id_container_harbor.desc())\
+            .first()
+
+        if container_harbor_item and container_harbor_item.exit_date == None:
             data['entry_date'] = container_harbor_item.entry_date
             container_exit_date = datetime.utcnow()
-            item = ContainerHarbor(entry_date=data['entry_date'], exit_date=container_exit_date)
+
+            item = ContainerHarbor(
+                entry_date=data['entry_date'], exit_date=container_exit_date
+            )
             item.container = container
             harbor.container_harbor_items.append(item)
             harbor.availability += container.teu
 
             current_app.db.session.commit()
 
-            container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
-            .order_by(ContainerHarbor.id_container_harbor.desc()).first()
+            container_harbor_item = ContainerHarbor.query.filter(
+                ContainerHarbor.id_container == container.id_container
+                )\
+                .order_by(ContainerHarbor.id_container_harbor.desc())\
+                .first()
 
-            new_item = {'container': container.tracking_code,                        
-                        'entry_date': container_harbor_item.entry_date,
-                        'exit_date': container_harbor_item.exit_date
-                        }
+            new_item = {
+                'container': container.tracking_code,
+                'entry_date': container_harbor_item.entry_date,
+                'exit_date': container_harbor_item.exit_date
+            }
 
             return jsonify(new_item), HTTPStatus.OK
-        
+
         elif not container_harbor_item or container_harbor_item.exit_date != None:
             container_entry_date = datetime.utcnow()
             item = ContainerHarbor(entry_date=container_entry_date)
@@ -250,16 +266,22 @@ def update_containers_on_harbor(harbor_name:str):
 
             current_app.db.session.commit()
 
-            container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
-            .order_by(ContainerHarbor.id_container_harbor.desc()).first()
+            container_harbor_item = ContainerHarbor.query.filter(
+                ContainerHarbor.id_container == container.id_container
+                )\
+                .order_by(ContainerHarbor.id_container_harbor.desc())\
+                .first()
 
-            new_item = {'container': container.tracking_code,                        
-                        'entry_date': container_harbor_item.entry_date
-                        }
+            new_item = {
+                'container': container.tracking_code,
+                'entry_date': container_harbor_item.entry_date
+            }
 
             return jsonify(new_item), HTTPStatus.OK
     else:
-        return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
+        return {
+            'msg': 'You are a company user. You are not allowed to handle harbors data.'
+        }, HTTPStatus.UNAUTHORIZED
 
 
 @jwt_required()
