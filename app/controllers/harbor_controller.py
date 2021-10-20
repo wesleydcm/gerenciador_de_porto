@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from datetime import datetime
 from app.models.user_model import User
 from app.models.harbor_model import Harbor
@@ -6,6 +5,8 @@ from app.models.ship_harbor_model import ShipHarbor
 from app.models.ship_model import Ship
 from app.models.container_harbor_model import ContainerHarbor
 from app.models.container_model import Container
+from app.models.container_travel_model import ContainerTravel
+from app.models.travel_model import Travel
 from app.controllers.utils import session
 from flask import jsonify, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -216,6 +217,7 @@ def update_containers_on_harbor(harbor_name:str):
     if user.is_harbor:
         harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
         container = Container.query.filter_by(tracking_code=data['tracking_code']).first()
+        travel = Travel.query.filter_by(tracking_code=data['tracking_code']).first()
         
         container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
             .order_by(ContainerHarbor.id_container_harbor.desc()).first()
@@ -247,6 +249,11 @@ def update_containers_on_harbor(harbor_name:str):
             item.container = container
             harbor.container_harbor_items.append(item)
             harbor.availability -= container.teu
+
+            container_travel_item = ContainerTravel.query.filter(ContainerTravel.id_travel == travel.id_travel)\
+            .filter(ContainerTravel.id_container == container.id_container).first()
+
+            container_travel_item.last_update = container_entry_date
 
             current_app.db.session.commit()
 
