@@ -16,9 +16,7 @@ import sqlalchemy
 
 @jwt_required()
 def create_harbor():
-
     current_username = get_jwt_identity()['username']
-    
     user = User.query.filter_by(username=current_username).first()
 
     if user.is_harbor:

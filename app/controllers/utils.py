@@ -3,6 +3,11 @@ import secrets
 from flask import current_app
 
 
+error_messages = {
+    'travel_not_found': "travel not found, please review 'travel_code'."
+}
+
+
 def generate_random_alphanumeric(length: int) -> str:
     """
         receives the length and generates randomly,
