@@ -238,21 +238,18 @@ def update_containers_on_harbor(harbor_name: str):
         container = Container.query.filter_by(tracking_code=data['tracking_code']).first()
         travel = Travel.query.filter_by(travel_code=data['travel_code']).first()
 
-        # pdb.set_trace()
-        container_harbor_item = ContainerHarbor.query\
-            .filter(ContainerHarbor.id_container == container.id_container)\
+        container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
             .order_by(ContainerHarbor.id_container_travel.desc()).first()
 
         if container_harbor_item and container_harbor_item.exit_date == None:
-            data['entry_date'] = container_harbor_item.entry_date
-            container_exit_date = datetime.utcnow()
 
-            item = ContainerHarbor(
-                entry_date=data['entry_date'], exit_date=container_exit_date
-            )
-            item.container = container
-            harbor.container_harbor_items.append(item)
+            container_harbor_item.exit_date = datetime.utcnow()
             harbor.availability += container.teu
+
+            container_travel_item = ContainerTravel.query.filter(ContainerTravel.id_travel == travel.id_travel)\
+            .filter(ContainerTravel.id_container == container.id_container).first()
+
+            container_travel_item.last_update = datetime.utcnow()
 
             current_app.db.session.commit()
 
@@ -277,11 +274,6 @@ def update_containers_on_harbor(harbor_name: str):
             harbor.container_harbor_items.append(item)
             harbor.availability -= container.teu
 
-            container_travel_item = ContainerTravel.query.filter(ContainerTravel.id_travel == travel.id_travel)\
-            .filter(ContainerTravel.id_container == container.id_container).first()
-
-            container_travel_item.created_at = container_entry_date
-            container_travel_item.last_update = datetime.utcnow()
             current_app.db.session.commit()
 
             container_harbor_item = ContainerHarbor.query.filter(
@@ -381,11 +373,7 @@ def update_ships_on_harbor(harbor_name:str):
                 .order_by(ShipHarbor.id_ship_harbor.desc()).first()
 
             if ship_harbor_item and ship_harbor_item.exit_date == None:
-                ship_entry_date = ship_harbor_item.entry_date
-                ship_exit_date = datetime.utcnow()
-                item = ShipHarbor(entry_date=ship_entry_date, exit_date=ship_exit_date)
-                item.ship = ship
-                harbor.ship_harbor_items.append(item)
+                ship_harbor_item.exit_date = datetime.utcnow()
 
                 current_app.db.session.commit()
 
