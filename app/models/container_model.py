@@ -3,6 +3,8 @@ from sqlalchemy.sql.schema import ForeignKey
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String
 from dataclasses import dataclass
+from sqlalchemy.orm import validates
+from app.exceptions.teu_errors import TeuError
 
 
 @dataclass
@@ -30,4 +32,12 @@ class Container(db.Model):
     harbors = relationship('Harbor',
                            secondary='container_harbor', backref='containers')
 
-    # TODO: Verificar se o atributo "teus" não é maior que dois
+
+@validates('teu')
+def validate_teu(self, key, teu):
+    
+    if (teu == 1 or teu == 2):
+        return teu                
+    else:
+        raise TeuError
+

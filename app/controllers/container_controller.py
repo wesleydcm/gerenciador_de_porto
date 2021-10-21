@@ -1,6 +1,7 @@
 from http import HTTPStatus
 import sqlalchemy
 from app.exceptions.containers_errors import CompanyNotPermission
+from app.exceptions.teu_errors import TeuError
 from app.models.company_model import ShippingCompany
 from app.models.container_model import Container
 from app.models.container_harbor_model import ContainerHarbor
@@ -55,6 +56,11 @@ def create_container():
     except CompanyNotPermission:
         return {
             "Error": "This company does not belong you!"
+        }, HTTPStatus.BAD_REQUEST
+
+    except TeuError:
+        return {
+            "Error": "Teu must be 1 or 2."
         }, HTTPStatus.BAD_REQUEST
 
 
