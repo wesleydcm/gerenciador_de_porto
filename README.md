@@ -1,5 +1,7 @@
 # HARBOR MANAGEMENT
 
+![diagram_er](./HM.png)
+
 ## Descrição
 
 </br>
