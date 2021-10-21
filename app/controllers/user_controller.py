@@ -53,7 +53,9 @@ def login():
 def get_user():
     user = get_jwt_identity()
 
-    new_user = User.query.filter_by(id_user=user["id_user"]).first()
+    print(user)
+
+    new_user = User.query.filter_by(username=user["username"]).first()
 
     if not user:
         return {'msg': 'user not found'}, HTTPStatus.BAD_REQUEST
