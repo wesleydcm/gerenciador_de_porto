@@ -257,8 +257,7 @@ If you have run out of energy or time for your project, put a note at the top of
 
 ```json
 {
-  "created_at": "Wed, 20 Oct 2021 00:00:00 GMT",
-  "trading_name": "H2H"
+  "msg": "Shipping Company created!"
 }
 ```
 
@@ -278,7 +277,7 @@ If you have run out of energy or time for your project, put a note at the top of
 
 ### GET `/harbor_manager/shipping_company/<string:trading_name>`
 
-> Retorna dados de uma transportadora
+> Retorna dados de uma Shipping Company
 
 - **Rota protegida**
 
@@ -610,7 +609,7 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
   - Não retorna corpo
 
-  - Status: 200 OK
+  - Status: 204 NO CONTENT
 
 <br>
 
@@ -721,13 +720,15 @@ DELETE /harbor_manager/container/<int:codigo_rastreio> - deleta um container esp
 
 - Exemplo de requisição
 
-      GET /harbor_manager/ship/Navio N
+      GET /harbor_manager/container/7iE70
 
   - Corpo da requisição:
 
     ```json
     {
-      "company": "MSC"
+      "tracking_code": "7iE70",
+      "teu": 1,
+      "type": "dry box"
     }
     ```
 
