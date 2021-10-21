@@ -210,8 +210,9 @@ def update_containers_on_harbor(harbor_name: str):
     
     if user.is_harbor:
         harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).first()
+       
         container = Container.query.filter_by(tracking_code=data['tracking_code']).first()
-        travel = Travel.query.filter_by(travel_code=data['travel_code']).first()
+
         container_harbor_item = ContainerHarbor.query.filter(ContainerHarbor.id_container == container.id_container)\
             .order_by(ContainerHarbor.id_container_travel.desc()).first()
         if container_harbor_item and container_harbor_item.exit_date == None:
@@ -229,16 +230,20 @@ def update_containers_on_harbor(harbor_name: str):
                 'exit_date': container_harbor_item.exit_date
             }
             return jsonify(new_item), HTTPStatus.CREATED
+        
         elif not container_harbor_item or container_harbor_item.exit_date != None:
             current_time = datetime.utcnow()
+            
             item = ContainerHarbor(entry_date=current_time)
+            
             item.container = container
+            
             harbor.container_harbor_items.append(item)
+            
             harbor.availability -= container.teu
-            container_travel_item = ContainerTravel.query.filter(ContainerTravel.id_travel == travel.id_travel)\
-            .filter(ContainerTravel.id_container == container.id_container).first()
-            container_travel_item.last_update = current_time
+            
             current_app.db.session.commit()
+            
             container_harbor_item = ContainerHarbor.query.filter(
                 ContainerHarbor.id_container == container.id_container
                 )\
