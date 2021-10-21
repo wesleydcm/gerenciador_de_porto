@@ -29,3 +29,5 @@ class Container(db.Model):
 
     harbors = relationship('Harbor',
                            secondary='container_harbor', backref='containers')
+
+    # TODO: Verificar se o atributo "teus" não é maior que dois

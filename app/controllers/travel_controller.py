@@ -1,4 +1,5 @@
 from http import HTTPStatus
+import pdb
 from app.models.container_model import Container
 
 from app.models.travel_model import Travel
@@ -11,7 +12,6 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from sqlalchemy.orm import exc
 from app.controllers.utils import generate_random_alphanumeric
 from datetime import datetime
-import pdb
 
 from .utils import session
 
@@ -22,7 +22,7 @@ def get_by_travel_code(travel_code: str):
         travel = Travel.query.filter_by(travel_code=travel_code).first()
         if not travel:
             return {
-                "Error': Travel not found, please review 'travel_code'."
+                "Error": "Travel not found, please review 'travel_code'."
             }, HTTPStatus.NOT_FOUND
 
         requester_username = get_jwt_identity()['username']
@@ -38,6 +38,11 @@ def get_by_travel_code(travel_code: str):
 
     except PermissionError as e:
         return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
+
+    except TypeError:
+        return {
+            "Error": "Travel not found, please review 'travel_code'."
+        }, HTTPStatus.BAD_REQUEST
 
 
 @jwt_required()
@@ -152,13 +157,15 @@ def add_container_in_travel(travel_code: str):
                 'Error': f'No Travel found with the travel_code: {travel_code}'
             }, HTTPStatus.NOT_FOUND
 
-        user = User.query.filter_by(username=requester_username).first()
         ship = Ship.query.filter_by(id_ship=travel.id_ship).first()
-        company = ShippingCompany.query.filter_by(id_user=user.id_user).first()
+        company = ShippingCompany.query.filter_by(id_shipping_company=ship.id_shipping_company).first()
+        user = User.query.filter_by(username=requester_username).first()
         container = Container.query.filter_by(tracking_code=data["tracking_code"]).first()
 
-        if ship.id_shipping_company != company.id_shipping_company:
-            return {
+        # pdb.set_trace()
+
+        if user.id_user != company.id_user:
+            return{
                 'Error': 'This travel does not belong to you'
             }, HTTPStatus.BAD_REQUEST
 

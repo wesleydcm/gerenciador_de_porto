@@ -1,28 +1,12 @@
 from flask import jsonify, request, current_app
 from http import HTTPStatus
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from flask_jwt_extended import (
     create_access_token, jwt_required, get_jwt_identity
 )
 
 from app.models.user_model import User
-
-
-def session(model, action):
-    """
-        receives the object and an write the action
-        to "add" to add to db
-        or "remove" to delete from the db
-    """
-    session = current_app.db.session()
-
-    if action == "add":
-        session.add(model)
-        session.commit()
-
-    elif action == "remove":
-        session.delete(model)
-        session.commit()
+from app.controllers.utils import session
 
 
 def register_user():
@@ -31,30 +15,42 @@ def register_user():
         new_user = User(**data)
         session(new_user, "add")
 
-        return jsonify(new_user), HTTPStatus.CREATED
+        return {"msg": "User created!"}, HTTPStatus.CREATED
 
     except IntegrityError as err:
         message = str(str(err.orig).split("\n")[0]).split()
         return {"Error": " ".join(message[:5])}, HTTPStatus.BAD_REQUEST
 
+    except TypeError as err:
+        return {"Error": str(err)}
+
 
 def login():
-    data = request.get_json()
-    user = User.query.filter_by(username=data["username"]).first()
+    try:
+        data = request.get_json()
+        user = User.query.filter_by(username=data["username"]).first()
 
-    if user.check_password(data["password"]):
-        access_token = create_access_token(user)
-        return {"access_token": access_token}, HTTPStatus.OK
+        if user.check_password(data["password"]):
+            access_token = create_access_token(user)
+            return {"access_token": access_token}, HTTPStatus.OK
 
-    return {"Error": "Bad username or password"}, HTTPStatus.BAD_REQUEST
+        return {"Error": "Bad username or password"}, HTTPStatus.BAD_REQUEST
+
+    except AttributeError:
+        return {
+            "Error": "Username or password invalid!"
+        }, HTTPStatus.BAD_REQUEST
 
 
 @jwt_required()
 def get_user():
     user = get_jwt_identity()
 
+<<<<<<< HEAD
     print(user)
 
+=======
+>>>>>>> 58f35e95834380b88065d12270e7b0fe5f922007
     new_user = User.query.filter_by(username=user["username"]).first()
 
     if not user:
@@ -65,24 +61,29 @@ def get_user():
 
 @jwt_required()
 def update():
-    data = request.get_json()
-    user_data = get_jwt_identity()
+    try:
+        data = request.get_json()
+        user_data = get_jwt_identity()
 
-    user = User.query.filter_by(username=user_data["username"]).first()
+        user = User.query.filter_by(username=user_data["username"]).first()
 
-    if data["password"]:
-        password_to_hash = data.pop("password")
-        user.password = password_to_hash
-        current_app.db.session.commit()
+        if data.get("password"):
+            password_to_hash = data.pop("password")
+            user.password = password_to_hash
+            current_app.db.session.commit()
 
-    if data:
-        for key, value in data.items():
-            setattr(user, key, value)
+        if data:
+            for key, value in data.items():
+                setattr(user, key, value)
 
-        User.query.filter_by(username=user_data["username"]).update(data)
-        current_app.db.session.commit()
+            User.query.filter_by(username=user_data["username"]).update(data)
+            current_app.db.session.commit()
 
-    return jsonify(user), HTTPStatus.OK
+        return jsonify(user), HTTPStatus.OK
+
+    except InvalidRequestError as err:
+        # TODO: tratar a mensagem do erro
+        return {"Error": str(err)}
 
 
 @jwt_required()
