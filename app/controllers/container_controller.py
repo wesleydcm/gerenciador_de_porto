@@ -121,30 +121,7 @@ def delete_container_by_tracking_code(tracking_code: int):
         return {}, HTTPStatus.NO_CONTENT
 
 
-@jwt_required()
-def get_travels_of_container(tracking_code: int):
-    try:
-        user_from_jwt = get_jwt_identity()["username"]
 
-        container = Container.query.filter_by(tracking_code=tracking_code).first()
-        user = User.query.filter_by(id_user=container.company.id_user).first()
-
-        if user.username == user_from_jwt:
-            return jsonify(container.travels), HTTPStatus.OK
-        else:
-            raise TypeError
-
-    except AttributeError:
-        return {"Error": "Tracking code invalid!"}, HTTPStatus.BAD_REQUEST
-
-    except TypeError:
-        return {
-            "Error": "This container does not belong to this company!"
-        }, HTTPStatus.BAD_REQUEST
-
-
-@jwt_required()
-def get_every_harbor_container_has_been(tracking_code: int):
     try:
         user_from_jwt = get_jwt_identity()["username"]
 
@@ -167,25 +144,22 @@ def get_every_harbor_container_has_been(tracking_code: int):
         }, HTTPStatus.BAD_REQUEST
 
 
-# TODO: criar as rotas
 @jwt_required()
-def container_locate(tracking_code: str):
-    user_from_jwt = get_jwt_identity()["username"]
+def get_all():
+    try:
+        user_from_jwt = get_jwt_identity()["username"]
+        user = User.query.filter_by(username=user_from_jwt).first()
 
-    container = Container.query.filter_by(tracking_code=tracking_code).first()
-    user = User.query.filter_by(id_user=container.company.id_user).first()
-
-    if user.username == user_from_jwt:
-        container_harbor_item = ContainerHarbor.query\
-            .filter(ContainerHarbor.id_container == container.id_container)\
-            .order_by(ContainerHarbor.id_container_harbor.desc())\
+        data = request.json
+        company = ShippingCompany.query\
+            .filter_by(trading_name=data["company"])\
             .first()
 
-        if container_harbor_item and container_harbor_item.exit_date == None:
-            return {
-                'msg': f'Container {container.tracking_code} is on harbor {container.harbors.name}.'
-            }, HTTPStatus.OK
-        else:
-            return {
-                'msg': f'Container {container.tracking_code} is with his owner.'
-            }, HTTPStatus.OK
+        if user.id_user == company.id_user:
+            containers = Container.query\
+                .filter_by(id_shipping_company=company.id_shipping_company)\
+                .all()
+            return jsonify(containers), HTTPStatus.OK
+
+    except AttributeError:
+        return {"Error": "Company does not exists!"}, HTTPStatus.BAD_REQUEST

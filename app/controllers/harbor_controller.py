@@ -81,30 +81,6 @@ def get_one_harbor(harbor_name:str):
 
 
 @jwt_required()
-def delete_one_harbor(harbor_name: str):
-    current_username = get_jwt_identity()['username']
-    user = User.query.filter_by(username=current_username).first()
-
-    if user.is_harbor:
-        try:
-            harbor = Harbor.query.filter_by(name=harbor_name.capitalize())\
-                .first()
-
-            session(harbor, "remove")
-
-            return {
-                "msg": f'Harbor {harbor.name} no longer exists.'
-            }, HTTPStatus.OK
-
-        except sqlalchemy.exc.NoResultFound:
-            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
-    else:
-        return {
-             'msg': 'You are a company user. You are not allowed to handle harbors data.'
-        }, HTTPStatus.UNAUTHORIZED
-
-
-@jwt_required()
 def update_one_harbor(harbor_name:str):
 
     current_username = get_jwt_identity()['username']
