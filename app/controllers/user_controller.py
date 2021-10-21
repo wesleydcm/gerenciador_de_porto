@@ -46,11 +46,6 @@ def login():
 def get_user():
     user = get_jwt_identity()
 
-<<<<<<< HEAD
-    print(user)
-
-=======
->>>>>>> 58f35e95834380b88065d12270e7b0fe5f922007
     new_user = User.query.filter_by(username=user["username"]).first()
 
     if not user:
