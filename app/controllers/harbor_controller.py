@@ -46,12 +46,12 @@ def create_harbor():
         except sqlalchemy.exc.IntegrityError as e:
 
             if type(e.orig) == psycopg2.errors.NotNullViolation:
-                return {'msg': str(e.orig).split('\n')[0]}, HTTPStatus.BAD_REQUEST
+                return {'Error': str(e.orig).split('\n')[0]}, HTTPStatus.BAD_REQUEST
 
-            return {'msg': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
+            return {'Error': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
 
         except TypeError as e:
-             return {'msg': str(e)}, HTTPStatus.BAD_REQUEST
+             return {'Error': str(e)}, HTTPStatus.BAD_REQUEST
 
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
@@ -69,7 +69,7 @@ def get_one_harbor(harbor_name:str):
             return jsonify(harbor), HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
-            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
+            return {'Error': 'Harbor not found'}, HTTPStatus.NOT_FOUND
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
         
@@ -85,10 +85,10 @@ def delete_one_harbor(harbor_name:str):
             harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).one()
             session(harbor, "remove")
 
-            return {"msg": f'Harbor {harbor.name} no longer exists.'}, HTTPStatus.NO_CONTENT
+            return {"Error": f'Harbor {harbor.name} no longer exists.'}, HTTPStatus.NO_CONTENT
 
         except sqlalchemy.exc.NoResultFound:
-            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
+            return {'Error': 'Harbor not found'}, HTTPStatus.NOT_FOUND
     else:
          return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
 
@@ -132,13 +132,13 @@ def update_one_harbor(harbor_name:str):
             return jsonify(harbor), HTTPStatus.OK
             
         except sqlalchemy.exc.NoResultFound:
-            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
+            return {'Error': 'Harbor not found'}, HTTPStatus.NOT_FOUND
 
         except sqlalchemy.exc.IntegrityError as e:
-            return {'msg': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
+            return {'Error': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
 
         except sqlalchemy.exc.InvalidRequestError as e:
-            return {'msg': str(e)}, HTTPStatus.BAD_REQUEST    
+            return {'Error': str(e)}, HTTPStatus.BAD_REQUEST    
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
 
@@ -169,7 +169,7 @@ def get_containers_on_harbor_now(harbor_name:str):
             return jsonify(result_list), HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
-            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
+            return {'Error': 'Harbor not found'}, HTTPStatus.NOT_FOUND
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
 
@@ -201,7 +201,7 @@ def get_containers_on_harbor_all_times(harbor_name:str):
             return jsonify(result_list), HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
-            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
+            return {'Error': 'Harbor not found'}, HTTPStatus.NOT_FOUND
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
 
@@ -291,7 +291,7 @@ def get_ships_on_harbor_now(harbor_name:str):
             return jsonify(result_list), HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
-            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
+            return {'Error': 'Harbor not found'}, HTTPStatus.NOT_FOUND
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
 
@@ -322,7 +322,7 @@ def get_ships_on_harbor_all_times(harbor_name:str):
             return jsonify(result_list), HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
-            return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
+            return {'Error': 'Harbor not found'}, HTTPStatus.NOT_FOUND
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
 
@@ -378,7 +378,7 @@ def update_ships_on_harbor(harbor_name:str):
                 return jsonify(new_item), HTTPStatus.OK
         
         except AttributeError:
-            return {'msg': 'Ship not found'}, HTTPStatus.NOT_FOUND     
+            return {'Error': 'Ship not found'}, HTTPStatus.NOT_FOUND     
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
 
