@@ -27,4 +27,4 @@ class Ship(db.Model):
         )
     )
 
-    travel = relationship("Travel")
+    travel = relationship("Travel", backref="ship")

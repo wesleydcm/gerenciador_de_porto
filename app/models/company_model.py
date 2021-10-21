@@ -19,5 +19,5 @@ class ShippingCompany(db.Model):
     trading_name = Column(String(255), nullable=False, unique=True)
     id_user = Column(Integer, ForeignKey('users.id_user', ondelete='cascade'))
 
-    containers = relationship("Container")
-    ships = relationship("Ship")
+    containers = relationship("Container", backref="company")
+    ships = relationship("Ship", backref="company")
