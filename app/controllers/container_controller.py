@@ -50,8 +50,7 @@ def create_container():
         if type(e.orig) == NotNullViolation:
             return {'msg': 'Tracking code is required'}, HTTPStatus.BAD_REQUEST
         if type(e.orig) == UniqueViolation:
-            return {'msg': 'Tracking code already registered'},
-            HTTPStatus.BAD_REQUEST
+            return {'msg': 'Tracking code already registered'}, HTTPStatus.BAD_REQUEST
 
     except CompanyNotPermission:
         return {
