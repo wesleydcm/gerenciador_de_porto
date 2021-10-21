@@ -208,7 +208,7 @@ def get_all_containers_in_travel(travel_code: str):
         if company.id_user == user.id_user:
             return jsonify(travel.containers), HTTPStatus.OK
 
-    except exc.UnmappedInstanceError:
+    except (exc.UnmappedInstanceError, AttributeError):
         return {
             'Error': "Travel not found, please review 'travel_code'."
         }, HTTPStatus.BAD_REQUEST

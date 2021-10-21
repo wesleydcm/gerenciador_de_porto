@@ -37,7 +37,7 @@ e de saída do porto.
 
 <br>
 
-### BASE URI - HARBOR MANAGEMENT
+### BASE URL - HARBOR MANAGEMENT
 
 - https://harbor-management.herokuapp.com/
 
@@ -99,13 +99,7 @@ e de saída do porto.
 
 ---
 
-## Licença
-
-Para projetos de código aberto, está autorizado.
-
 <br>
-
----
 
 ## Endpoints User (Tabela "users")
 
@@ -1312,3 +1306,11 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 - _Paulo Mello - Dev_
 
 - _Wesley Matos - PO_
+
+---
+
+## Licença
+
+Para projetos de código aberto, está autorizado.
+
+<br>

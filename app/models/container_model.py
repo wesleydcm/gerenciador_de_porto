@@ -33,11 +33,10 @@ class Container(db.Model):
                            secondary='container_harbor', backref='containers')
 
 
-@validates('teu')
-def validate_teu(self, key, teu):
-    
-    if (teu == 1 or teu == 2):
-        return teu                
-    else:
-        raise TeuError
-
+    @validates('teu')
+    def validate_teu(self, key, teu):
+                
+        if (teu == 1 or teu == 2):
+            return teu                
+        else:
+            raise TeuError
