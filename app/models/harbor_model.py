@@ -7,7 +7,6 @@ from app.configs.database import db
 
 @dataclass
 class Harbor(db.Model):
-    
     name: str
     country: str
     city: str
@@ -23,12 +22,15 @@ class Harbor(db.Model):
     teus = Column(Integer, nullable=False)
     availability = Column(Integer, nullable=False)
     id_user = Column(
-        Integer, ForeignKey("users.id_user", ondelete="cascade")
+        Integer, ForeignKey("users.id_user", ondelete='cascade')
     )
 
     user = relationship('User', backref='harbor')
 
-    container_harbor_items = relationship('ContainerHarbor', cascade='all, delete-orphan')
+    container_harbor_items = relationship(
+        'ContainerHarbor', cascade='all, delete-orphan'
+    )
 
-    ship_harbor_items = relationship('ShipHarbor', backref='harbor', cascade='all, delete-orphan')
-
+    ship_harbor_items = relationship(
+        'ShipHarbor', backref='harbor', cascade='all, delete-orphan'
+    )

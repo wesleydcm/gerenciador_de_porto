@@ -17,7 +17,7 @@ class Container(db.Model):
     __tablename__ = 'containers'
 
     id_container = Column(Integer, primary_key=True)
-    tracking_code = Column(String, nullable=False, unique=True)
+    tracking_code = Column(String, nullable=True, unique=True)
     teu = Column(Integer, nullable=False, default=1)
     type = Column(String(255), nullable=False, default='dry box')
     id_shipping_company = Column(
