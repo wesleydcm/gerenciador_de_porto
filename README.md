@@ -1,106 +1,113 @@
-# capstone_q3_gerenciador_de_porto
+# HARBOR MANAGEMENT
 
-## Getting started
+## Descrição
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+</br>
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Back-end de um sistema que facilita a gestão da logística portuária, integrando o comprador ao gestor do porto.
 
-## Add your files
+O HM Plus é um sistema que permitirá
+analisar todas as viagens realizadas, os
+containers transportados, os navios
+utilizados, bem como as datas de chegada
+e de saída do porto.
 
-- [ ] [Create](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/MarceloRomao/capstone_q3_gerenciador_de_porto.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/project/integrations/)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Automatically merge when pipeline succeeds](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://docs.gitlab.com/ee/user/clusters/agent/)
+</br>
 
 ---
 
-# Editing this README
+## Tecnologias:
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://www.makeareadme.com/) for this template.
+- Linguagem:
+  - Python 3
+- Framework:
+  - Flask
+- Banco de dados e migração:
+  - PostgreSQL
+  - Flask-Migrate
+- ORM:
+  - Flask-SQLAlchemy
+- Design pattens:
+  - Blueprints
+  - e design pattern Flask Factory.
+- Autenticação:
+  - JWT
+- Deploy no Heroku
+- entre outras.
 
-## Suggestions for a good README
+<br>
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### BASE URI - HARBOR MANAGEMENT
 
-## Name
+- https://harbor-management.herokuapp.com/
 
-Choose a self-explaining name for your project.
+</br>
 
-## Description
+## Diagrama ER
 
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+</br>
 
-## Badges
+![diagram_er](./diagram_ER.png)
 
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+</br>
+</br></br>
 
-## Visuals
+## Instalação
 
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+</br>
 
-## Installation
+1. Crie e ative o venv (ambiente virtual);
 
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+   ```
+   $ python -m venv venv
+   ```
 
-## Usage
+2. Instale as dependências do projeto;
 
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+   ```
+   $ pip install -r requirements.txt
+   ```
 
-## Support
+3. Crie um banco de dados postgreSQL
 
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+</br>
 
-## Roadmap
+4.  Crie e configure o .env com base no arquivo .env.example, em seguida substitua com as informações do seu banco de dados
 
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+    ```
+    SQLALCHEMY_DATABASE_URI=postgresql://seuUsuário:suaSenha@localhost:5432/seuBanco
+    ```
 
-## Contributing
+    </br>
 
-State if you are open to contributions and what your requirements are for accepting them.
+5.  Atualize o banco de dados
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+    ```
+    $ flask db migrate
+    $ flask db upgrade
+    ```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+</br>
 
-## Authors and acknowledgment
+- **Rode, e teste as rotas**
 
-Show your appreciation to those who have contributed to the project.
+  ```
+  $ gunicorn "app:create_app()"
+  ```
 
-## License
+<br><br>
 
-For open source projects, say how it is licensed.
+---
 
-## Project status
+## Licença
 
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Para projetos de código aberto, está autorizado.
 
-## Endpoints User (tabela usuário)
+<br>
+
+---
+
+## Endpoints User (Tabela "users")
 
 ### POST `/harbor_manager/users`
 
@@ -235,7 +242,7 @@ If you have run out of energy or time for your project, put a note at the top of
 
 <br>
 
-## Endpoints Shipping Company (Tabela ShippingCompany)
+## Endpoints Shipping Company (Tabela "shipping_company")
 
 ### POST `/harbor_manager/shipping_company`
 
@@ -306,7 +313,7 @@ If you have run out of energy or time for your project, put a note at the top of
     "Error": "Company not found!"
   }
   ```
-  - Status: 400 OK
+  - Status: 404 NOT FOUND
 
 <br>
 
@@ -387,9 +394,19 @@ If you have run out of energy or time for your project, put a note at the top of
 - Corpo da resposta:
 
   ```json
-  {
-    "Alterar": ""
-  }
+  [
+    {
+      "tracking_code": "n7O07",
+      "teu": 1,
+      "type": "dry box"
+    },
+    {
+      "tracking_code": "75xT5",
+      "teu": 1,
+      "type": "dry box"
+    },
+      ...
+  ]
   ```
 
 - Status: 200 OK
@@ -421,7 +438,7 @@ If you have run out of energy or time for your project, put a note at the top of
   ```json
   [
     {
-      "name": "Navio N",
+      "name": "Navio_N",
       "draught": 20,
       "size": 30,
       "nationality": "Brasil"
@@ -437,7 +454,7 @@ If you have run out of energy or time for your project, put a note at the top of
     "Error": "Company not found!"
   }
   ```
-  - Status: 400 OK
+  - Status: 404 NOT FOUND
 
 <br>
 
@@ -447,7 +464,7 @@ If you have run out of energy or time for your project, put a note at the top of
 
 <br>
 
-## Endpoints Ship (tabela navio)
+## Endpoints Ship (Tabela "ships")
 
 POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
@@ -463,7 +480,7 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
 ```json
 {
-  "name": "Navio N",
+  "name": "Navio_N",
   "draught": 20,
   "size": 30,
   "nationality": "Brasil",
@@ -475,7 +492,7 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
 ```json
 {
-  "name": "Navio N",
+  "name": "Navio_N",
   "draught": 20,
   "size": 30,
   "nationality": "Brasil"
@@ -491,6 +508,8 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
   "msg": "Ship already registered."
 }
 ```
+
+- Status: 409 CONFLICT
 
 - Caso o usuário não seja do tipo **_is_harbor: false_**:
 
@@ -512,23 +531,15 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
 - Corpo requisição:
 
-- Exemplo de requisição
+  - Exemplo de requisição
 
-      GET /harbor_manager/ship/Navio N
-
-  - Corpo da requisição:
-
-    ```json
-    {
-      "company": "MSC"
-    }
-    ```
+        GET /harbor_manager/ship/Navio_N
 
   - Corpo da resposta:
 
     ```json
     {
-      "name": "Navio N",
+      "name": "Navio_N",
       "draught": 20,
       "size": 30,
       "nationality": "Brasil"
@@ -560,8 +571,7 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
   ```json
   {
-    "nationality": "Alemanha-3",
-    "company": "MSC"
+    "nationality": "Alemanha-3"
   }
   ```
 
@@ -569,7 +579,7 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
   ```json
   {
-    "name": "Navio N",
+    "name": "Navio_N",
     "draught": 20,
     "size": 30,
     "nationality": "Alemanha-3"
@@ -592,28 +602,20 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
 ### DELETE `/harbor_manager/ship/<string:name_ship>`
 
-> Deleta shipping company.
+> Deleta um Ship.
 
 - Rota protegida
 - Exemplo de requisição
 
-        /harbor_manager/ship/Navio N
+        /harbor_manager/ship/Navio_N
 
-  - Precisa informar Shipping Company:
+- Não retorna corpo, basta ter autenticação.
 
-  ```json
-  {
-    "company": "MSC"
-  }
-  ```
-
-  - Não retorna corpo
-
-  - Status: 204 NO CONTENT
+- Status: 204 NO CONTENT
 
 <br>
 
-**_Outras consultas relacionadas a Shipping Company:_**
+**_Outras consultas relacionadas a Ship:_**
 
 ### GET `/harbor_manager/ship/<string:name_ship>/travels`
 
@@ -625,20 +627,18 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 
 - Exemplo de requisição
 
-      GET /harbor_manager/ship/Navio N/travels
-
-  ```json
-  {
-    "company": "MSC"
-  }
-  ```
+      GET /harbor_manager/ship/Navio_N/travels
 
 - Corpo da resposta:
 
   ```json
-  {
-    "Alterar": ""
-  }
+  [
+    {
+      "travel_code": "12iY3z",
+      "destination": "Santos",
+      "id_ship": 3
+    }
+  ]
   ```
 
 - Status: 200 OK
@@ -660,14 +660,6 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 <br>
 
 ## Endpoints Container (Tabela 'containers')
-
-POST /harbor_manager/container - cria containers. - **precisa de autorização**
-
-GET /harbor_manager/container/<int:codigo_rastreio> - lista um container específico. - **precisa de autorização**
-
-PATCH /harbor_manager/container/<int:codigo_rastreio> - atualiza um container específico. - **precisa de autorização**
-
-DELETE /harbor_manager/container/<int:codigo_rastreio> - deleta um container específico. - **precisa de autorização**
 
 ### POST `/harbor_manager/container`
 
@@ -710,9 +702,59 @@ DELETE /harbor_manager/container/<int:codigo_rastreio> - deleta um container esp
 
 <br>
 
+### GET `/harbor_manager/container/`
+
+> Retorna lista com containers de uma compania do usuario
+
+- **Rota protegida**
+
+- Exemplo de requisição
+
+      /harbor_manager/container/7iE70
+
+- Corpo requisição:
+
+  ```json
+  {
+    "company": "MSC"
+  }
+  ```
+
+- Corpo da resposta:
+
+  ```json
+  [
+    {
+      "tracking_code": "n7O07",
+      "teu": 1,
+      "type": "dry box"
+    },
+    {
+      "tracking_code": "75xT5",
+      "teu": 1,
+      "type": "dry box"
+    },
+
+    ...
+
+  ]
+  ```
+
+- Status: 200 OK
+
+- Caso company informada não exista:
+  ```json
+  {
+    "msg": "Company not found."
+  }
+  ```
+- Status: 404 NOT FOUND
+
+<br>
+
 ### GET `/harbor_manager/container/<string:tracking_code>`
 
-> Retorna informarções do Ship
+> Retorna informarções de um Container
 
 - **Rota protegida**
 
@@ -720,77 +762,65 @@ DELETE /harbor_manager/container/<int:codigo_rastreio> - deleta um container esp
 
 - Exemplo de requisição
 
-      GET /harbor_manager/container/7iE70
+      /harbor_manager/container/7iE70
 
-  - Corpo da requisição:
-
-    ```json
-    {
-      "tracking_code": "7iE70",
-      "teu": 1,
-      "type": "dry box"
-    }
-    ```
-
-  - Corpo da resposta:
-
-    ```json
-    {
-      "name": "Navio N",
-      "draught": 20,
-      "size": 30,
-      "nationality": "Brasil"
-    }
-    ```
-
-    - Status: 200 OK
-
-  - Caso Ship não exista:
-    ```json
-    {
-      "msg": "Ship not found."
-    }
-    ```
-    - Status: 404 NOT FOUND
-
-<br>
-
-### PATCH `/harbor_manager/ship/<string:name_ship>`
-
-> Atualiza informações de um ship.
-
-- Rota protegida
-- Exemplo de requisição
-
-      /harbor_manager/ship/Navio N
-
-  - Corpo da requisição:
-
-  ```json
-  {
-    "nationality": "Alemanha-3",
-    "company": "MSC"
-  }
-  ```
-
-  - Corpo da resposta:
+- Corpo da resposta:
 
   ```json
   {
     "name": "Navio N",
     "draught": 20,
     "size": 30,
-    "nationality": "Alemanha-3"
+    "nationality": "Brasil"
+  }
+  ```
+
+- Status: 200 OK
+
+- Caso Ship não exista:
+  ```json
+  {
+    "msg": "Container not found."
+  }
+  ```
+- Status: 404 NOT FOUND
+
+<br>
+
+### PATCH `/harbor_manager/container/<string:tracking_code>`
+
+> Atualiza informações de um container.
+
+- Rota protegida
+- Exemplo de requisição
+
+      /harbor_manager/container/808Eh
+
+  - Corpo da requisição:
+
+  ```json
+  {
+    "teu": 2
+  }
+  ```
+
+  - Corpo da resposta:
+
+  ```json
+  {
+    "tracking_code": "808Eh",
+    "teu": 2,
+    "type": "dry box"
   }
   ```
 
   - Status: 200 OK
 
-  - Caso ship não exista:
+  - Caso Container não exista:
 
   ```json
   {
-    "msg": "Ship not found."
+    "msg": "Container not found."
   }
   ```
 
@@ -798,36 +828,27 @@ DELETE /harbor_manager/container/<int:codigo_rastreio> - deleta um container esp
 
 <br>
 
-### DELETE `/harbor_manager/ship/<string:name_ship>`
+### DELETE `/harbor_manager/container/<string:tracking_code>`
 
 > Deleta shipping company.
 
 - Rota protegida
 - Exemplo de requisição
 
-        /harbor_manager/ship/Navio N
-
-  - Precisa informar Shipping Company:
-
-  ```json
-  {
-    "company": "MSC"
-  }
-  ```
+        /harbor_manager/container/D78x9
 
   - Não retorna corpo
 
-  - Status: 200 OK
+  - Status: 204 NO CONTENT
 
+<br>
 <br>
 
 ---
 
-GET /harbor_manager/container/<int:codigo_rastreio>/travel - lista as viagens de um container
+<br>
 
-GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os pátios nos quais o container esteve
-
-## Endpoints Travel (tabela Travel)
+## Endpoints Travel (Tabela travel)
 
 ### POST `/harbor_manager/travel`
 
@@ -840,7 +861,8 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 ```json
 {
   "destination": "Santos",
-  "id_ship": "1"
+  "name_ship": "Navio_N",
+  "company": "MSC"
 }
 ```
 
@@ -848,9 +870,9 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 
 ```json
 {
-  "travel_code": "0gF28O",
+  "travel_code": "12iY3z",
   "destination": "Santos",
-  "id_ship": "1"
+  "id_ship": 3
 }
 ```
 
@@ -922,17 +944,9 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 
         /harbor_manager/travel/i251LR
 
-  - Corpo da resposta:
+  - Não retornar corpo
 
-  ```json
-  {
-    "travel_code": "i251LR",
-    "destination": "Paranaguá",
-    "id_ship": 2
-  }
-  ```
-
-  - Status: 200 OK
+  - Status: 204 NO CONTENT
 
 <br>
 
@@ -940,16 +954,74 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 
 ### GET `/harbor_manager/travel/<string:travel_code>/containers`
 
-> Lista todos os containers da viagem.
+> Lista todos os Containers de uma Travel.
 
 - Rota protegida
 
+- Exemplo de requisição
+
+        /harbor_manager/travel/12iY3z/containers
+
+  - Corpo da resposta:
+
+  ```json
+  [
+    {
+      "tracking_code": "n7O07",
+      "teu": 1,
+      "type": "dry box"
+    },
+    {
+      "tracking_code": "808Eh",
+      "teu": 1,
+      "type": "dry box"
+    },
+    ...
+  ]
+  ```
+
+  - Status: 200 OK
+
 <br>
+
+### POST `/harbor_manager/travel/<string:travel_code>/add`
+
+> Cadastra Containers em uma Travel
+
+- Rota protegida
+- Exemplo de requisição
+
+        /harbor_manager/travel/12iY3z/add
+
+  ```json
+  {
+    "tracking_code": "q50J3"
+  }
+  ```
+
+  - Corpo da resposta:
+
+  ```json
+  {
+    "tracking_code": "q50J3",
+    "teu": 2,
+    "type": "dry box"
+  }
+  ```
+
+  - Status: 201 CREATED
+
+<br>
+
 <br>
 
 ---
 
-## POST `/harbor_manager/harbor`
+<br>
+
+## Endpoint Harbor (tavela harbor)
+
+### POST `/harbor_manager/harbor`
 
 > Rota responsável pela criação de portos.
 
@@ -1226,3 +1298,17 @@ GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os p
 - **\*_last_update_** do container é atualizada automaticamente e salva no banco dados.
 
 <br>
+
+---
+
+## Authors and acknowledgment
+
+- _Felipe Dias - SM_
+
+- _Matheus Humberto - Dev_
+
+- _Marcelo Cabral Romão - Tech Lead_
+
+- _Paulo Mello - Dev_
+
+- _Wesley Matos - PO_
