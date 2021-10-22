@@ -22,3 +22,21 @@ class Container(db.Model):
             "shipping_company.id_shipping_company", ondelete="cascade"
         )
     )
+<<<<<<< HEAD
+=======
+
+    travels = relationship('Travel',
+                           secondary='container_travel', backref='containers')
+
+    harbors = relationship('Harbor',
+                           secondary='container_harbor', backref='containers')
+
+
+    @validates('teu')
+    def validate_teu(self, key, teu):
+                
+        if (teu == 1 or teu == 2):
+            return teu                
+        else:
+            raise TeuError
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
