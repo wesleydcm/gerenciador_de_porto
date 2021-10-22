@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 4437dac8ecdf
+Revision ID: 2f0f1d1b3700
 Revises: 
-Create Date: 2021-10-19 20:19:34.862866
+Create Date: 2021-10-21 00:22:06.024389
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4437dac8ecdf'
+revision = '2f0f1d1b3700'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -41,7 +41,7 @@ def upgrade():
     )
     op.create_table('shipping_company',
     sa.Column('id_shipping_company', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.Date(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('trading_name', sa.String(length=255), nullable=False),
     sa.Column('id_user', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_user'], ['users.id_user'], ondelete='cascade'),
@@ -50,7 +50,7 @@ def upgrade():
     )
     op.create_table('containers',
     sa.Column('id_container', sa.Integer(), nullable=False),
-    sa.Column('tracking_code', sa.String(), nullable=False),
+    sa.Column('tracking_code', sa.String(), nullable=True),
     sa.Column('teu', sa.Integer(), nullable=False),
     sa.Column('type', sa.String(length=255), nullable=False),
     sa.Column('id_shipping_company', sa.Integer(), nullable=True),
@@ -71,8 +71,8 @@ def upgrade():
     )
     op.create_table('container_harbor',
     sa.Column('id_container_travel', sa.Integer(), nullable=False),
-    sa.Column('entry_date', sa.Date(), nullable=False),
-    sa.Column('exit_date', sa.Date(), nullable=True),
+    sa.Column('entry_date', sa.DateTime(), nullable=False),
+    sa.Column('exit_date', sa.DateTime(), nullable=True),
     sa.Column('id_container', sa.Integer(), nullable=True),
     sa.Column('id_harbor', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_container'], ['containers.id_container'], ondelete='cascade'),
@@ -81,8 +81,8 @@ def upgrade():
     )
     op.create_table('ship_harbor',
     sa.Column('id_ship_harbor', sa.Integer(), nullable=False),
-    sa.Column('entry_date', sa.Date(), nullable=True),
-    sa.Column('exit_date', sa.Date(), nullable=True),
+    sa.Column('entry_date', sa.DateTime(), nullable=True),
+    sa.Column('exit_date', sa.DateTime(), nullable=True),
     sa.Column('id_ship', sa.Integer(), nullable=True),
     sa.Column('id_harbor', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_harbor'], ['harbor.id_harbor'], ondelete='cascade'),
@@ -91,7 +91,7 @@ def upgrade():
     )
     op.create_table('travel',
     sa.Column('id_travel', sa.Integer(), nullable=False),
-    sa.Column('travel_code', sa.String(length=127), nullable=False),
+    sa.Column('travel_code', sa.String(length=127), nullable=True),
     sa.Column('destination', sa.String(length=63), nullable=False),
     sa.Column('id_ship', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_ship'], ['ships.id_ship'], ondelete='cascade'),
@@ -100,8 +100,8 @@ def upgrade():
     )
     op.create_table('container_travel',
     sa.Column('id_container_travel', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.Date(), nullable=False),
-    sa.Column('last_update', sa.Date(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('last_update', sa.DateTime(), nullable=False),
     sa.Column('id_container', sa.Integer(), nullable=True),
     sa.Column('id_travel', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_container'], ['containers.id_container'], ondelete='cascade'),

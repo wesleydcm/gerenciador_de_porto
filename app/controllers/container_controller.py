@@ -1,7 +1,6 @@
 from http import HTTPStatus
 import sqlalchemy
 from app.exceptions.containers_errors import CompanyNotPermission
-from app.exceptions.teu_errors import TeuError
 from app.models.company_model import ShippingCompany
 from app.models.container_model import Container
 from app.models.container_harbor_model import ContainerHarbor
@@ -22,6 +21,10 @@ def create_container():
 
         data = request.json
 
+        if data.get('teu'):
+            if data['teu'] != 1 and data['teu'] != 2:
+                return {'msg': 'Teu must be equal to 1 or 2.'}
+
         shipping_company = ShippingCompany.query\
             .filter_by(trading_name=data["company"])\
             .first()
@@ -41,7 +44,6 @@ def create_container():
         del(data["company"])
 
         new_container = Container(**data)
-        print(new_container)
         session(new_container, "add")
 
         return jsonify(new_container), HTTPStatus.CREATED
@@ -55,11 +57,6 @@ def create_container():
     except CompanyNotPermission:
         return {
             "Error": "This company does not belong you!"
-        }, HTTPStatus.BAD_REQUEST
-
-    except TeuError:
-        return {
-            "Error": "Teu must be 1 or 2."
         }, HTTPStatus.BAD_REQUEST
 
 
