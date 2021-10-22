@@ -2,6 +2,8 @@ from sqlalchemy.sql.schema import ForeignKey
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String
 from dataclasses import dataclass
+from sqlalchemy.orm import validates, relationship
+from app.exceptions.teu_errors import TeuError
 
 
 @dataclass

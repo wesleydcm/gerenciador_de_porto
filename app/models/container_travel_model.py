@@ -8,8 +8,8 @@ from datetime import datetime
 @dataclass
 class ContainerTravel(db.Model):
 
-    created_at: Date
-    last_update: Date
+    created_at: datetime
+    last_update: datetime
     
     __tablename__ = 'container_travel'
 
