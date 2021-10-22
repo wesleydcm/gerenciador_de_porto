@@ -27,3 +27,6 @@ class Ship(db.Model):
     )
 
     travel = relationship("Travel", backref="ship")
+
+    harbors = relationship('Harbor',
+                           secondary='ship_harbor', backref='ships')

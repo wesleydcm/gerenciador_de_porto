@@ -171,22 +171,24 @@ def add_container_in_travel(travel_code: str):
             }, HTTPStatus.BAD_REQUEST
 
         if not container_travel:
+            current_time = datetime.utcnow()
+
             container_travel = ContainerTravel(
-            created_at=datetime.utcnow(),
-            last_update=datetime.utcnow(),
+            created_at=current_time,
+            last_update=current_time,
             id_container=container.id_container,
             id_travel=travel.id_travel
         )
             session(container_travel, "add")
             return jsonify(container), HTTPStatus.CREATED
         
-        elif container_travel and container_travel.last_update == container_travel.created_at:
-            container_travel.last_update = datetime.utcnow()
+        # elif container_travel and container_travel.last_update == container_travel.created_at:
+        #     container_travel.last_update = datetime.utcnow()
             
-            current_app.db.session.commit()
-            return jsonify(container), HTTPStatus.CREATED
+        #     current_app.db.session.commit()
+        #     return jsonify(container), HTTPStatus.CREATED
 
-        elif container_travel and container_travel.last_update != container_travel.created_at:
+        else:
             return {
                 'msg': f'Container {container.tracking_code} already added to this travel.'
             }, HTTPStatus.CONFLICT
