@@ -26,3 +26,4 @@ class ShipHarbor(db.Model):
     )
 
     ship = relationship('Ship')
+

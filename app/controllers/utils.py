@@ -44,3 +44,4 @@ def session(model, action):
     elif action == "remove":
         session.delete(model)
         session.commit()
+

@@ -1,15 +1,17 @@
-from dataclasses import asdict
-
+from http import HTTPStatus
+from app.models.container_model import Container
 from app.models.travel_model import Travel
 from app.models.company_model import ShippingCompany
 from app.models.ship_model import Ship
 from app.models.user_model import User
 from app.models.container_travel_model import ContainerTravel
 from flask import current_app, jsonify, request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from sqlalchemy.orm import exc
+from app.controllers.utils import generate_random_alphanumeric
+from datetime import datetime
+from .utils import session
 
-def get_one_travel(id:int):
-
-    travel = Travel.query.get(id)
 
 @jwt_required()
 def get_by_travel_code(travel_code: str):
@@ -156,8 +158,7 @@ def add_container_in_travel(travel_code: str):
         company = ShippingCompany.query.filter_by(id_shipping_company=ship.id_shipping_company).first()
         user = User.query.filter_by(username=requester_username).first()
         container = Container.query.filter_by(tracking_code=data["tracking_code"]).first()
-
-        # pdb.set_trace()
+        container_travel = ContainerTravel.query.filter_by(id_container=container.id_container).first()
 
         if user.id_user != company.id_user:
             return{
@@ -169,19 +170,27 @@ def add_container_in_travel(travel_code: str):
                 'Error': f'Tracking code({data["tracking_code"]}) of container not found'
             }, HTTPStatus.BAD_REQUEST
 
-        if container in travel.containers:
-            return {
-                'msg': f'Container {container.tracking_code} already added to this travel.'
-            }, HTTPStatus.CONFLICT
-
-        container_travel = ContainerTravel(
+        if not container_travel:
+            container_travel = ContainerTravel(
             created_at=datetime.utcnow(),
             last_update=datetime.utcnow(),
             id_container=container.id_container,
             id_travel=travel.id_travel
         )
-        session(container_travel, "add")
-        return jsonify(container), HTTPStatus.CREATED
+            session(container_travel, "add")
+            return jsonify(container), HTTPStatus.CREATED
+        
+        elif container_travel and container_travel.last_update == container_travel.created_at:
+            container_travel.last_update = datetime.utcnow()
+            
+            current_app.db.session.commit()
+            return jsonify(container), HTTPStatus.CREATED
+
+        elif container_travel and container_travel.last_update != container_travel.created_at:
+            return {
+                'msg': f'Container {container.tracking_code} already added to this travel.'
+            }, HTTPStatus.CONFLICT
+ 
     except PermissionError as e:
         return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
 
