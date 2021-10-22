@@ -11,12 +11,6 @@ def get_one_travel(id:int):
 
     travel = Travel.query.get(id)
 
-<<<<<<< HEAD
-    if not travel:
-        return {'msg': 'travel not found'}, 404
-    
-    return jsonify(travel), 200
-=======
 @jwt_required()
 def get_by_travel_code(travel_code: str):
     try:
@@ -216,4 +210,3 @@ def get_all_containers_in_travel(travel_code: str):
 
     except PermissionError as e:
         return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
->>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6

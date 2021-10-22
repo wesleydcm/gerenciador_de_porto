@@ -22,8 +22,6 @@ class Container(db.Model):
             "shipping_company.id_shipping_company", ondelete="cascade"
         )
     )
-<<<<<<< HEAD
-=======
 
     travels = relationship('Travel',
                            secondary='container_travel', backref='containers')
@@ -39,4 +37,3 @@ class Container(db.Model):
             return teu                
         else:
             raise TeuError
->>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6

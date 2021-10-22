@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import datetime
-from sqlalchemy.orm import relationship
-=======
->>>>>>> 78197d889ca7011c0075934cf323d8c0d2cd9b7d
 from app.configs.database import db
 from sqlalchemy import Column, Integer, DateTime
 from sqlalchemy.sql.schema import ForeignKey

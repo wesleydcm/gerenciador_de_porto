@@ -98,13 +98,8 @@ def upgrade():
     )
     op.create_table('travel',
     sa.Column('id_travel', sa.Integer(), nullable=False),
-<<<<<<< HEAD:migrations/versions/2f0f1d1b3700_.py
-    sa.Column('destination', sa.String(), nullable=False),
-    sa.Column('code', sa.Integer(), nullable=False),
-=======
     sa.Column('travel_code', sa.String(length=127), nullable=True),
     sa.Column('destination', sa.String(length=63), nullable=False),
->>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6:migrations/versions/0dbaa814d0d0_.py
     sa.Column('id_ship', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_ship'], ['ships.id_ship'], ondelete='cascade'),
     sa.PrimaryKeyConstraint('id_travel'),
