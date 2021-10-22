@@ -8,9 +8,9 @@ from datetime import datetime
 @dataclass
 class ContainerTravel(db.Model):
 
-    created_at: datetime
-    last_update: datetime
-
+    created_at: Date
+    last_update: Date
+    
     __tablename__ = 'container_travel'
 
     id_container_travel = Column(Integer, primary_key=True)

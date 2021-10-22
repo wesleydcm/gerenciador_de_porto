@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.orm import relationship
 
 
 @dataclass
@@ -26,5 +25,8 @@ class Ship(db.Model):
             "shipping_company.id_shipping_company", ondelete="cascade"
         )
     )
+<<<<<<< HEAD
 
     travel = relationship("Travel", backref="ship")
+=======
+>>>>>>> 78197d889ca7011c0075934cf323d8c0d2cd9b7d
