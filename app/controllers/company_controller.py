@@ -2,9 +2,8 @@ from flask import jsonify, request, current_app
 from http import HTTPStatus
 from datetime import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.exceptions.company_erros import UserIsHarbor
+from app.exceptions.company_errors import UserIsHarbor
 from sqlalchemy.exc import IntegrityError
-
 from app.controllers.user_controller import session
 from app.models.company_model import ShippingCompany
 from app.models.user_model import User
@@ -123,3 +122,4 @@ def list_ships_by_company(trading_name: str):
 
     except UnboundLocalError:
         return {"Error": "Company not found!"}, HTTPStatus.BAD_REQUEST
+

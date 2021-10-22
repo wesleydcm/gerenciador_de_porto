@@ -1,6 +1,12 @@
 # HARBOR MANAGEMENT
 
+<<<<<<< HEAD
+
+
+## Getting started
+=======
 ![diagram_er](./HM.png)
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
 ## Descrição
 
@@ -16,8 +22,43 @@ e de saída do porto.
 
 </br>
 
----
+***
 
+<<<<<<< HEAD
+# Editing this README
+
+When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://gitlab.com/-/experiment/new_project_readme_content:40bab2ae25ade5d452676e630b3ba46e?https://www.makeareadme.com/) for this template.
+
+## Suggestions for a good README
+Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+
+## Name
+Choose a self-explaining name for your project.
+
+## Description
+Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+
+## Badges
+On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+
+## Visuals
+Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+
+## Installation
+Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+
+## Usage
+Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+
+## Support
+Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+
+## Roadmap
+If you have ideas for releases in the future, it is a good idea to list them in the README.
+
+## Contributing
+State if you are open to contributions and what your requirements are for accepting them.
+=======
 ## Tecnologias:
 
 - Linguagem:
@@ -81,6 +122,7 @@ e de saída do porto.
     ```
 
     </br>
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
 5.  Atualize o banco de dados
 
@@ -89,6 +131,19 @@ e de saída do porto.
     $ flask db upgrade
     ```
 
+<<<<<<< HEAD
+## Authors and acknowledgment
+Show your appreciation to those who have contributed to the project.
+
+## License
+For open source projects, say how it is licensed.
+
+## Project status
+If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+## Endpoints User (tabela usuário)
+POST /harbor_manager/users - cria um usuário.
+=======
 </br>
 
 - **Rode, e teste as rotas**
@@ -106,150 +161,44 @@ e de saída do porto.
 ## Endpoints User (Tabela "users")
 
 ### POST `/harbor_manager/users`
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
 > Rota responsável pelo cadastros de usuários.
 
-- Corpo requisição:
+GET /harbor_manager/users - lista o próprio dado do usuário. - **precisa de autorização** 
 
-```json
-{
-  "name": "F_Porto",
-  "username": "Fporto_1",
-  "password": "abc1234",
-  "is_harbor": true
-}
-```
+PATCH /harbor_manager/users - atualiza os próprios dados. - **precisa de autorização** 
 
-- Corpo da resposta:
+DELETE /harbor_manager/users - se deleta do banco de dados. - **precisa de autorização**
+                      
+## Endpoints Marine Company (tabela empresa marítima)
+POST /harbor_manager/marine_company - cria empresas marítimas. - **precisa de autorização**
 
-```json
-{
-  "name": "F_Porto",
-  "username": "Fporto_1"
-}
-```
+## Endpoints Container (Tabela 'containers')
 
-- Status: 201 CREATED
+POST /harbor_manager/container - cria containers. - **precisa de autorização**
 
-- **\*_is_harbor_**: essa propriedade distingue usuário do porto (true) e da companhia (false).\*
-
-<br>
-
-### POST `/harbor_manager/users/login`
-
-> Rota responsável pelo login de usuários.
-
-- Corpo requisição:
-
-```json
-{
-  "username": "Fporto_1",
-  "password": "abc1234"
-}
-```
-
-- Corpo da resposta:
-
-```json
-{
-  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYzNDc2NTY1MiwianRpIjoiZDE5Mzg3NzctMjQ4OC00NWNjLWJlYTYtMmJiYTBhNDdmZDdkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJuYW1lIjoiRl9Qb3J0byIsInVzZXJuYW1lIjoiRnBvcnRvXzEifSwibmJmIjoxNjM0NzY1NjUyLCJleHAiOjE2MzQ3NjY1NTJ9.3dxK4yqivcn9TYq8z-d-Jc36QPY4qW4gkcsNUep9n8g"
-}
-```
-
-- Status: 200 OK
-
-- **\*access_token**: token tipo **Bearer Token**, deverá ser informado no cabeçalho das requisições à rotas protegidas\*
-
-<br>
-
-### GET `/harbor_manager/users`
-
-> Retorna os dados do usuário
-
-- Rota protegida
-- Exemplo de requisição
-
-        /harbor_manager/users
-
-  - Corpo da resposta:
-
-  ```json
-  {
-    "name": "F_Porto",
-    "username": "Fporto_1"
-  }
-  ```
-
-  - Status: 200 OK
-
-<br>
-
-### PATCH `/harbor_manager/users`
-
-> Update dados do usuário
-
-- Rota protegida
-
-- Corpo requisição
-
-  ```json
-  {
-    "name": "haha",
-    "password": "1234567"
-  }
-  ```
-
-  - Corpo da resposta:
-
-  ```json
-  {
-    "name": "haha",
-    "username": "Fporto_1"
-  }
-  ```
-
-  - Status: 200 OK
-
-<br>
-
-### DELETE `/harbor_manager/users`
-
-> Deleta o usuário.
-
-- Rota protegida
-- Exemplo de requisição
-
-        /harbor_manager/users
-
-  - Corpo da resposta:
-
-  ```json
-  {
-    "name": "haha",
-    "username": "Fporto_1"
-  }
-  ```
-
-  - Status: 200 OK
-
-<br>
-
----
-
-<br>
-
+<<<<<<< HEAD
+GET /harbor_manager/container/<int:codigo_rastreio> - lista um container específico. - **precisa de autorização**
+=======
 ## Endpoints Shipping Company (Tabela "shipping_company")
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
-### POST `/harbor_manager/shipping_company`
+-------
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/containers - lista todos os containers da companhia. - **precisa de autorização** 
 
-> Rota responsável pelo cadastros de Shipping Company
+GET /harbor_manager/marine_company/<string:fantasy_name of the marine_company>/ships - lista todos os navios da companhia. - **precisa de autorização** 
 
-> Somente para usuários "is_harbor: false".
+## Endpoints Ship (tabela navio)
+POST /harbor_manager/ship - cria navios. - **precisa de autorização**     
 
 - **Rota protegida**
 - is_harbor: false
 - Corpo requisição:
 
+<<<<<<< HEAD
+PATCH /harbor_manager/ship/<string:name of the ship> - altera dados do navio. - **precisa de autorização**     
+=======
 ```json
 {
   "trading_name": "H2H"
@@ -263,46 +212,66 @@ e de saída do porto.
   "msg": "Shipping Company created!"
 }
 ```
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
-- Status: 201 CREATED
+DELETE /harbor_manager/ship/<string:name of the ship> - deleta o navio. - **precisa de autorização**  
 
-- Caso o usuário não seja do tipo **_is_harbor: false_**:
+-----
+GET /harbor_manager/ship/<string:name of the ship>/travels - lista todos as viagens que o navio fez. - **precisa de autorização**
 
-```json
-{
-  "Error": "This user cannot create a company"
-}
-```
+## Endpoints Container (tabela container)
+POST /harbor_manager/container - cria containers. - **precisa de autorização**
 
 - Status: 400 BAD REQUEST
 
 <br>
 
-### GET `/harbor_manager/shipping_company/<string:trading_name>`
+### GET `/harbor_manager/container/<string:tracking_code>`
 
+<<<<<<< HEAD
+> Retorna informarções do Ship
+=======
 > Retorna dados de uma Shipping Company
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
 - **Rota protegida**
-
-- Somente proprietario
 
 - Corpo requisição:
 
 - Exemplo de requisição
 
-      GET /shipping_company/H2H
+      GET /harbor_manager/ship/Navio N
 
-- Corpo da resposta:
+  - Corpo da requisição:
 
-  ```json
-  {
-    "created_at": "Wed, 20 Oct 2021 00:00:00 GMT",
-    "trading_name": "H2H"
-  }
-  ```
+    ```json
+    {
+      "company": "MSC"
+    }
+    ```
 
-- Status: 200 OK
+  - Corpo da resposta:
 
+<<<<<<< HEAD
+    ```json
+    {
+      "name": "Navio N",
+      "draught": 20,
+      "size": 30,
+      "nationality": "Brasil"
+    }
+    ```
+
+    - Status: 200 OK
+
+  - Caso Ship não exista:
+    ```json
+    {
+      "msg": "Ship not found."
+    }
+    ```
+    - Status: 404 NOT FOUND
+=======
 - Caso transportadora não exista:
   ```json
   {
@@ -310,23 +279,25 @@ e de saída do porto.
   }
   ```
   - Status: 404 NOT FOUND
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
 <br>
 
-### PATCH `/harbor_manager/shipping_company/<string:trading_name>`
+### PATCH `/harbor_manager/ship/<string:name_ship>`
 
-> Atualiza informações de uma shipping company.
+> Atualiza informações de um ship.
 
 - Rota protegida
 - Exemplo de requisição
 
-        /harbor_manager/shipping_company/H2H
+      /harbor_manager/ship/Navio N
 
   - Corpo da requisição:
 
   ```json
   {
-    "trading_name": "MSC"
+    "nationality": "Alemanha-3",
+    "company": "MSC"
   }
   ```
 
@@ -334,17 +305,20 @@ e de saída do porto.
 
   ```json
   {
-    "trading_name": "MSC"
+    "name": "Navio N",
+    "draught": 20,
+    "size": 30,
+    "nationality": "Alemanha-3"
   }
   ```
 
   - Status: 200 OK
 
-  - Caso shipping company não exista:
+  - Caso ship não exista:
 
   ```json
   {
-    "Error": "Company not found!"
+    "msg": "Ship not found."
   }
   ```
 
@@ -352,44 +326,23 @@ e de saída do porto.
 
 <br>
 
-### DELETE `/harbor_manager/shipping_company/<string:trading_name>`
+### DELETE `/harbor_manager/ship/<string:name_ship>`
 
 > Deleta shipping company.
 
 - Rota protegida
 - Exemplo de requisição
 
-        /harbor_manager/travel/MSC
+        /harbor_manager/ship/Navio N
 
-  - Corpo da resposta:
+  - Precisa informar Shipping Company:
 
   ```json
+<<<<<<< HEAD
   {
-    "trading_name": "MSC"
+    "company": "MSC"
   }
-  ```
-
-  - Status: 200 OK
-
-<br>
-
-**_Outras consultas relacionadas a Shipping Company:_**
-
-### GET `/harbor_manager/shipping_company/<string:trading_name>/containers`
-
-> Retorna lista com todos os containers da Shipping Company.
-
-- **Rota protegida**
-
-- Corpo requisição:
-
-- Exemplo de requisição
-
-      GET /harbor_manager/shipping_company/MSC/containers
-
-- Corpo da resposta:
-
-  ```json
+=======
   [
     {
       "tracking_code": "n7O07",
@@ -403,20 +356,19 @@ e de saída do porto.
     },
       ...
   ]
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
   ```
 
-- Status: 200 OK
+  - Não retorna corpo
 
-- Caso transportadora não exista:
-  ```json
-  {
-    "Error": "Company not found!"
-  }
-  ```
-  - Status: 400 OK
+  - Status: 200 OK
 
 <br>
 
+<<<<<<< HEAD
+--------
+GET /harbor_manager/container/<int:codigo_rastreio>/travel - lista as viagens de um container
+=======
 ### GET `/harbor_manager/shipping_company/<string:trading_name>/ships`
 
 > Retorna lista com todos os ships da Shipping Company.
@@ -451,29 +403,41 @@ e de saída do porto.
   }
   ```
   - Status: 404 NOT FOUND
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
-<br>
+GET /harbor_manager/container/<int:codigo_rastreio>/marine_terminal - lista os pátios nos quais o container esteve
 
-<br>
+## Endpoints Travel (tabela viagem)
+POST /harbor_manager/travel - cria uma viagem. - **precisa de autorização**
 
----
+GET /harbor_manager/travel/<int:codigo> - lista uma viagem específico. - **precisa de autorização**
 
-<br>
+PATCH /harbor_manager/travel/<int:codigo> - atualiza uma viagem específico. - **precisa de autorização**
 
+<<<<<<< HEAD
+DELETE /harbor_manager/travel/<int:codigo> - deleta uma viagem específico. - **precisa de autorização**
+=======
 ## Endpoints Ship (Tabela "ships")
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
-POST /harbor_manager/ship - cria navios. - **precisa de autorização**
+------
+GET /harbor_manager/travel/<int:codigo>/containers - lista todos os containers da viagem. . - **precisa de autorização**
 
-### POST `/harbor_manager/ship`
+## Endpoints harbor (tabela porto)
+POST /harbor_manager/harbor - cria um porto. - **precisa de autorização**
 
-> Rota responsável pelo cadastros de Ship
+- Status: 201 CREATED
 
-> Somente para usuários "is_harbor: false".
+GET /harbor_manager/harbor/<int:nome> - lista alguns dados de um específico.
+- nome,
+- pais,
+- cidade
 
-- **Rota protegida**
-- is_harbor: false
-- Corpo requisição:
+## GET `/harbor_manager/harbor/<str:nome>`
 
+<<<<<<< HEAD
+> Lista um porto específico.
+=======
 ```json
 {
   "name": "Navio_N",
@@ -483,28 +447,37 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
   "company": "MSC"
 }
 ```
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 
-- Corpo da resposta:
+------
+GET /harbor_manager/harbor/<int:nome>/containers - lista todos os containers que estão no porto. - **precisa de autorização**
 
 ```json
 {
+<<<<<<< HEAD
+  "container": "452KGR",
+  "entry_code": "01/10/2021",
+  "exit_code": "10/10/2021"
+=======
   "name": "Navio_N",
   "draught": 20,
   "size": 30,
   "nationality": "Brasil"
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6
 }
 ```
 
 - Status: 201 CREATED
+- **\*_availability_** do porto é atualizada automaticamente e salva no banco dados.
+- **\*_last_update_** do container é atualizada automaticamente e salva no banco dados.
 
-- Caso Ship já exista:
+GET /harbor_manager/harbor/<int:nome>/ships/history - histórico dos navios que passaram pelo porto. - **precisa de autorização**
 
-```json
-{
-  "msg": "Ship already registered."
-}
-```
 
+<<<<<<< HEAD
+
+
+=======
 - Status: 409 CONFLICT
 
 - Caso o usuário não seja do tipo **_is_harbor: false_**:
@@ -1316,3 +1289,4 @@ POST /harbor_manager/ship - cria navios. - **precisa de autorização**
 Para projetos de código aberto, está autorizado.
 
 <br>
+>>>>>>> 65b82ccff00bfa2661198cd9fd23f6a5ec6fa7c6

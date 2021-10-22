@@ -2,7 +2,6 @@ from sqlalchemy import Column, String, Integer, Boolean
 from dataclasses import dataclass
 from sqlalchemy.orm import relationship
 from werkzeug.security import check_password_hash, generate_password_hash
-
 from app.configs.database import db
 
 
@@ -32,3 +31,4 @@ class User(db.Model):
     def check_password(self, password_to_hash):
         is_valid = check_password_hash(self.password_hash, password_to_hash)
         return is_valid
+

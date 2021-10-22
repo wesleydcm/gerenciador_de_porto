@@ -125,8 +125,6 @@ def delete_container_by_tracking_code(tracking_code: int):
         session(container, "remove")
         return {}, HTTPStatus.NO_CONTENT
 
-
-
     try:
         user_from_jwt = get_jwt_identity()["username"]
 
@@ -168,3 +166,4 @@ def get_all():
 
     except AttributeError:
         return {"Error": "Company does not exists!"}, HTTPStatus.BAD_REQUEST
+

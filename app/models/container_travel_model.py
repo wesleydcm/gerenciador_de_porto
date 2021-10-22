@@ -10,7 +10,7 @@ class ContainerTravel(db.Model):
 
     created_at: datetime
     last_update: datetime
-
+    
     __tablename__ = 'container_travel'
 
     id_container_travel = Column(Integer, primary_key=True)

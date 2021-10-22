@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.sql.schema import ForeignKey
@@ -20,3 +19,4 @@ class Travel(db.Model):
     id_ship = Column(
         Integer, ForeignKey("ships.id_ship", ondelete="cascade")
     )
+

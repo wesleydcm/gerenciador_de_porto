@@ -14,6 +14,6 @@ bp.post('')(register_travel)
 bp.get('/<string:travel_code>')(get_by_travel_code)
 bp.patch('/<string:travel_code>')(update_travel)
 bp.delete('/<string:travel_code>')(delete_travel)
-
 bp.post('/<string:travel_code>/add')(add_container_in_travel)
 bp.get('/<string:travel_code>/containers')(get_all_containers_in_travel)
+

@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-
 from app.configs.database import db
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.sql.schema import ForeignKey
@@ -28,3 +27,6 @@ class Ship(db.Model):
     )
 
     travel = relationship("Travel", backref="ship")
+
+    harbors = relationship('Harbor',
+                           secondary='ship_harbor', backref='ships')

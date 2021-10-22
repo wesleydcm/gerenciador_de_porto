@@ -21,3 +21,4 @@ class ShippingCompany(db.Model):
 
     containers = relationship("Container", backref="company")
     ships = relationship("Ship", backref="company")
+

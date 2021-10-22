@@ -8,3 +8,4 @@ bp.post("/login")(login)
 bp.get("")(get_user)
 bp.patch("")(update)
 bp.delete("")(delete)
+

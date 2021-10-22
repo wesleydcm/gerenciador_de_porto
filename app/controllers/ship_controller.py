@@ -149,3 +149,4 @@ def ship_locate(name_ship: str):
             }, HTTPStatus.OK
         else:
             return {'msg': f'{ship.name} is with his owner.'}, HTTPStatus.OK
+
