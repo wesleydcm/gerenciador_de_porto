@@ -25,5 +25,5 @@ class ContainerHarbor(db.Model):
         Integer, ForeignKey('harbor.id_harbor', ondelete='cascade')
     )
 
-    container = relationship('Container')
+    container = relationship('Container', backref='container_harbor_dates')
 
