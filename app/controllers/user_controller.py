@@ -4,9 +4,9 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from flask_jwt_extended import (
     create_access_token, jwt_required, get_jwt_identity
 )
-
 from app.models.user_model import User
 from app.controllers.utils import session
+from dataclasses import asdict
 
 
 def register_user():
@@ -44,14 +44,22 @@ def login():
 
 @jwt_required()
 def get_user():
-    user = get_jwt_identity()
+    current_user = get_jwt_identity()
 
-    new_user = User.query.filter_by(username=user["username"]).first()
+    user = User.query.filter_by(username=current_user["username"]).first()
 
     if not user:
         return {'msg': 'user not found'}, HTTPStatus.BAD_REQUEST
+    
+    result_list = []                      
 
-    return jsonify(new_user), HTTPStatus.OK
+    user_dict = asdict(user)
+    user_dict['companies'] = [{
+            'name': item.trading_name            
+            } for item in user.company]
+    result_list.append(user_dict)
+
+    return jsonify(result_list), HTTPStatus.OK
 
 
 @jwt_required()
