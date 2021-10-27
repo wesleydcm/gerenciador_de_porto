@@ -1,5 +1,10 @@
 from app.controllers.ship_controller import (
-    create_ship, info_ship, update_ship, delete_ship, all_ship_travel, ship_locate
+    create_ship,
+    info_ship,
+    update_ship,
+    delete_ship,
+    all_ship_travel,
+    ship_locate
 )
 from flask import Blueprint
 

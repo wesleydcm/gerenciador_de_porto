@@ -1,12 +1,12 @@
-from flask import jsonify, request, current_app
-from http import HTTPStatus
-from datetime import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.exceptions.company_erros import UserIsHarbor
+from flask import jsonify, request, current_app
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+from http import HTTPStatus
 
-from app.controllers.user_controller import session
+from app.exceptions.company_erros import UserIsHarbor
 from app.models.company_model import ShippingCompany
+from app.controllers.user_controller import session
 from app.models.user_model import User
 
 
@@ -35,7 +35,6 @@ def register_company():
         }, HTTPStatus.BAD_REQUEST
 
     except IntegrityError as err:
-        #TODO: dar replace e tirar os parenteses
         return str(err).split('\n')[1], HTTPStatus.CONFLICT
 
 

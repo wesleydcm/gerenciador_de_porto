@@ -2,7 +2,6 @@ from app.controllers.harbor_controller import (
     get_one_harbor,
     create_harbor,
     update_one_harbor,
-    delete_one_harbor,
     get_containers_on_harbor_all_times,
     get_containers_on_harbor_now,
     update_containers_on_harbor,
@@ -30,4 +29,3 @@ bp.get(containers_on_harbor_all_times)(get_containers_on_harbor_all_times)
 bp.get(ships_on_harbor_now)(get_ships_on_harbor_now)
 bp.get(ships_on_harbor_all_times)(get_ships_on_harbor_all_times)
 bp.patch(harbor_name)(update_one_harbor)
-bp.delete(harbor_name)(delete_one_harbor)

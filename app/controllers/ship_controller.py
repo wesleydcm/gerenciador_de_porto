@@ -1,12 +1,13 @@
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import jsonify, request, current_app
 from http import HTTPStatus
+
+from app.models.company_model import ShippingCompany
+from app.models.ship_harbor_model import ShipHarbor
 from app.controllers.utils import session
 from app.models.ship_model import Ship
-from flask import jsonify, request, current_app
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from sqlalchemy.exc import IntegrityError, InvalidRequestError
-from app.models.company_model import ShippingCompany
 from app.models.user_model import User
-from app.models.ship_harbor_model import ShipHarbor
 
 
 @jwt_required()
@@ -124,7 +125,6 @@ def all_ship_travel(name_ship: str):
         return jsonify(ship.travel), HTTPStatus.OK
 
 
-# TODO: implementar rota
 @jwt_required()
 def ship_locate(name_ship: str):
     data_user = get_jwt_identity()["username"]

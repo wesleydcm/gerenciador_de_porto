@@ -1,7 +1,7 @@
-from sqlalchemy import Column, String, Integer, Boolean
-from dataclasses import dataclass
-from sqlalchemy.orm import relationship
 from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy import Column, String, Integer, Boolean
+from sqlalchemy.orm import relationship
+from dataclasses import dataclass
 
 from app.configs.database import db
 

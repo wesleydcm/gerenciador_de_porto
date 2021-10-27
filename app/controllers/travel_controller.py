@@ -1,19 +1,16 @@
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask import current_app, jsonify, request
+from sqlalchemy.orm import exc
+from datetime import datetime
 from http import HTTPStatus
-import pdb
-from app.models.container_model import Container
 
-from app.models.travel_model import Travel
+from app.controllers.utils import generate_random_alphanumeric, session
+from app.models.container_travel_model import ContainerTravel
 from app.models.company_model import ShippingCompany
+from app.models.container_model import Container
+from app.models.travel_model import Travel
 from app.models.ship_model import Ship
 from app.models.user_model import User
-from app.models.container_travel_model import ContainerTravel
-from flask import current_app, jsonify, request
-from flask_jwt_extended import get_jwt_identity, jwt_required
-from sqlalchemy.orm import exc
-from app.controllers.utils import generate_random_alphanumeric
-from datetime import datetime
-
-from .utils import session
 
 
 @jwt_required()
@@ -208,7 +205,7 @@ def get_all_containers_in_travel(travel_code: str):
         if company.id_user == user.id_user:
             return jsonify(travel.containers), HTTPStatus.OK
 
-    except exc.UnmappedInstanceError:
+    except (exc.UnmappedInstanceError, AttributeError):
         return {
             'Error': "Travel not found, please review 'travel_code'."
         }, HTTPStatus.BAD_REQUEST

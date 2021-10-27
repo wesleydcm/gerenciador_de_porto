@@ -1,6 +1,6 @@
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from flask import jsonify, request, current_app
 from http import HTTPStatus
-from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from flask_jwt_extended import (
     create_access_token, jwt_required, get_jwt_identity
 )
@@ -77,7 +77,6 @@ def update():
         return jsonify(user), HTTPStatus.OK
 
     except InvalidRequestError as err:
-        # TODO: tratar a mensagem do erro
         return {"Error": str(err)}
 
 

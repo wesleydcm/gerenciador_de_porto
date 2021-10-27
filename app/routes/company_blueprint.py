@@ -1,8 +1,11 @@
-from sys import path
 from flask import Blueprint
 from app.controllers.company_controller import (
-    get_company, register_company, update, delete,
-    list_containers_by_company, list_ships_by_company
+    get_company,
+    register_company,
+    update,
+    delete,
+    list_containers_by_company,
+    list_ships_by_company
 )
 
 bp = Blueprint('company_bp', __name__, url_prefix='/shipping_company')

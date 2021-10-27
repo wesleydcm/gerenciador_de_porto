@@ -1,8 +1,7 @@
-import datetime
-from sqlalchemy.orm import relationship
-from app.configs.database import db
 from sqlalchemy import Column, Integer, DateTime
 from sqlalchemy.sql.schema import ForeignKey
+from sqlalchemy.orm import relationship
+from app.configs.database import db
 from dataclasses import dataclass
 from datetime import datetime
 

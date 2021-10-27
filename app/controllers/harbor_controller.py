@@ -1,19 +1,19 @@
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import jsonify, request, current_app
 from datetime import datetime
-from app.models.user_model import User
-from app.models.harbor_model import Harbor
-from app.models.ship_harbor_model import ShipHarbor
-from app.models.ship_model import Ship
+from http import HTTPStatus
+import sqlalchemy
+import psycopg2
+
 from app.models.container_harbor_model import ContainerHarbor
-from app.models.container_model import Container
 from app.models.container_travel_model import ContainerTravel
+from app.models.ship_harbor_model import ShipHarbor
+from app.models.container_model import Container
+from app.models.harbor_model import Harbor
 from app.models.travel_model import Travel
 from app.controllers.utils import session
-from flask import jsonify, request, current_app
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from http import HTTPStatus
-import psycopg2
-import sqlalchemy
-import pdb
+from app.models.user_model import User
+from app.models.ship_model import Ship
 
 
 @jwt_required()
@@ -86,7 +86,7 @@ def update_one_harbor(harbor_name:str):
     current_username = get_jwt_identity()['username']
     user = User.query.filter_by(username=current_username).first()
 
-    data = request.json   
+    data = request.json
 
     if user.is_harbor:
         try:
@@ -112,12 +112,12 @@ def update_one_harbor(harbor_name:str):
             else:
                 new_name  = harbor.name.capitalize()
 
-            Harbor.query.filter_by(name=harbor_name.capitalize()).update(data)            
+            Harbor.query.filter_by(name=harbor_name.capitalize()).update(data)
             current_app.db.session.commit()
             harbor = Harbor.query.filter_by(name=new_name).first()
 
             return jsonify(harbor), HTTPStatus.OK
-            
+
         except sqlalchemy.exc.NoResultFound:
             return {'msg': 'Harbor not found'}, HTTPStatus.NOT_FOUND
 
@@ -125,7 +125,7 @@ def update_one_harbor(harbor_name:str):
             return {'msg': str(e).split('\n')[1]}, HTTPStatus.CONFLICT
 
         except sqlalchemy.exc.InvalidRequestError as e:
-            return {'msg': str(e)}, HTTPStatus.BAD_REQUEST    
+            return {'msg': str(e)}, HTTPStatus.BAD_REQUEST
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
 
@@ -181,19 +181,25 @@ def get_containers_on_harbor_all_times(harbor_name:str):
             harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).one()
 
             session = current_app.db.session
-            query_list = session.query(Container.tracking_code,\
-                                       ContainerHarbor.entry_date,\
-                                       sqlalchemy.func.max(ContainerHarbor.exit_date))\
-                                       .join(Container, Container.id_container == ContainerHarbor.id_container)\
-                                       .filter(ContainerHarbor.id_harbor == harbor.id_harbor)\
-                                       .group_by(Container.tracking_code, ContainerHarbor.entry_date)\
-                                       .all()
+            query_list = session.query(
+                Container.tracking_code,\
+                    ContainerHarbor.entry_date,\
+                    sqlalchemy.func.max(ContainerHarbor.exit_date)
+                )\
+                .join(Container, Container.id_container == ContainerHarbor.id_container)\
+                .filter(ContainerHarbor.id_harbor == harbor.id_harbor)\
+                .group_by(Container.tracking_code, ContainerHarbor.entry_date)\
+                .all()
 
-            result_list = [{'container': query[0], 
-                            'entry_date': query[1],
-                            'exit_date': query[2]} 
-                            for query in query_list]
-            
+            result_list = [
+                {
+                    'container': query[0],
+                    'entry_date': query[1],
+                    'exit_date': query[2]
+                }
+                    for query in query_list
+            ]
+
             return jsonify(result_list), HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
@@ -279,19 +285,23 @@ def get_ships_on_harbor_now(harbor_name:str):
     if user.is_harbor:
         try:
             harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).one()
-            
             session = current_app.db.session
-            query_list = session.query(Ship.name,\
-                                       ShipHarbor.entry_date,\
-                                       sqlalchemy.func.max(ShipHarbor.exit_date))\
-                                       .join(Ship, Ship.id_ship == ShipHarbor.id_ship)\
-                                       .filter(ShipHarbor.id_harbor == harbor.id_harbor)\
-                                       .group_by(Ship.name, ShipHarbor.entry_date)\
-                                       .all()
+            query_list = session.query(
+                Ship.name,\
+                ShipHarbor.entry_date,\
+                sqlalchemy.func.max(ShipHarbor.exit_date)
+            )\
+                .join(Ship, Ship.id_ship == ShipHarbor.id_ship)\
+                .filter(ShipHarbor.id_harbor == harbor.id_harbor)\
+                .group_by(Ship.name, ShipHarbor.entry_date)\
+                .all()
 
-            result_list = [{'ship': query[0], 
-                            'entry_date': query[1]} 
-                            for query in query_list if query[2] == None]
+            result_list = [
+                {
+                    'ship': query[0],
+                    'entry_date': query[1]
+                }
+                    for query in query_list if query[2] == None]
 
             return jsonify(result_list), HTTPStatus.OK
 
@@ -311,19 +321,24 @@ def get_ships_on_harbor_all_times(harbor_name:str):
         try:
             harbor = Harbor.query.filter_by(name=harbor_name.capitalize()).one()
             session = current_app.db.session
-            query_list = session.query(Ship.name,\
-                                       ShipHarbor.entry_date,\
-                                       sqlalchemy.func.max(ShipHarbor.exit_date))\
-                                       .join(Ship, Ship.id_ship == ShipHarbor.id_ship)\
-                                       .filter(ShipHarbor.id_harbor == harbor.id_harbor)\
-                                       .group_by(Ship.name, ShipHarbor.entry_date)\
-                                       .all()
+            query_list = session.query(
+                Ship.name,\
+                ShipHarbor.entry_date,\
+                sqlalchemy.func.max(ShipHarbor.exit_date)
+            )\
+                .join(Ship, Ship.id_ship == ShipHarbor.id_ship)\
+                .filter(ShipHarbor.id_harbor == harbor.id_harbor)\
+                .group_by(Ship.name, ShipHarbor.entry_date)\
+                .all()
 
-            result_list = [{'ship': query[0], 
-                            'entry_date': query[1],
-                            'exit_date': query[2]} 
-                            for query in query_list]
-            
+            result_list = [
+                {
+                    'ship': query[0],
+                    'entry_date': query[1],
+                    'exit_date': query[2]
+                }
+                    for query in query_list]
+
             return jsonify(result_list), HTTPStatus.OK
 
         except sqlalchemy.exc.NoResultFound:
@@ -356,33 +371,33 @@ def update_ships_on_harbor(harbor_name:str):
                 ship_harbor_item = ShipHarbor.query.filter(ShipHarbor.id_ship == ship.id_ship)\
                 .order_by(ShipHarbor.id_ship_harbor.desc()).first()
 
-                new_item = {'ship': ship.name,
-                            'entry_date': ship_harbor_item.entry_date,
-                            'exit_date': ship_harbor_item.exit_date
-                            }
+                new_item = {
+                    'ship': ship.name,
+                    'entry_date': ship_harbor_item.entry_date,
+                    'exit_date': ship_harbor_item.exit_date
+                }
 
                 return jsonify(new_item), HTTPStatus.OK
-            
+
             elif not ship_harbor_item or ship_harbor_item.exit_date != None:
 
                 ship_entry_date = datetime.utcnow()
                 item = ShipHarbor(entry_date=ship_entry_date)
                 item.ship = ship
                 harbor.ship_harbor_items.append(item)
-                
                 current_app.db.session.commit()
 
                 ship_harbor_item = ShipHarbor.query.filter(ShipHarbor.id_ship == ship.id_ship)\
                 .order_by(ShipHarbor.id_ship_harbor.desc()).first()
 
-                new_item = {'ship': ship.name,                        
+                new_item = {'ship': ship.name,
                             'entry_date': ship_harbor_item.entry_date,
                             'exit_date': None
                             }
 
                 return jsonify(new_item), HTTPStatus.OK
-        
+
         except AttributeError:
-            return {'msg': 'Ship not found'}, HTTPStatus.NOT_FOUND     
+            return {'msg': 'Ship not found'}, HTTPStatus.NOT_FOUND
     else:
         return {'msg': 'You are a company user. You are not allowed to handle harbors data.'}, HTTPStatus.UNAUTHORIZED
