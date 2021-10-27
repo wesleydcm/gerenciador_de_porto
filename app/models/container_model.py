@@ -3,6 +3,8 @@ from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.orm import relationship
 from app.configs.database import db
 from dataclasses import dataclass
+from sqlalchemy.orm import validates, relationship
+from app.exceptions.teu_errors import TeuError
 
 
 @dataclass
@@ -29,3 +31,11 @@ class Container(db.Model):
 
     harbors = relationship('Harbor',
                            secondary='container_harbor', backref='containers')
+
+
+    @validates('teu')
+    def validate_teu(self, key, teu):
+        if (teu == 1 or teu == 2):
+            return teu
+        else:
+            raise TeuError

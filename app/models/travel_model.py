@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+from dataclasses import dataclass
+from app.configs.database import db
+>>>>>>> b51ba58c0ca82d4bb665479167fc3c56550de9a8
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.sql.schema import ForeignKey
 from app.configs.database import db
@@ -19,3 +24,4 @@ class Travel(db.Model):
     id_ship = Column(
         Integer, ForeignKey("ships.id_ship", ondelete="cascade")
     )
+

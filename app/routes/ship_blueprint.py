@@ -16,3 +16,7 @@ bp.patch('/<string:name_ship>')(update_ship)
 bp.delete('/<string:name_ship>')(delete_ship)
 bp.get('/<string:name_ship>/travels')(all_ship_travel)
 bp.get('/<string:name_ship>/locate')(ship_locate)
+<<<<<<< HEAD
+=======
+
+>>>>>>> b51ba58c0ca82d4bb665479167fc3c56550de9a8

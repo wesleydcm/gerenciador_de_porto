@@ -1,12 +1,9 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask import jsonify, request, current_app
 from sqlalchemy.exc import IntegrityError
-from datetime import datetime
-from http import HTTPStatus
 
-from app.exceptions.company_erros import UserIsHarbor
-from app.models.company_model import ShippingCompany
+from app.exceptions.company_errors import UserIsHarbor
 from app.controllers.user_controller import session
+from app.models.company_model import ShippingCompany
 from app.models.user_model import User
 
 

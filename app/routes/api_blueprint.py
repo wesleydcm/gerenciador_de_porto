@@ -6,7 +6,7 @@ from app.routes import (
     ship_blueprint,
     travel_blueprint,
     user_blueprint
-    )
+)
 
 bp = Blueprint('harbor_manager_bp', __name__, url_prefix='/harbor_manager')
 

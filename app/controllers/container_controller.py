@@ -7,6 +7,7 @@ import sqlalchemy
 
 from app.controllers.utils import session, generate_random_alphanumeric
 from app.exceptions.containers_errors import CompanyNotPermission
+from app.exceptions.teu_errors import TeuError
 from app.models.company_model import ShippingCompany
 from app.models.container_model import Container
 from app.models.user_model import User
@@ -49,12 +50,16 @@ def create_container():
         if type(e.orig) == NotNullViolation:
             return {'msg': 'Tracking code is required'}, HTTPStatus.BAD_REQUEST
         if type(e.orig) == UniqueViolation:
-            return {'msg': 'Tracking code already registered'},
-            HTTPStatus.BAD_REQUEST
+            return {'msg': 'Tracking code already registered'}, HTTPStatus.BAD_REQUEST
 
     except CompanyNotPermission:
         return {
             "Error": "This company does not belong you!"
+        }, HTTPStatus.BAD_REQUEST
+
+    except TeuError:
+        return {
+            "Error": "Teu must be 1 or 2."
         }, HTTPStatus.BAD_REQUEST
 
 
@@ -120,8 +125,6 @@ def delete_container_by_tracking_code(tracking_code: int):
         session(container, "remove")
         return {}, HTTPStatus.NO_CONTENT
 
-
-
     try:
         user_from_jwt = get_jwt_identity()["username"]
 
@@ -163,3 +166,4 @@ def get_all():
 
     except AttributeError:
         return {"Error": "Company does not exists!"}, HTTPStatus.BAD_REQUEST
+

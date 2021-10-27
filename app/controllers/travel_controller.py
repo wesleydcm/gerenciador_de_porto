@@ -158,8 +158,7 @@ def add_container_in_travel(travel_code: str):
         company = ShippingCompany.query.filter_by(id_shipping_company=ship.id_shipping_company).first()
         user = User.query.filter_by(username=requester_username).first()
         container = Container.query.filter_by(tracking_code=data["tracking_code"]).first()
-
-        # pdb.set_trace()
+        container_travel = ContainerTravel.query.filter_by(id_container=container.id_container).first()
 
         if user.id_user != company.id_user:
             return{
@@ -171,19 +170,23 @@ def add_container_in_travel(travel_code: str):
                 'Error': f'Tracking code({data["tracking_code"]}) of container not found'
             }, HTTPStatus.BAD_REQUEST
 
-        if container in travel.containers:
+        if not container_travel:
+            current_time = datetime.utcnow()
+
+            container_travel = ContainerTravel(
+            created_at=current_time,
+            last_update=current_time,
+            id_container=container.id_container,
+            id_travel=travel.id_travel
+        )
+            session(container_travel, "add")
+            return jsonify(container), HTTPStatus.CREATED
+
+        else:
             return {
                 'msg': f'Container {container.tracking_code} already added to this travel.'
             }, HTTPStatus.CONFLICT
 
-        container_travel = ContainerTravel(
-            created_at=datetime.utcnow(),
-            last_update=datetime.utcnow(),
-            id_container=container.id_container,
-            id_travel=travel.id_travel
-        )
-        session(container_travel, "add")
-        return jsonify(container), HTTPStatus.CREATED
     except PermissionError as e:
         return jsonify({'msg': str(e)}), HTTPStatus.BAD_REQUEST
 
